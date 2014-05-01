@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<bean id="classInPkgOfReource" class="java.lang.Class" factory-method="forName"> 
+		<constructor-arg value="com.billybyte.commonlibs.testcases.dse.AtmQueryForTest"/> 
+	</bean> 
+
+	<bean id="classOfKey" class="java.lang.Class" factory-method="forName"> 
+		<constructor-arg value="java.lang.String"/> 
+	</bean> 
+
+	<bean id="classOfData" class="java.lang.Class" factory-method="forName"> 
+		<constructor-arg value="com.billybyte.commonlibs.testcases.dse.SecInputsInfo"/> 
+	</bean> 
+	
+	<bean id="testDataMap" class="com.billybyte.commoncollections.MapFromMap"> 
+		<constructor-arg type="java.lang.String" value="testQueryDataForTestQueryManager.csv" />
+		<constructor-arg>
+			<ref local="classInPkgOfReource"/>
+		</constructor-arg>
+		<constructor-arg type="java.lang.String" value="shortName" />
+		<constructor-arg>
+			<ref local="classOfKey"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="classOfData"/>
+		</constructor-arg>
+	</bean> 
+	
+	
+	<bean id="atmQuery" class="com.billybyte.commonlibs.testcases.dse.AtmQueryForTest" > 
+		<constructor-arg>
+			<ref local="testDataMap"/>
+		</constructor-arg>
+	</bean> 
+
+	<bean id="volQuery" class="com.billybyte.commonlibs.testcases.dse.VolQueryForTest" > 
+		<constructor-arg>
+			<ref local="testDataMap"/>
+		</constructor-arg>
+	</bean> 
+
+	<bean id="strikeQuery" class="com.billybyte.commonlibs.testcases.dse.StrikeQueryForTest" > 
+		<constructor-arg>
+			<ref local="testDataMap"/>
+		</constructor-arg>
+	</bean> 
+
+	<bean id="rateQuery" class="com.billybyte.commonlibs.testcases.dse.RateQueryForTest" > 
+		<constructor-arg>
+			<ref local="testDataMap"/>
+		</constructor-arg>
+	</bean> 
+
+
+	<bean id="divQuery" class="com.billybyte.commonlibs.testcases.dse.DivQueryForTest" > 
+		<constructor-arg>
+			<ref local="testDataMap"/>
+		</constructor-arg>
+	</bean> 
+
+
+	<bean id="dteQuery" class="com.billybyte.commonlibs.testcases.dse.DteQueryForTest" > 
+		<constructor-arg>
+			<ref local="testDataMap"/>
+		</constructor-arg>
+	</bean> 
+
+	<bean id="cpQuery" class="com.billybyte.commonlibs.testcases.dse.CallPutQueryForTest" > 
+		<constructor-arg>
+			<ref local="testDataMap"/>
+		</constructor-arg>
+	</bean> 
+
+	<bean id="corrQuery" class="com.billybyte.commonlibs.testcases.dse.CorrFromSnSetQueryForTest" > 
+	</bean> 
+
+
+	<bean id="atmDiot" class="com.billybyte.dse.inputs.diotypes.AtmDiot" > 
+	</bean> 
+	<bean id="volDiot" class="com.billybyte.commonlibs.testcases.dse.VolDiotForTest" > 
+	</bean> 
+	<bean id="strikeDiot" class="com.billybyte.commonlibs.testcases.dse.StrikeDiotForTest" > 
+	</bean> 
+	<bean id="divDiot" class="com.billybyte.dse.inputs.diotypes.DivDiot" > 
+	</bean> 
+	<bean id="dteDiot" class="com.billybyte.dse.inputs.diotypes.DteSimpleDiot" > 
+	</bean> 
+	<bean id="rateDiot" class="com.billybyte.dse.inputs.diotypes.RateDiot" > 
+	</bean> 
+	<bean id="cpDiot" class="com.billybyte.dse.inputs.diotypes.CallPutDiot" > 
+	</bean> 
+	<bean id="corrDiot" class="com.billybyte.dse.inputs.diotypes.CorrDiot" > 
+	</bean> 
+
+
+	<util:map id="queryMap">
+			<entry key-ref="atmDiot" value-ref="atmQuery"/>
+			<entry key-ref="volDiot" value-ref="volQuery"/>
+			<entry key-ref="strikeDiot" value-ref="strikeQuery"/>
+			<entry key-ref="rateDiot" value-ref="rateQuery"/>
+			<entry key-ref="divDiot" value-ref="divQuery"/>
+			<entry key-ref="dteDiot" value-ref="dteQuery"/>
+			<entry key-ref="cpDiot" value-ref="cpQuery"/>
+			<entry key-ref="corrDiot" value-ref="corrQuery"/>
+	</util:map>
+
+ 
+	<bean id="sdQuery" class="com.billybyte.marketdata.SecDefQueryAllMarkets" > 
+	</bean> 
+		
+	<bean id="baseUnderlyingQuery" class="com.billybyte.dse.queries.BaseUnderlyingSecDefQuery" > 
+		<constructor-arg>
+			<ref local="sdQuery"/>
+		</constructor-arg>
+	</bean> 
+
+	<bean id="calSwapQuery" class="com.billybyte.marketdata.futures.apos.CalSwapUnderlyingSecDefQuery" > 
+	</bean> 
+
+	<bean id="csoQuery" class="com.billybyte.marketdata.futures.csos.NymexCsoSecDefListQuery" > 
+		<constructor-arg>
+			<ref local="sdQuery"/>
+		</constructor-arg>
+	</bean> 
+
+	<util:map id="secDefQueryMap">
+			<entry key="((FOP)|(FUT)|(OPT)|(STK))" value-ref="baseUnderlyingQuery"/>
+			<entry key="((CSX)|(AAO)|(AOX))\\.((FOP)|(FUT))" value-ref="calSwapQuery"/>
+			<entry key="((CSX)|(AAO)|(AOX))\\.((FOP)|(FUT))" value-ref="csoQuery"/>
+	</util:map>
+
+	<bean id="queryManager" class="com.billybyte.dse.inputs.QueryManager" > 
+		<constructor-arg>
+			<ref local="queryMap"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="secDefQueryMap"/>
+		</constructor-arg>
+	</bean> 
+	
+</beans>

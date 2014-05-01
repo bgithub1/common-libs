@@ -1,0 +1,159 @@
+symbol,contractDescription,exchange,times,sizeDescription,monthsAllowed,ticValue,pointValue,notionalContractSize,minOrderTick,notionalTickSize,validTypes,underlyingSymbol,spanSymbol
+BO,Soybean Oil (P),CBOT,9:30a.m. - 1:15p.m. CST,60000 lbs,FHKNQUVZ,0.0001 cent per lb. (6 per contract),60000,60000,0.0001,6,FUT;FOP,BO,7
+C,Corn (P),CBOT,9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,C,C
+DJ,DJIA,CBOT,7:20a.m. - 3:15p.m. CST,10 times Dow Jones,HMUZ,1 pt. (10.00 per contract),10,10,1,10,FUT;FOP,DJ,11
+FF,30-Day Fed Funds (P),CBOT,5:30p.m. - 4:00p.m. CST,5000000,FGHJKMNQUVXZ,Increments of 0.00005 percent of 5 million on a 30-day basis in the spot month only (20.835) and 0.0001 percent of 5 million on a 30-day basis in all other contract months (41.67),4167,5000000,0.0001,500,FUT;FOP,FF,41
+FV,5-Year T-Note (P),CBOT,7:20a.m. - 2:00p.m. CST,100000,HMUZ,One quarter of 1/32 of a point (7.8125 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,100000,0.000078125,7.8125,FUT;FOP,FV,25
+NI,10-Year Swaps (P),CBOT,7:20a.m. - 2:00p.m. CST,100000,HMUZ,One half of 1/32 of a point (15.625 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,100000,0.00015625,15.625,FUT;FOP,NI,NI
+NJ,5-Year Swaps (P),CBOT,7:20a.m. - 2:00p.m. CST,100000,HMUZ,One half of 1/32 of a point (15.625 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,5000,0.0025,12.5,FUT;FOP,NJ,NJ
+O,Oats (P),CBOT,9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,O,O
+RR,Rough Rice (P),CBOT,9:30a.m. - 1:15p.m. CST,2000 cwt,FHKNUX,1/2 cent per cwt. (10 per contract),2000,2000,0.005,10,FUT;FOP,RR,14
+S,Soybeans (P),CBOT,9:30a.m. - 1:15p.m. CST,5000 bu,FHKNQUX,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,S,S
+SA,5-Year Swaps,CBOT,5:30p.m. - 4:00p.m. CST,100000,HMUZ,One half of 1/32 of a point (15.625 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,5000,0.0025,12.5,FUT;FOP,SA,NG
+SM,Soybean Meal (P),CBOT,9:30a.m. - 1:15p.m. CST,100 tons (2000 lbs per ton),FHKNQUVZ,10 cents per ton (10 per contract),100,100,0.1,10,FUT;FOP,SM,6
+SR,10-Year Swaps,CBOT,5:30p.m. - 4:00p.m. CST,100000,HMUZ,One half of 1/32 of a point (15.625 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,100000,0.00015625,15.625,FUT;FOP,SR,66
+TU,2-Year T-Note (P),CBOT,7:20a.m. - 2:00p.m. CST,200000,HMUZ,One quarter of 1/32 of a point (7.8125 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,2000,200000,0.000078125,15.625,FUT;FOP,TU,26
+TY,10-Year T-Note (P),CBOT,7:20a.m. - 2:00p.m. CST,100000,HMUZ,One half of 1/32 of a point (15.625 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,100000,0.00015625,15.625,FUT;FOP,TY,21
+UD,Ultra T-Bond,CBOT,5:30p.m. - 4:00p.m. CST,100000,HMUZ,32nds of a point (31.25 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,100000,0.0003125,31.25,FUT;FOP,UD,UD
+UL,Ultra T-Bond (P),CBOT,7:20a.m. - 2:00p.m. CST,100000,HMUZ,32nds of a point (31.25 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,100000,0.0003125,31.25,FUT;FOP,UL,UBE
+US,T-Bond (P),CBOT,7:20a.m. - 2:00p.m. CST,100000,HMUZ,32nds of a point (31.25 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,100000,0.0003125,31.25,FUT;FOP,US,17
+W,Wheat (P),CBOT,9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,W,W
+ZB,T-Bond,ECBOT,5:30p.m. - 4:00p.m. CST,100000,HMUZ,32nds of a point (31.25 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,1000,0.03125,31.25,FUT;FOP,ZB,17
+OZB,T-Bond,ECBOT,5:30p.m. - 4:00p.m. CST,100000,HMUZ,32nds of a point (31.25 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,1000,0.03125,31.25,FOP,ZB,17
+ZC,Corn,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,ZC,C
+OZC,Corn,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FOP,ZC,C
+ZD,DJIA (E),ECBOT,Globex 3:30p.m. - 7:00a.m. 5:00p.m. - 7:00a.m. Mon-Thurs Sun 5:00p.m. - 7:00a.m. CST,10 times Dow Jones,HMUZ,1 pt. (10.00 per contract),10,10,1,10,FUT;FOP,ZD,11
+OZD,DJIA (E),ECBOT,Globex 3:30p.m. - 7:00a.m. 5:00p.m. - 7:00a.m. Mon-Thurs Sun 5:00p.m. - 7:00a.m. CST,10 times Dow Jones,HMUZ,1 pt. (10.00 per contract),10,10,1,10,FOP,ZD,11
+ZF,5-Year T-Note,ECBOT,5:30p.m. - 4:00p.m. CST,100000,HMUZ,One quarter of 1/32 of a point (7.8125 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,100000,0.000078125,7.8125,FUT;FOP,ZF,25
+ZK,Ethanol Futures,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,29000 U.S. gallons,FGHJKMNQUVXZ,1/10th cent per gal. (29.00 per contract),29000,29000,0.001,29,FUT;FOP,ZK,EH
+ZL,Soybean Oil,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,60000 lbs,FHKNQUVZ,0.0001 cent per lb. (6 per contract),600,600,0.01,6,FUT;FOP,ZL,7
+OZL,Soybean Oil,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,60000 lbs,FHKNQUVZ,0.0001 cent per lb. (6 per contract),600,600,0.01,6,FOP,ZL,7
+ZM,Soybean Meal,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,100 tons (2000 lbs per ton),FHKNQUVZ,10 cents per ton (10 per contract),100,100,0.1,10,FUT;FOP,ZM,6
+OZM,Soybean Meal,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,100 tons (2000 lbs per ton),FHKNQUVZ,10 cents per ton (10 per contract),100,100,0.1,10,FOP,ZM,6
+ZN,10-Year T-Note,ECBOT,5:30p.m. - 4:00p.m. CST,100000,HMUZ,One half of 1/32 of a point (15.625 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,1000,0.015625,15.625,FUT;FOP,ZN,21
+OZN,10-Year T-Note,ECBOT,5:30p.m. - 4:00p.m. CST,100000,HMUZ,One half of 1/32 of a point (15.625 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,1000,1000,0.015625,15.625,FOP,ZN,21
+ZO,Oats,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,ZO,O
+OZO,Oats,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FOP,ZO,O
+ZQ,30-Day Fed Funds,ECBOT,5:30p.m. - 4:00p.m. CST,5000000,FGHJKMNQUVXZ,Increments of 0.00005 percent of 5 million on a 30-day basis in the spot month only (20.84) and 0.0001 percent of 5 million on a 30-day basis in all other contract months (41.67),4167,5000000,0.0001,500,FUT;FOP,ZQ,41
+ZR,Rough Rice,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,2000 cwt,FHKNUX,1/2 cent per cwt. (10 per contract),2000,2000,0.005,10,FUT;FOP,ZR,14
+ZS,Soybeans,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,FHKNQUX,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,ZS,S
+OZS,Soybeans,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,FHKNQUX,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FOP,ZS,S
+ZT,2-Year T-Note,ECBOT,5:30p.m. - 4:00p.m. CST,200000,HMUZ,One quarter of 1/32 of a point (7.8125 per contract) rounded up to the nearest cent per contract; par is on the basis of 100 points,2000,200000,0.000078125,15.625,FUT;FOP,ZT,26
+ZW,Wheat,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,ZW,W
+OZW,Wheat,ECBOT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FOP,ZW,W
+YM,DJIA Mini-Sized,CBOT,3:30p.m. - 4:30p.m. 5:00p.m. - 3:15p.m. Mon-Thurs Sun 5:00p.m. - 3:15p.m. CST,5 times Dow Jones,HMUZ,1 pt. (5.00 per contract),5,5,1,5,FUT;FOP,YM,YM
+VI,CBOE SP 500 VIX,CFE,8:30a.m. - 3:15p.m. CST,1000 * Index VIX,FGHJKMNQUVXZ,0.05 (50.00 per contract),1000,1000,0.05,50,FUT;FOP,VI,VI
+6A,Australian Dollar,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,AD100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,6A,AD
+AUD,Australian Dollar,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,AD100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,AUD,AD
+AD,Australian Dollar (P),CME,7:20a.m. - 2:00p.m. CST,AD100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,AD,AD
+6B,British Pound,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,BP62500,HMUZ,0.0001 (1 points) (6.25 per contract),62500,62500,0.0001,6.25,FUT;FOP,6B,BP
+GBP,British Pound (P),GLOBEX,7:20a.m. - 2:00p.m. CST,BP62500,HMUZ,0.0001 (1 points) (6.25 per contract),62500,62500,0.0001,6.25,FUT;FOP,GBP,_NA
+BP,British Pound (P),CME,7:20a.m. - 2:00p.m. CST,BP62500,HMUZ,0.0001 (1 points) (6.25 per contract),62500,62500,0.0001,6.25,FUT;FOP,BP,BP
+BR,Brazilian Real (P),CME,7:20a.m. - 2:00p.m. CST,BR100000,FGHJKMNQUVXZ,0.0001 (1 point) (10.00 per contract),50000,100000,0.0001,10,FUT;FOP,BR,BR
+CD,Canadian Dollar (P),CME,7:20a.m. - 2:00p.m. CST,CD100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,CD,C1
+6C,Canadian Dollar,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,CD100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,6C,C1
+CAD,Canadian Dollar,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,CD100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,CAD,C1
+DA,Class III Milk (P),CME,9:40a.m. - 1:10p.m. CST,200000 lbs,FGHJKMNQUVXZ,1 point = 0.01 per hundred weight (20.00 per contract),2000,200000,0.0001,20,FUT;FOP,DA,DA
+DL,Class III Milk,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs 5:00pm - 1:55p.m. Fri CST,200000 lbs,FGHJKMNQUVXZ,1 point = 0.01 per hundred weight (20.00 per contract),2000,200000,0.0001,20,FUT;FOP,DL,DA
+6E,Euro FX,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,Euro125000,HMUZ,0.0001 (1 point) (12.50 per contract),125000,125000,0.0001,12.5,FUT;FOP,6E,EC
+EUR,Euro FX,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,Euro125000,HMUZ,0.0001 (1 point) (12.50 per contract),125000,125000,0.0001,12.5,FUT;FOP,EUR,EC
+EC,Euro FX (P),CME,7:20a.m. - 2:00p.m. CST,Euro125000,HMUZ,0.0001 (1 point) (12.50 per contract),125000,125000,0.0001,12.5,FUT;FOP,EC,EC
+ED,Eurodollar (P),CME,7:20a.m. - 2:00p.m. CST,1000000,FGHJKMNQUVXZ,0.0025 (6.25 per contract),2500,1000000,0.00000625,6.25,FUT;FOP,ED,ED
+FC,Feeder Cattle (P),CME,9:05a.m. - 1:00p.m. CST,50000 lbs,FHJKQUVX,2.5 cents per cwt. (100 lbs)(12.50 per contract),500,50000,0.00025,12.5,FUT;FOP,FC,FC
+GE,Eurodollar,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,1000000,FGHJKMNQUVXZ,0.005 (12.50 per contract),2500,10000,0.0000125,12.5,FUT;FOP,GE,ED
+GF,Feeder Cattle,GLOBEX,Globex 9:05a.m. - 4:00p.m. Mon 5:00p.m. - 4:00p.m. Tues-Thurs 5:00pm - 1:55p.m. Fri CST,50000 lbs,FHJKQUVX,2.5 cents per cwt. (100 lbs)(12.50 per contract),500,50000,0.00025,12.5,FUT;FOP,GF,62
+HE,Lean Hogs,GLOBEX,Globex 9:05a.m. - 4:00p.m. Mon 5:00p.m. - 4:00p.m. Tues-Thurs 5:00pm - 1:55p.m. Fri CST,40000 lbs,GJKMNQVZ,2.5 cents per cwt (10.00 per contract),400,40000,0.00025,10,FUT;FOP,HE,LN
+6J,Japanese Yen,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,JY12500000,HMUZ,0.000001 (1 point) (12.50 per contract),125000,12500000,0.000001,12.5,FUT;FOP,6J,J1
+JPY,Japanese Yen,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,JY12500000,HMUZ,0.000001 (1 point) (12.50 per contract),125000,12500000,0.000001,12.5,FUT;FOP,JPY,J1
+JY,Japanese Yen (P),CME,7:20a.m. - 2:00p.m. CST,JY12500000,HMUZ,0.000001 (1 point) (12.50 per contract),125000,12500000,0.000001,12.5,FUT;FOP,JY,J1
+6L,Brazilian Real,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,BR100000,FGHJKMNQUVXZ,0.0001 (1 point) (10.00 per contract),50000,100000,0.0001,10,FUT;FOP,6L,BR
+BRL,Brazilian Real,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,BR100000,FGHJKMNQUVXZ,0.0001 (1 point) (10.00 per contract),50000,100000,0.0001,10,FUT;FOP,BRL,BR
+LC,Live Cattle (P),CME,9:05a.m. - 1:00p.m. CST,40000 lbs,GJMQVZ,2.5 cents per cwt. (100 lbs)(10.00 per contract),400,40000,0.00025,10,FUT;FOP,LC,48
+LE,Live Cattle,GLOBEX,Globex 9:05a.m. - 4:00p.m. Mon 5:00p.m. - 4:00p.m. Tues-Thurs 5:00pm - 1:55p.m. Fri CST,40000 lbs,GJMQVZ,2.5 cents per cwt. (100 lbs)(10.00 per contract),400,40000,0.00025,10,FUT;FOP,LE,48
+LH,Lean Hogs (P),CME,9:10a.m. - 1:00p.m. CST,40000 lbs,GJKMNQVZ,2.5 cents per cwt (10.00 per contract),400,40000,0.00025,10,FUT;FOP,LH,LN
+HE,Lean Hogs (P),GLOBEX,9:10a.m. - 1:00p.m. CST,40000 lbs,GJKMNQVZ,2.5 cents per cwt (10.00 per contract),400,40000,0.00025,10,FUT;FOP,HE,LN
+LS,Lumber,GLOBEX,Globex 9:05a.m. - 4:00p.m. Mon 5:00p.m. - 4:00p.m. Tues-Thurs 5:00pm - 1:55p.m. Fri CST,110000 bd ft,FHKNUX,10 cents per thou bd ft. 11.00 per contract,110,110000,0.0001,11,FUT;FOP,LS,LB
+6M,Mexican Peso,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,MP500000,FGHJKMNQUVXZ,0.00001 (1 points) (5.00 per contract),500000,500000,0.00001,5,FUT;FOP,6M,MP
+MXN,Mexican Peso,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,MP500000,FGHJKMNQUVXZ,0.00001 (1 points) (5.00 per contract),500000,500000,0.00001,5,FUT;FOP,MXN,_NA
+MQ,Mexican Peso (P),CME,7:20a.m. - 2:00p.m. CST,MP500000,FGHJKMNQUVXZ,0.00001 (1 points) (5.00 per contract),500000,500000,0.00001,5,FUT;FOP,MQ,MQ
+6N,New Zealand Dollar,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,NZ100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,6N,NE
+NZD,New Zealand Dollar,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,NZ100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,NZD,NE
+ND,Nasdaq 100,CME,RTH 8:30a.m. - 3:15p.m. (Globex 3:30p.m. - 4:30p.m. 5:00p.m. - 3:15p.m. Mon-Thurs Sun 5:00p.m. - 8:15a.m.) CST,100 x Nasdaq 100 Index,HMUZ,.25 Index Points (25 /contract),100,100,0.25,25,FUT;FOP,ND,ND
+NE,New Zealand Doll (P),CME,7:20a.m. - 2:00p.m. CST,NZ100000,HMUZ,0.0001 (1 point) (10.00 per contract),100000,100000,0.0001,10,FUT;FOP,NE,NE
+PB,Pork Bellies (P),CME,9:05a.m. - 1:00p.m. CST,40000 lbs,GHKNQ,2.5 cents per cwt. (100 lb)(10.00 per contract),400,40000,0.00025,10,FUT;FOP,PB,PB
+PD,Pork Bellies,CME,Globex 9:05a.m. - 4:00p.m. Mon 5:00p.m. - 4:00p.m. Tues-Thurs 5:00pm - 1:55p.m. Fri CST,40000 lbs,GHKNQ,2.5 cents per cwt. (100 lb)(10.00 per contract),400,40000,0.00025,10,FUT;FOP,PD,PD
+RA,South African Rand(P),CME,7:20a.m. - 2:00p.m. CST,BA500000,FGHJKMNQUVXZ,0.000025 (2 1/2 points) (12.50 per contract),500000,500000,0.000025,12.5,FUT;FOP,RA,RA
+6S,Swiss Franc,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,SF125000,HMUZ,0.0001 (1 point) (12.50 per contract),125000,125000,0.0001,12.5,FUT;FOP,6S,E1
+CHF,Swiss Franc,GLOBEX,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,SF125000,HMUZ,0.0001 (1 point) (12.50 per contract),125000,125000,0.0001,12.5,FUT;FOP,CHF,E1
+SF,Swiss Franc (P),CME,7:20a.m. - 2:00p.m. CST,SF125000,HMUZ,0.0001 (1 point) (12.50 per contract),125000,125000,0.0001,12.5,FUT;FOP,SF,E1
+SP,SP 500 Index,CME,RTH 8:30a.m. - 3:15p.m. (Globex 3:30p.m. - 4:30p.m. 5:00p.m. - 3:15p.m. Mon-Thurs Sun 5:00p.m. - 8:15a.m.) CST,250 * Index,HMUZ,0.10 (25.00 per contract),250,250,0.1,25,FUT;FOP,SP,SP
+T6,South African Rand,CME,Globex 5:00p.m. - 4:00p.m. Sun-Thurs CST,BA500000,FGHJKMNQUVXZ,0.000025 (2 1/2 points) (12.50 per contract),500000,500000,0.000025,12.5,FUT;FOP,T6,T6
+GC,Gold,COMEX,8:20a.m. to 1:30p.m. (6:00p.m. - 5:15p.m. (Sunday - Friday) EST),100 Troy ounces,GJMQVZ,0.10 (10 cent) per troy ounce. (10.00 per contract),100,100,0.1,10,FUT;FOP,GC,GC
+HG,High Grade Copper,COMEX,8:10a.m. to 1:00p.m. (6:00p.m. - 5:15p.m. (Sunday - Friday) EST),25000 lbs,HKNUZ,0.0005 cent per lb. (12.50 per contract),25000,25000,0.0005,12.5,FUT;FOP,HG,HG
+SI,Silver,COMEX,8:25a.m. to 1:25p.m. (6:00p.m. - 5:15p.m. (Sunday - Friday) EST),5000 troy ounces,HKNUZ,0.005 (1 cent) per troy ounce. (25.00 per contract),5000,5000,0.005,25,FUT;FOP,SI,SI
+ES,E-Mini SP 500,GLOBEX,3:30p.m. - 4:30p.m. 5:00p.m. - 3:15p.m. Mon-Thurs Sun 5:00p.m. - 3:15p.m. CST,50 X SP's 500 stock index,HMUZ,0.25 (12.50 per contract),50,50,0.25,12.5,FUT;FOP,ES,ES
+EW,E-Mini SP Midcap,GLOBEX,3:30p.m. - 4:30p.m. 5:00p.m. - 3:15p.m. Mon-Thurs Sun 5:00p.m. - 3:15p.m. CST,100 x SP's MidCap 400 Index,HMUZ,0.10 (10.00 per contract),100,100,0.1,10,FUT;FOP,EW,EW
+NQ,E-Mini Nasdaq 100,GLOBEX,3:30p.m. - 4:30p.m. 5:00p.m. - 3:15p.m. Mon-Thurs Sun 5:00p.m. - 3:15p.m. CST,20 x Nasdaq 100 Index,HMUZ,.25 Index Points (5 /contract),20,20,0.25,5,FUT;FOP,NQ,NQ
+PC,E-Mini SP Smallcap,GLOBEX,3:30p.m. - 4:30p.m. 5:00p.m. - 3:15p.m. Mon-Thurs Sun 5:00p.m. - 3:15p.m. CST,100 x SP's SmallCap 600 Index,HMUZ,0.05 (10.00 per contract),100,100,0.1,10,FUT;FOP,PC,PC
+CB,Crude Oil Brent,IPE,22:00p.m. - 18:00p.m. (EST),42000 US Gallons,FGHJKMNQUVXZ,1 cent per barrel (10),1000,1000,0.01,10,FUT;FOP,CB,CB
+CI,CRB CCI Index,NYBOT,10:00a.m. - 2:30p.m. EST,500 x Index,FGJMQX,0.05 (25.00 per contract),500,500,0.05,25,FUT;FOP,CI,CI
+DX,U.S. Dollar Index,NYBOT,20:00p.m. - 17:00p.m. (18:00p.m. start on Sunday) EST,1000 x Index,HMUZ,0.01 of a U.S. DOLLAR INDEX point (10.00 per contract),1000,1000,0.005,5,FUT;FOP,DX,DX
+RJ,Russell 2000 Mini,NYBOT,20:00p.m. - 16:15p.m. (18:00p.m. start on Sunday) EST,100 x Index,HMUZ,0.1 (10.00 per contract),100,100,0.1,10,FUT;FOP,RJ,_NA
+CC,Cocoa,NYBOT,4:00a.m. - 2:00p.m. EST,10 metric tons (22046 lbs),HKNUZ,1.00 per metric ton (10.00 per contract),1000,1000,0.01,10,FUT;FOP,CC,CC
+CT,Cotton #2,NYBOT,21:00p.m. - 2:00p.m. EST,50000 lbs (approximately 100 bales),HKNVZ,0.01 cent per lb (5.00 per contract),500,500,0.01,5,FUT;FOP,CT,CT
+KC,Coffee,NYBOT,3:30a.m. - 2:00p.m. EST,37500 lbs (approximately 250 bags),HKNUZ,0.05 cents per lb. (18.75 per contract),375,375,0.05,18.75,FUT;FOP,KC,_NA
+OJ,Orange Juice,NYBOT,8:00a.m. - 2:00p.m. EST,15000 lbs,FHKNUX,0.05 cent per lb. (7.50 per contract),150,150,0.05,7.5,FUT;FOP,OJ,OJ
+SB,Sugar #11,NYBOT,3:30a.m. - 2:00p.m. EST,112000 lbs (50 long tonnes),FHKNV,0.01 cent per lb. (11.20 per contract),1120,1120,0.01,11.2,FUT;FOP,SB,SB
+SD,Sugar #16,NYBOT,9:00a.m. - 2:00p.m. EST,112000 lbs (50 long tonnes),FHKNUX,0.01 cent per lb. (11.20 per contract),1120,112000,0.0001,11.2,FUT;FOP,SD,SD
+KE,Kcbt Red Wheat,KCBT,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,KE,KE
+KW,Kcbt Red Wheat (P),KCBT,9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,KW,_NA
+MW,Spring Wheat,MGEX,6:00p.m. - 7:15a.m. and 9:30a.m. - 1:15p.m. CST,5000 bu,HKNUZ,1/4 cent per bu. (12.50 per contract),50,5000,0.0025,12.5,FUT;FOP,MW,_NA
+CL,Crude Oil WTI,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FUT;FOP,CL,CL
+HO,Heating Oil,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FUT;FOP,HO,HO
+NG,Natural Gas,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FUT;FOP,NG,NG
+PA,Palladium,NYMEX,8:30a.m. to 1:00p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,100 troy ounces,HMUZ,0.05 (5 cent) per troy ounce. (5 per contract),100,100,0.05,5,FUT;FOP,PA,PA
+PL,Platinum,NYMEX,8:20a.m. to 1:05p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,50 troy ounces,FJNV,0.10 (10 cent) per troy ounce. (5.00 per contract),50,50,0.1,5,FUT;FOP,PL,PL
+RB,Gasoline RBOB,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FUT;FOP,RB,RB
+YG,Gold Mini-Sized,LIFFE,6:16p.m. - 4:00p.m. CST,33.2 fine troy oz,FGHJKMNQUVXZ,10 cent/fine troy oz. (3.32 per contract),33.2,33.2,0.1,3.32,FUT;FOP,YG,_NA
+YI,Silver Mini-Sized,LIFFE,6:16p.m. - 4:00p.m. CST,1000 troy ounces,FGHJKMNQUVXZ,0.001/troy oz. (1.00 per contract),1000,1000,0.001,1,FUT;FOP,YI,_NA
+RS,Canola,WCE,7:00p.m. - 1:15p.m. (CST),1 contract 20 tonnes (5 contracts 1 board lot),FHKNX,0.10 per tonne (10.00/board lot or 2.00 per contract),20,100,0.1,10,FUT;FOP,RS,_NA
+WTI,ICE WTI,ICE,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FUT;FOP,WTI,_NA
+COIL,ICE BRENT,IPE,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FUT;FOP,COIL,_NA
+GOIL,ICE GAS OIL,IPE,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,100 METRIC TONS,FGHJKMNQUVXZ,,100,100,0.25,25,FUT;FOP,GOIL,_NA
+LF,ICE GAS OIL,IPE,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,100 METRIC TONS,FGHJKMNQUVXZ,,100,100,0.25,25,FUT;FOP,LF,_NA
+RBOB,ICE RBOB,IPE,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FUT;FOP,RBOB,_NA
+HOIL,ICE HEATING OIL,IPE,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FUT;FOP,HOIL,_NA
+ON,Natural Gas American Options,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FOP,NG,ON
+LO,Crude Oil WTI American Options,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FOP,CL,LO
+LNE,Natural Gas Eur Options,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.0001,1,FOP,NG,LNE
+OB,Gasoline RBOB,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FOP,RB,OB
+OH,Heating Oil Options,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FOP,HO,OH
+OG,Gold,COMEX,8:20a.m. to 1:30p.m. (6:00p.m. - 5:15p.m. (Sunday - Friday) EST),100 Troy ounces,GJMQVZ,0.10 (10 cent) per troy ounce. (10.00 per contract),100,100,0.1,10,FOP,GC,OG
+SO,Silver,COMEX,8:25a.m. to 1:25p.m. (6:00p.m. - 5:15p.m. (Sunday - Friday) EST),5000 troy ounces,HKNUZ,0.005 (1 cent) per troy ounce. (25.00 per contract),5000,5000,0.005,25,FOP,SI,SO
+HXE,High Grade Copper,COMEX,8:10a.m. to 1:00p.m. (6:00p.m. - 5:15p.m. (Sunday - Friday) EST),25000 lbs,HKNUZ,0.0005 cent per lb. (12.50 per contract),25000,25000,0.0005,12.5,FOP,HG,HXE
+HX,High Grade Copper,COMEX,8:10a.m. to 1:00p.m. (6:00p.m. - 5:15p.m. (Sunday - Friday) EST),25000 lbs,HKNUZ,0.0005 cent per lb. (12.50 per contract),25000,25000,0.0005,12.5,FOP,HG,HXE
+PO,Platinum,NYMEX,8:20a.m. to 1:05p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,50 troy ounces,FJNV,0.10 (10 cent) per troy ounce. (5.00 per contract),50,50,0.1,5,FOP,PL,PO
+PAO,Palladium,NYMEX,8:30a.m. to 1:00p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,100 troy ounces,HMUZ,0.05 (5 cent) per troy ounce. (5 per contract),100,100,0.05,5,FOP,PA,PAO
+LCE,Crude Oil WTI Eur Options,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FOP,CL,LCE
+NN,Natural Gas Swap Futures,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),2500,2500,0.001,10,FUT,NN,NN
+NP,Natural Gas Swap Futures,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),2500,2500,0.001,10,FUT,NP,NP
+iNG,Natural Gas Swap Futures,ICE,9:00a.m. - 2:30p.m. (ICE 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),2500,2500,0.001,10,FUT;FOP,iNG,_NA
+G2,Natural Gas 2 Month CSO,NYMEX,9:00a.m. - 2:30p.m. (OTC 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FOP,G2,G2
+G3,Natural Gas 3 Month CSO,NYMEX,9:00a.m. - 2:30p.m. (OTC 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FOP,G3,G3
+G4,Natural Gas 1 Month CSO,NYMEX,9:00a.m. - 2:30p.m. (OTC 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FOP,G4,G4
+G5,Natural Gas 5 Month CSO,NYMEX,9:00a.m. - 2:30p.m. (OTC 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FOP,G5,G5
+G6,Natural Gas 6 Month CSO,NYMEX,9:00a.m. - 2:30p.m. (OTC 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FOP,G6,G6
+G7,Natural Gas 12 Month CSO,NYMEX,9:00a.m. - 2:30p.m. (OTC 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FOP,G7,G7
+HH,Natural Gas Large Swap,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.001,10,FUT,HH,HH
+KD,Natural Gas Eur Options,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,10000 MMBtu (million British thermal units),FGHJKMNQUVXZ,0.001 per MMBtu (10.00 per contract),10000,10000,0.0001,1,FOP,NG,KD
+CSX,WTI Calendar Swap Futures,NYMEX,9:00a.m. - 2:30p.m.,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FUT,CSX,CS
+AAO,WTI Calendar Swap Options,NYMEX,9:00a.m. - 2:30p.m.,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FOP,CSX,AO
+MPX,Heating Oil Calendar Swap Futures,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FUT,MPX,MP
+ATX,Heating Oil Calendar Swap Options,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FOP,MPX,AT
+RLX,Gasoline RBOB  Calendar Swap Futures,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FUT,RLX,RL
+RA,Gasoline RBOB  Calendar Swap Options,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,42000 gallons,FGHJKMNQUVXZ,0.0001 (0.01 cent) per gallon (4.20 per contract),42000,42000,0.0001,4.2,FOP,RLX,RA
+WA,WTI Calendar Spread 1 Month Option,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FOP,WA,WA
+WB,WTI Calendar Spread 1 Month Option,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FOP,WB,WB
+WC,WTI Calendar Spread 1 Month Option,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FOP,WC,WC
+WM,WTI Calendar Spread 1 Month Option,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FOP,WM,WM
+WZ,WTI Calendar Spread 1 Month Option,NYMEX,9:00a.m. - 2:30p.m. (GLOBEX 6:00p.m. - 5:15p.m. Sunday - Friday) EST,1000 U.S. barrels (42000 gallons),FGHJKMNQUVXZ,0.01 (1 cent) per barrel (10.00 per contract),1000,1000,0.01,10,FOP,WZ,WZ
