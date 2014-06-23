@@ -83,7 +83,7 @@ public class TestDseMongoBased extends TestCase {
 				new GammaDerSen(),
 				new ThetaDerSen()
 		};
-		String csvNameOrPath = "testQueryDataForTestDseMongoBased.csv";
+		String csvNameOrPath = "testQueryDataForTestMongoBasedQueriesFromBeans.csv";//testQueryDataForTestDseMongoBased.csv";
 		Class<?> classInPkgOfResource = this.getClass();
 		String colNameOfKey = "shortName";
 		Class<String> classOfKey = String.class;

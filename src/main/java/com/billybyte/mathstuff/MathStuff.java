@@ -528,15 +528,25 @@ public class MathStuff {
 		
 		int len = snList.size();
 		double[][] ret = new double[len][len];
-		for(Entry<String, ComplexQueryResult<BigDecimal>> entry: in.entrySet()){
-			BigDecimal value = entry.getValue().getResult();
-			String[] parts = entry.getKey().split("__");
-			if(parts.length!=2)return null;
-			int index0 = snList.indexOf(parts[0]);
-			int index1 = snList.indexOf(parts[1]);
-			ret[index0][index1] = value.doubleValue();
-			ret[index1][index0] = value.doubleValue();
+		for(int i = 0;i<snList.size();i++){
+			String firstName = snList.get(i);
+			for(int j=0;j<snList.size();j++){
+				String secondName = snList.get(j);
+				String corrName = firstName+MarketDataComLib.DEFAULT_CORRELATION_PAIR_SEPARATOR+secondName;
+				BigDecimal value = in.get(corrName).getResult();
+				ret[i][j]=value.doubleValue();
+			}
 		}
+
+//		for(Entry<String, ComplexQueryResult<BigDecimal>> entry: in.entrySet()){
+//			BigDecimal value = entry.getValue().getResult();
+//			String[] parts = entry.getKey().split("__");
+//			if(parts.length!=2)return null;
+//			int index0 = snList.indexOf(parts[0]);
+//			int index1 = snList.indexOf(parts[1]);
+//			ret[index0][index1] = value.doubleValue();
+//			ret[index1][index0] = value.doubleValue();
+//		}
 		return ret;
 	}
 	
@@ -611,7 +621,7 @@ public class MathStuff {
 			for(int j = 0;j<copy.getColumnDimension();j++){
 				double val = copy.get(i,j);
 				if(Double.isNaN(val) || Double.isInfinite(val)){
-					Utils.prt("fixing element ("+i+","+j+")");
+					Utils.prtObMess(MathStuff.class,"fixing element ("+i+","+j+")");
 					copy.set(i, j,0.0);
 				}
 			}

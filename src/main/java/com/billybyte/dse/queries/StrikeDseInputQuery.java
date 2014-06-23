@@ -27,6 +27,7 @@ public class StrikeDseInputQuery extends DseInputQuery<BigDecimal>{
 				ComplexQueryResult<BigDecimal> errCqr = 
 						MarketDataComLib.errorRet(sn+" has no SecDef");
 				ret.put(sn, errCqr);
+				continue;
 			}
 			BigDecimal strike =  sd.getStrike()==null?BigDecimal.ZERO : sd.getStrike();
 			ret.put(sn,new ComplexQueryResult<BigDecimal>(null,strike));

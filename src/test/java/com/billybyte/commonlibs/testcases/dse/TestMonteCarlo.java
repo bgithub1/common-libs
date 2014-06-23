@@ -137,7 +137,12 @@ public class TestMonteCarlo extends TestCase{
 		Set<String> derivNames = generateDerivNamesFromUnderlyingNames(underlyingNames);
 
 		McVar mcv = new McVar();
-		double var = mcv.mcVar(derivNames, trials, dse);
+		Map<String, BigDecimal> position = new HashMap<String, BigDecimal>();
+		
+		for(String name:derivNames){
+			position.put(name, BigDecimal.ONE);
+		}
+		double var = mcv.mcVar(position, trials, dse);
 		
 		double var2 = getAnalyticVar()/2;
 		

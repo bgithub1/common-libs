@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import Jama.Matrix;
 
 import com.billybyte.commoninterfaces.QueryInterface;
+import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.DerivativeSetEngine;
 import com.billybyte.dse.inputs.InBlk;
 import com.billybyte.dse.inputs.diotypes.AtmDiot;
@@ -34,7 +35,7 @@ import com.billybyte.marketdata.SecDef;
 import com.billybyte.mathstuff.MathStuff;
 import com.billybyte.queries.ComplexQueryResult;
 
-public class McVar extends TestCase{
+public class McVar { //extends TestCase{
 	private final DioType<BigDecimal> atmDiot = new AtmDiot();
 	private final DioType<BigDecimal>  volDiot = new VolDiot();
 	private final DioType<BigDecimal>  corrDiot = new CorrDiot();
@@ -88,6 +89,61 @@ public class McVar extends TestCase{
 		
 		return var;
 	}
+
+	
+	public double mcVar(
+			Map<String,BigDecimal> position, 
+			int trials,
+			DerivativeSetEngine dse){
+
+		Set<String> derivNames = new TreeSet<String>(position.keySet());
+		Map<DioType<?>,QueryInterface<StressInputQueryBlock,Map<String,double[]>>> mcInputsQueryMap = 
+				createMcInputQueryPerDiotMap(dse);
+		Matrix currPriceArrayCopied = getCopiedCurrentValues(derivNames,trials,dse);// this a double[trials][derivNames]
+		
+		// get a Matrix of trials X shortNames, that holds the values of derivative prices per trial, per shortName
+		Matrix resultsPerTrialPerDerivName = getAllTrialValues(derivNames,dse,mcInputsQueryMap,trials);
+		// get a Matrix of trials X shortNames that holds the differences of the trial derivative price minus the current 
+		//   deriviatve price.
+		Matrix derivPriceChangePerTrial = resultsPerTrialPerDerivName.minus(currPriceArrayCopied);
+		// now, multiply values time position sizes
+		double[] posSizes = new double[derivNames.size()];		
+		List<String> orderedList = new ArrayList<String>(derivNames);
+		double[] notionalValues = getNotionals(orderedList, dse);
+		for(int i = 0;i<orderedList.size();i++){
+			posSizes[i] = position.get(orderedList.get(i)).doubleValue();
+			// need to multiply position sizes by notionals
+			posSizes[i] = posSizes[i] * notionalValues[i];
+		}
+		Matrix posSizeMatrix = new Matrix(posSizes,posSizes.length);
+		double[] portfolioChangesPerTrial = derivPriceChangePerTrial.times(posSizeMatrix).getColumnPackedCopy();
+
+		// the var is the worst n% of these trial sums
+		double var = 
+				MathStuff.excelPercentile(portfolioChangesPerTrial, .01);
+		
+		return var;
+	}
+	
+	/**
+	 * Get list of notional values for each derivative
+	 * @param snList
+	 * @return
+	 */
+	private double[] getNotionals(List<String> snList,
+			DerivativeSetEngine dse){
+		double[] ret = new double[snList.size()];
+		QueryInterface<String, SecDef> sdQuery = dse.getSdQuery();
+		for(int i = 0;i<snList.size();i++){
+			String name = snList.get(i);
+			SecDef sd = sdQuery.get(name, 200, TimeUnit.MILLISECONDS);
+			if(sd==null){
+				throw Utils.IllState(this.getClass(), name+" : no sec def found");
+			}
+			ret[i] = sd.getMultiplier().doubleValue();
+		}
+		return ret;
+	}
 	
 	private static List<String> getUnderlyingNames(String derivName,InBlk inblk){
 		SecDef[] sds  = inblk.getUnderlyingSds();
@@ -105,7 +161,13 @@ public class McVar extends TestCase{
 		// make an array of these prices
 		double[] currPriceArray = new double[currPrices.size()];
 		for(int i = 0;i<orderedDerivNames.size();i++){
-			currPriceArray[i]= currPrices.get(orderedDerivNames.get(i))[0].getValue().doubleValue();
+			String orderedName = orderedDerivNames.get(i);
+			DerivativeReturn[] drArray = currPrices.get(orderedName);
+			DerivativeReturn dr = drArray[0];
+			if(!dr.isValidReturn()){
+				throw Utils.IllState( dr.getException());
+			}
+			currPriceArray[i]= dr.getValue().doubleValue();//currPrices.get(orderedDerivNames.get(i))[0].getValue().doubleValue();
 		}
 		Matrix ret = // this a double[trials][derivNames]
 				MathStuff.generateDuplicateRowMatrix(
@@ -213,7 +275,7 @@ public class McVar extends TestCase{
 	 * @param mcInputsQueryMap - map of queries that will generate Matrices of
 	 *        inputs for each Diot type that the dse needs to generate an option value.
 	 * @return - Map<DioType<?>, Map<String, double[]>> - a 2 level map where :
-	 *           1.  the key of the top leve is a DioType and the value is another Map
+	 *           1.  the key of the top level is a DioType and the value is another Map
 	 *           2.  the key of the inner map is a shortName of either the portfolio
 	 *               derivative, or any of the underlyings that are associated with that
 	 *               derivative.  The values of the inner map are a list of values for

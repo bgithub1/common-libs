@@ -19,7 +19,7 @@
 	</bean> 
 	
 	<bean id="testDataMap" class="com.billybyte.commoncollections.MapFromMap"> 
-		<constructor-arg type="java.lang.String" value="testQueryDataForTestQueryManager.csv" />
+		<constructor-arg type="java.lang.String" value="testQueryDataForTestMongoBasedQueriesFromBeans.csv" />
 		<constructor-arg>
 			<ref local="classInPkgOfReource"/>
 		</constructor-arg>

@@ -30,6 +30,7 @@ public class DteDseInputQuery extends DseInputQuery<BigDecimal>{
 				ComplexQueryResult<BigDecimal> errCqr = 
 						MarketDataComLib.errorRet(sn+" has no SecDef");
 				ret.put(sn, errCqr);
+				continue;
 			}
 			BigDecimal dte =  new BigDecimal(MarketDataComLib.getDteFromSd(Calendar.getInstance(), sd));
 			ret.put(sn,new ComplexQueryResult<BigDecimal>(null,dte));

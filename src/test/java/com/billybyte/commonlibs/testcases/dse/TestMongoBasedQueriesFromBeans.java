@@ -70,8 +70,10 @@ public class TestMongoBasedQueriesFromBeans  extends TestCase{
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void test3(){
+//		Map<String,Object> beansMap =
+//				Utils.springGetAllBeans("beans_TestQueryManager.xml", this.getClass());
 		Map<String,Object> beansMap =
-				Utils.springGetAllBeans("beans_TestQueryManager.xml", this.getClass());
+				Utils.springGetAllBeans("beans_TestMongoBasedQueryManager.xml", this.getClass());
 		QueryManager qm = (QueryManager)beansMap.get("queryManager");
 		assertNotNull(qm);
 		

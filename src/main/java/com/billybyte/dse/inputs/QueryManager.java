@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.billybyte.commoncollections.TypedMap;
 import com.billybyte.commoninterfaces.QueryInterface;
+import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.DerivativeModelInterface;
 import com.billybyte.dse.inputs.diotypes.CorrDiot;
 import com.billybyte.dse.inputs.diotypes.DioType;
@@ -245,7 +246,11 @@ public class QueryManager {
 		for(int i = 0;i<orderedDerivNames.size();i++){
 			String derivName = orderedDerivNames.get(i);
 			List<String> underList = new ArrayList<String>();
-			for(SecDef sd:getUnderlyingSecDefs(derivName, 1, TimeUnit.SECONDS)){
+			List<SecDef> sdList = getUnderlyingSecDefs(derivName, 1, TimeUnit.SECONDS);
+			if(sdList==null){
+				throw Utils.IllState(this.getClass(), derivName + " : can't find SecDef");
+			}
+			for(SecDef sd:sdList){
 				String underName = sd.getShortName();
 				underList.add(underName);
 				underDiotNames.add(sd.getShortName());

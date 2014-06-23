@@ -51,7 +51,7 @@
 	<util:map id="modelMap">
 <!--			<entry key="((\.OPT\.)|(\.FOP\.))" value-ref="vanBawModel"/>   -->
 			<entry key="((\.OPT\.)|(\.FOP\.))" value-ref="vanBlackEuropeanModel"/>
-			<entry key="\.((FUT)|(STK))\.SMART" value-ref="vanUnderlyingModel"/>
+			<entry key="((\.FUT\.)|(\.STK\.))" value-ref="vanUnderlyingModel"/>
 			<entry key="((G[234567])|(G(3B)|(4X)|(6B)))\\.FOP\\.NYMEX" value-ref="spreadCsoModel"/>
 	</util:map>
 
