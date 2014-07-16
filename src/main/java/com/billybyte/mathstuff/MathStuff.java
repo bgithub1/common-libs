@@ -533,8 +533,15 @@ public class MathStuff {
 			for(int j=0;j<snList.size();j++){
 				String secondName = snList.get(j);
 				String corrName = firstName+MarketDataComLib.DEFAULT_CORRELATION_PAIR_SEPARATOR+secondName;
-				BigDecimal value = in.get(corrName).getResult();
+				ComplexQueryResult<BigDecimal> cqr = in.get(corrName);
+				BigDecimal value=null;
+				if(cqr==null || !cqr.isValidResult()){
+					corrName = secondName+MarketDataComLib.DEFAULT_CORRELATION_PAIR_SEPARATOR+firstName;
+					cqr = in.get(corrName);
+				}
+				value = cqr.getResult();
 				ret[i][j]=value.doubleValue();
+				
 			}
 		}
 

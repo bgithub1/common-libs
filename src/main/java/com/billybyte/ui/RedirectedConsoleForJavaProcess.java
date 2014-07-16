@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import com.billybyte.commonstaticmethods.LoggingUtils;
 
