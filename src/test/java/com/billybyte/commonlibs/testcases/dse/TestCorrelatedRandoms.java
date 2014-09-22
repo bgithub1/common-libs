@@ -79,6 +79,7 @@ public class TestCorrelatedRandoms extends TestCase{
 	
 	@Override
 	protected void setUp() throws Exception {
+		if(this.dse!=null)return;
 		Utils.prtObMess(this.getClass(), "testDseSpringLoad");
 
 		Class<?> classNameOfClassInPkgOfBeanXmlAsResource = this.getClass();
