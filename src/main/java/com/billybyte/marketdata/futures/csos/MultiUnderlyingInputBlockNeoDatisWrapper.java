@@ -16,7 +16,4 @@ public class MultiUnderlyingInputBlockNeoDatisWrapper {
 		return inputBlockObject;
 	}
 	
-//	public MultiUnderlyingInputBlock getInputBlock(){
-//		return (MultiUnderlyingInputBlock)this.inputBlockObject;
-//	}
 }

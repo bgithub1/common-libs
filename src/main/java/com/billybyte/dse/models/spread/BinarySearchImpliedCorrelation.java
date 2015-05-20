@@ -3,7 +3,6 @@ package com.billybyte.dse.models.spread;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.billybyte.commonstaticmethods.Utils;
 
 
 
@@ -111,7 +110,6 @@ public  class BinarySearchImpliedCorrelation {
 		double corrRisk  = spreadModel.getSpreadCorrRisk(
 				callPut, atmLeg0, atmLeg1, strike, dte, volLeg0, volLeg1,
 				rate,rate, divLeg0, divLeg1, corrInput, other0, other1);
-//		double defaultVersion = super.derivation(corrInput);
 		return corrRisk;
 	}
 

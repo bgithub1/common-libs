@@ -1,7 +1,11 @@
 package com.billybyte.clientserver;
 
 
-
+/**
+ * This class facilitates passing arguments to WebServiceServer, WebServiceQuery, etc
+ * @author bperlman1
+ *
+ */
 public class ServiceBlock {
 	private final String urlOfApplicationServer;
 	private final Integer portOfService;

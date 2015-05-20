@@ -17,10 +17,8 @@ public class WebServiceComLib {
 		String firewallIp = sb.getUrlOfService();
 		String port = sb.getPortOfService().toString();
 		if(WebServiceServer.isStarted(firewallIp, port))return null;
-	//	XStream xs = new XStream();
 		WebServiceServer<K, V> server = 
 			new WebServiceServer<K, V>(sb,query,3000,TimeUnit.MILLISECONDS);
-//		server.publishService();
 		return server;
 	}
 
@@ -103,6 +101,7 @@ public class WebServiceComLib {
 				
 	public static void serviceBlockServiceStart(String sbMapPath,
 			ServiceBlock sbServiceSb){
+		@SuppressWarnings("unchecked")
 		Map<String,ServiceBlock> sbMap = 
 				(Map<String,ServiceBlock>)Utils.getFromXml(Map.class, null, sbMapPath);
 		serviceBlockServiceStart(sbMap, sbServiceSb);

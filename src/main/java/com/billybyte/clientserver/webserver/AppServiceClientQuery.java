@@ -9,10 +9,6 @@ import com.thoughtworks.xstream.XStream;
 public class AppServiceClientQuery<K,V>  
 	implements QueryInterface<K, V>{
 	private final AppServiceClient<K, V> appClient;
-//	public AppServiceClientQuery(String publicIpAddressOfWebService,
-//			XStream xs, String port, String ip) {
-//		appClient  = new AppServiceClient<K, V>(publicIpAddressOfWebService, xs, port, ip);
-//	}
 
 	public AppServiceClientQuery(ServiceBlock sb,XStream xs){
 		appClient  = new AppServiceClient<K, V>(sb,xs);

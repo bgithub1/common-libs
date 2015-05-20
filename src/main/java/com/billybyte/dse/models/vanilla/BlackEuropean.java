@@ -122,8 +122,6 @@ public class BlackEuropean extends DerivativeModel {
 	}
 	
 	public static double putPrice(double atm, double strike,double dte,double vol, double rate,double div){
-//		return  getStrike() * Math.exp(-getRate() * getDte()) * sCumNorm(-getD2()) - getATM() * sCumNorm(-getD1());
-//                         6.192047682664017E-9    0.7324073490807343                              3.1242797238206776E-10
 		return  strike * Math.exp(-rate * dte) * NormalDistribution.cumulativeDistribution(-d2(atm,strike,dte,vol,rate,div)) - atm * Math.exp(-div * dte) * NormalDistribution.cumulativeDistribution(-d1(atm,strike,dte,vol,rate,div));
 	}
 	

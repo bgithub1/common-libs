@@ -13,7 +13,6 @@ import com.billybyte.marketdata.SecEnums.SecExchange;
 import com.billybyte.marketdata.SecEnums.SecSymbolType;
 
 import com.billybyte.marketdata.futures.ExpiryRuleInterface;
-import com.billybyte.marketdata.futures.FuturesProductQuery;
 
 public class SecDefQueryFromRules implements QueryInterface<String, SecDef>{
 	private final ConcurrentHashMap<String, SecDef> cache= new ConcurrentHashMap<String, SecDef>();
@@ -27,8 +26,7 @@ public class SecDefQueryFromRules implements QueryInterface<String, SecDef>{
 	private final SecExchange defaultExchange;
 	private final SecCurrency defaultCurrency;
 	
-//	private final ExpiryFromListOfExpiryRules expiryLookup = new ExpiryFromListOfExpiryRules();
-	private final ExpiryRuleInterface expiryLookup;// = new ExpiryFromListOfExpiryRules();
+	private final ExpiryRuleInterface expiryLookup;
 	
 	private transient final Object getLock = new Object();
 	
@@ -66,7 +64,6 @@ public class SecDefQueryFromRules implements QueryInterface<String, SecDef>{
 		this.expiryLookup = expiryLookup;
 	}
 
-//203 557 9007
 
 	@Override
 	public SecDef get(String shortName, int timeoutValue, TimeUnit timeUnitType) {

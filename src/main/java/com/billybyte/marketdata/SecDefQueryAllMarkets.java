@@ -39,7 +39,6 @@ import com.billybyte.marketdata.futures.SecDefQueryFuturesStrips;
  */
 // TODO - must clean up excess code and start using csv file instead of hardcoded product listing
 public class SecDefQueryAllMarkets implements QueryInterface<String, SecDef>{
-//	protected SecDefQueryFromListOfSecDefQueries listQuery;
 	SecDefQueryFromListOfSecDefQueries listQuery;
 	private String productInfoCsvFileName="ExchangeProductList.csv";
 	private final Object get_Lock = new Object();
@@ -63,9 +62,6 @@ public class SecDefQueryAllMarkets implements QueryInterface<String, SecDef>{
 			// create the stock query allowing symbols from NYSE, AMEX, NASDAQ and OTC bulletin board
 			List<String[]> csvData=null;
 			Set<String> validSymbols = new HashSet<String>();
-//			csvData = Utils
-//					.getCSVData(this.getClass(),"NyseSymbols.csv");
-//			symCol = Utils.getCsvColumnIndex("Symbol", csvData.get(0));
 
 
 			ExpiryRuleInterface expiryLookup = new ExpiryFromListOfExpiryRules();
@@ -90,9 +86,6 @@ public class SecDefQueryAllMarkets implements QueryInterface<String, SecDef>{
 			validTypes = CollectionsStaticMethods.setFromArray(
 					new SecSymbolType[]{SecSymbolType.OPT});
 			ExpiryRuleInterface expiryLookupForOpt = new ExpiryFromListOfExpiryRulesBySecSymbolType();
-//			SecDefQueryFromRules optQueryEngine = new SecDefQueryFromRules(".",
-//					validTypes, validSymbols, validContractMonths, currency,
-//					exchange, precision, minTick, multiplier, expiryLookupForOpt);
 			SecDefQueryFromRules optQueryEngine = new SecDefQueryFromRules(".",
 					validTypes, null, validContractMonths, currency,
 					exchange, precision, minTick, multiplier, expiryLookupForOpt);
@@ -101,11 +94,6 @@ public class SecDefQueryAllMarkets implements QueryInterface<String, SecDef>{
 			
 			// do all futures
 			// get rules from csv
-//			String packageLocation = XSStaticFunctions
-//					.packageLocation(ExpiryFromListOfExpiryRules.class,
-//							"../CommonLibraries/src");
-//			csvData = Utils.getCSVData(packageLocation
-//					+ productInfoCsvFileName);
 
 			csvData = Utils.getCSVData(ExpiryFromListOfExpiryRules.class, productInfoCsvFileName);
 

@@ -1,8 +1,6 @@
 package com.billybyte.marketdata;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.marketdata.SecEnums.SecCurrency;

@@ -3,9 +3,7 @@ package com.billybyte.marketdata.futures.apos;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.billybyte.commoninterfaces.QueryInterface;
@@ -28,12 +26,11 @@ import com.billybyte.queries.QueryFromRegexPattern;
  */
 public class NymexAveragePriceSecDefQuery implements QueryInterface<String, SecDef[]>{
 	
-	public NymexAveragePriceSecDefQuery(/*Calendar evalDate*/) {
+	public NymexAveragePriceSecDefQuery() {
 		super();
 		this.regexQuery =			new QueryFromRegexPattern<String, String>(
 				averagePricePartialNames,Arrays.asList(correspondingUnderSymbols));
 
-	//	this.evalDate = evalDate;
 	}
 
 	
@@ -60,7 +57,6 @@ public class NymexAveragePriceSecDefQuery implements QueryInterface<String, SecD
 	private final QueryFromRegexPattern<String, String> regexQuery ;
 	
 	
-//	private final Calendar evalDate;
 	
 	public static final String[] getAveragePricePartialNames(){
 		return averagePricePartialNames;

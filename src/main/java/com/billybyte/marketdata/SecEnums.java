@@ -19,7 +19,6 @@ public class SecEnums {
 		}
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return currency;
 		}
 		
@@ -70,7 +69,8 @@ public class SecEnums {
 		IND("IND"),
 		FOP("FOP"),
 		TAS("TAS"),
-		BAG("BAG");
+		BAG("BAG"),
+		OOF("OOF");
 
 		String ibSymbolTypeString;
 		SecSymbolType(String ibSymbolTypeString){
@@ -81,7 +81,6 @@ public class SecEnums {
 
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return ibSymbolTypeString.toString();
 		}
 		
@@ -165,7 +164,6 @@ public class SecEnums {
 		}
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return putCall;
 		}
 		

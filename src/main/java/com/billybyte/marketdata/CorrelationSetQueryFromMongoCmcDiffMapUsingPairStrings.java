@@ -1,4 +1,4 @@
-package com.billybyte.dse.queries;
+package com.billybyte.marketdata;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -12,17 +12,16 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.commonstaticmethods.CollectionsStaticMethods;
 import com.billybyte.deprecated.CommodCorrelMatrix;
 import com.billybyte.deprecated.CommodToStockEtfConversionQuery;
+//import com.billybyte.commonstaticmethods.MarketDataComLib;
 
-import com.billybyte.marketdata.CorrPair;
-import com.billybyte.marketdata.MarketDataComLib;
-import com.billybyte.marketdata.SecDef;
 import com.billybyte.mongo.QueryFromMongoXml;
 import com.billybyte.queries.ComplexQueryResult;
 
-public class CorrelationSetQueryFromMongoCmcDiffMapUsingPairStrings extends DseInputQuery<BigDecimal> {
+public class CorrelationSetQueryFromMongoCmcDiffMapUsingPairStrings implements QueryInterface<Set<String>, Map<String, ComplexQueryResult<BigDecimal>>> {
 	private final QueryFromMongoXml<CorrPair> mongoQuery;
 	private final CommodCorrelMatrix cmcMatrix;
 	private final CommodToStockEtfConversionQuery convertQuery = 

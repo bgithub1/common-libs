@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import com.billybyte.commoninterfaces.SettlementDataInterface;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.DerivativeAbstractModel;
 import com.billybyte.dse.inputs.InBlk;
@@ -16,6 +17,7 @@ import com.billybyte.dse.inputs.diotypes.DioType;
 import com.billybyte.dse.inputs.diotypes.DivDiot;
 import com.billybyte.dse.inputs.diotypes.DteSimpleDiot;
 import com.billybyte.dse.inputs.diotypes.RateDiot;
+import com.billybyte.dse.inputs.diotypes.SettlePriceDiot;
 import com.billybyte.dse.inputs.diotypes.StrikeDiot;
 import com.billybyte.dse.inputs.diotypes.VolDiot;
 import com.billybyte.dse.outputs.DeltaDerSen;
@@ -25,7 +27,11 @@ import com.billybyte.dse.outputs.OptPriceDerSen;
 
 
 public abstract class VanOptAbst extends DerivativeAbstractModel{
-	
+	private final String BADVOL = "bad vol;";
+	private final double NEWTON_RAPHSON_PRECISION = 0.00001;
+	private final int NEWTON_RAPHSON_MAX_ITERATIONS = 500;
+	private final double NEWTON_RAPHSON_SEED_VOL = .1;
+		
 	/**
 	 * default
 	 * 
@@ -59,7 +65,8 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 		super(evaluationDate);
 		this.vsDiot = vsDiot;
 		mainTypeList = new DioType[]{
-				cpDiot,strkDiot,dteType,vsDiot};
+				cpDiot,strkDiot,dteType,vsDiot,settlePriceDiot};
+//				cpDiot,strkDiot,dteType,vsDiot};
 		this.otherList = others;
 	}
 
@@ -85,6 +92,7 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 	private static final AtmDiot atmType = new AtmDiot();
 	private static final StrikeDiot strkDiot = new StrikeDiot();
 	private static final DteSimpleDiot dteType = new DteSimpleDiot();
+	private static final SettlePriceDiot settlePriceDiot = new SettlePriceDiot();
 //	private final VolDiot vsDiot;
 	private final DioType<BigDecimal> vsDiot;
 	private static final RateDiot rateType = new RateDiot();
@@ -111,7 +119,9 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 		double callput;double atm; double strike;
 		double dte; double vol; double rate; double div; Object[] others ;
 		boolean allGood;
-		
+		Double priceForImplCalc=null;
+
+
 		
 		private VanInBlk(InBlk inputs){
 			allGood = true;
@@ -150,6 +160,14 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 					this.others[k] = otherList[k].getMainInputs(inputs);
 				}
 			}
+			SettlementDataInterface settle = settlePriceDiot.getMainInputs(inputs); 
+			if(settle!=null && settle.getPrice()!=null){
+				priceForImplCalc =  settle.getPrice().doubleValue();
+			}
+			if(priceForImplCalc==null){
+				priceForImplCalc = null;
+			}
+				
 		}
 		
 		String problems(){
@@ -222,6 +240,50 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 					vib.callput, vib.atm, vib.strike, vib.dte, 
 					vib.vol, vib.rate, vib.div, vib.others);
 		}
+
+// ************ implied vol *****************		
+		// implied vol?
+		if(sensitivityId.getString().compareTo(IMPLIEDVOL)==0){
+			if(vib.allGood || vib.problems().compareTo(BADVOL)==0){
+				// TRY IMPLIED VOL
+				if(vib.priceForImplCalc!=null){
+					try{
+						value = AnalyticFormulas.blackScholesOptionImpliedVolatility(
+								vib.atm,
+								vib.dte,
+								vib.strike,
+//								vib.rate,
+								1,
+								vib.priceForImplCalc);
+						if(!Double.isNaN(value) && !Double.isInfinite(value)){
+							return new DerivativeReturn[]{
+									goodRet(sensitivityId,
+											derivativeShortName,value)};
+						}
+					} catch (Exception e) {
+						return new DerivativeReturn[]{
+								new DerivativeReturn(
+										sensitivityId, 
+										derivativeShortName, 
+										null,e)};
+					}
+					if(Double.isNaN(value)){
+						Exception e = Utils.IllState(this.getClass(), " Cannot compute Implied Vol with inputs : " + vib.toString());
+						return new DerivativeReturn[]{
+								new DerivativeReturn(
+										sensitivityId, 
+										derivativeShortName, 
+										null,e)};
+					}
+					
+				}
+			}
+		}
+		// ************ END implied vol *****************		
+
+
+		
+		
 		
 		if(isNan(value)){
 			value = getVanillaCustomSensitivity(sensitivityId, 
@@ -306,52 +368,6 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 		}
 		return ret;
 	}
-	
-	
-
-//	@Override
-//	public DioType<?>[] getPriceArgTypes() {
-//		DioType<?>[] ret = 
-//				new DioType<?>[
-//				     mainTypeList.length+
-//				     underTypeList.length+
-//				     (otherList!=null?otherList.length:0)];
-//		ret[0] = cpDiot;
-//		ret[1] = atmType;
-//		ret[2] = strkDiot;
-//		ret[3] = dteType;
-//		ret[4] = vsDiot;
-//		ret[5] = rateType;
-//		ret[6] = divType;
-//		if(otherList!=null && otherList.length>0){
-//			for(int i = 0;i<otherList.length;i++){
-//				ret[7+i] = otherList[i];
-//			}
-//		}
-//		return ret;
-//	}
-//
-//	@Override
-//	public double getPrice(double[][] args) {
-//		double callput = args[0][0];
-//		double atm = args[1][0];
-//		double strike = args[2][0];
-//		double dte = args[3][0];
-//		double vol = args[4][0];
-//		double rate = args[5][0];
-//		double div = args[6][0];
-//		Object[] others = null;
-//		if(otherList!=null && otherList.length>0){
-//			others = new Object[otherList.length];
-//			for(int i = 0;i<otherList.length;i++){
-//				others[i] = args[7+i];
-//			}
-//		}
-//		double ret = getVanillaPrice(
-//				callput, atm, strike, dte, vol, rate, div, others);
-//		return ret;
-//	}
-
 	
 	
 	

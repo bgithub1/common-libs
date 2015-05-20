@@ -7,7 +7,6 @@ import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.commonstaticmethods.Utils;
 
 import com.billybyte.marketdata.SecDef;
-import com.billybyte.marketdata.SecDefQueryAllMarkets;
 import com.billybyte.queries.ComplexQueryResult;
 
 public class NymexCsoLegsQuery implements QueryInterface<String, ComplexQueryResult<Tuple<SecDef[], Double[]>>>{

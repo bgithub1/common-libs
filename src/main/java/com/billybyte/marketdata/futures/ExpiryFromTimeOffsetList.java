@@ -76,7 +76,6 @@ public class ExpiryFromTimeOffsetList implements ExpiryRuleInterface {
 			}else if(dt==DayType.NTH_TUESDAY){
 				return moveToNthDay(currDay, Calendar.TUESDAY, offsetValue);
 			}else if(dt==DayType.NTH_WEDNESDAY){
-//				return moveToNthDay(currDay, Calendar.WEDNESDAY, offsetValue);
 				currDay = moveToNthDay(currDay, Calendar.WEDNESDAY, offsetValue);
 			}else if(dt==DayType.NTH_THURSDAY){
 				return moveToNthDay(currDay, Calendar.THURSDAY, offsetValue);

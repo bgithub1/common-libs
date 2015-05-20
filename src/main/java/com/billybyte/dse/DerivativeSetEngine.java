@@ -22,6 +22,10 @@ import com.billybyte.dse.inputs.QueryManager;
 import com.billybyte.dse.inputs.UnderlyingInfo;
 import com.billybyte.dse.inputs.diotypes.AtmDiot;
 import com.billybyte.dse.inputs.diotypes.DioType;
+import com.billybyte.dse.inputs.diotypes.VolDiot;
+import com.billybyte.dse.models.vanilla.VanOptAbst;
+import com.billybyte.dse.models.vanilla.VanOptBlackEuropean;
+import com.billybyte.dse.models.vanilla.VanOptUnderlying;
 import com.billybyte.dse.outputs.DerivativeReturn;
 import com.billybyte.dse.outputs.DerivativeSensitivityTypeInterface;
 
@@ -69,7 +73,6 @@ public class DerivativeSetEngine {
 	private final Calendar evaluationDate;
 	
 	// models
-//	private final DerivativeModelInterface[] modelArray;
 	private final QueryFromRegexPattern<String, DerivativeModelInterface> regexModelQuery;
 
 	
@@ -78,16 +81,21 @@ public class DerivativeSetEngine {
 			QueryManager queryManager,
 			QueryInterface<String, SecDef> sdQuery,
 			Calendar evaluationDate,
-//			DerivativeModelInterface[] modelArray,
 			QueryFromRegexPattern<String, DerivativeModelInterface> regexModelQuery) {
 		super();
 		this.queryManager = queryManager;
 		this.sdQuery = sdQuery;
 		this.evaluationDate = evaluationDate;
-//		this.modelArray = modelArray;
-		this.regexModelQuery = regexModelQuery;
+		this.regexModelQuery = regexModelQuery;	
 	}
 
+	public DerivativeSetEngine(
+			QueryManager queryManager,
+			QueryInterface<String, SecDef> sdQuery,
+			Calendar evaluationDate) {
+		this(queryManager,sdQuery,evaluationDate,defaultQueryFromRegexPattern(sdQuery));
+		
+	}
 
 	
 	
@@ -500,4 +508,17 @@ public class DerivativeSetEngine {
 		return evaluationDate;
 	}
 	
+	private static QueryFromRegexPattern<String, DerivativeModelInterface> defaultQueryFromRegexPattern(QueryInterface<String, SecDef> sdQuery){
+		Calendar c = Calendar.getInstance();
+		VanOptAbst underModel  = new VanOptUnderlying(c,new VolDiot());
+		VanOptAbst vanModel  = new VanOptBlackEuropean(c,new VolDiot());
+		VanOptAbst stockModel  = vanModel;
+		DerivativeModelInterface[] modelArray = 
+				new DerivativeModelInterface[]{underModel,vanModel,stockModel};
+		QueryFromRegexPattern<String, DerivativeModelInterface> regexModelQuery = 
+				new QueryFromRegexPattern<String, DerivativeModelInterface>(
+						new String[]{"\\.((FUT)|(STK))\\.","\\.FOP\\.","\\.OPT\\."},
+						modelArray);
+		return regexModelQuery;
+	}
 }

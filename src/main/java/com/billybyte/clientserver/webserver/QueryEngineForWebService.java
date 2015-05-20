@@ -28,7 +28,6 @@ public class QueryEngineForWebService<K,T>
 		if(ret==null){
 			Utils.prtObErrMess(this.getClass(), " null return for key: "+requestKey.toString());
 		}else{
-//			UtilsComLib.prtObMess(this.getClass(), " found: "+ret.toString());
 		}
 		return ret;
 	}

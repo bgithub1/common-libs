@@ -7,8 +7,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-//import blackscholes.OptionsModel;
 
+import com.billybyte.commoninterfaces.SettlementDataInterface;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.DerivativeAbstractModel;
 import com.billybyte.dse.DerivativeSetEngine;
@@ -20,8 +20,9 @@ import com.billybyte.dse.inputs.diotypes.DivDiot;
 import com.billybyte.dse.inputs.diotypes.DteFromSettleDiot;
 import com.billybyte.dse.inputs.diotypes.ImpliedCorr;
 import com.billybyte.dse.inputs.diotypes.RateDiot;
+import com.billybyte.dse.inputs.diotypes.SettlePriceDiot;
 import com.billybyte.dse.inputs.diotypes.StrikeDiot;
-import com.billybyte.dse.inputs.diotypes.UnderlingVolsFromVsDiot;
+import com.billybyte.dse.inputs.diotypes.VolDiot;
 import com.billybyte.dse.models.spread.newtonraphsonforspreads.NewtonRaphsonImpliedCorrelation;
 import com.billybyte.dse.models.vanilla.NormalDistribution;
 import com.billybyte.dse.models.vanilla.VanOptAbst;
@@ -33,7 +34,6 @@ import com.billybyte.dse.outputs.DerivativeSensitivityTypeInterface;
 import com.billybyte.dse.outputs.DirectionalVarDerSen;
 import com.billybyte.dse.outputs.GammaDerSen;
 import com.billybyte.dse.outputs.OptPriceDerSen;
-import com.billybyte.dse.outputs.ThetaDerSen;
 import com.billybyte.dse.outputs.VegaDerSen;
 import com.billybyte.marketdata.SecDef;
 
@@ -94,20 +94,22 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 	private static final StrikeDiot strkDiot = new StrikeDiot();
 //	private static final DteSimpDiot dteType = new DteSimpDiot();
 	private static final DteFromSettleDiot dteType = new DteFromSettleDiot();
-	private static final UnderlingVolsFromVsDiot vsDiot = new UnderlingVolsFromVsDiot();
+//	private static final UnderlingVolsFromVsDiot vsDiot = new UnderlingVolsFromVsDiot();
+	private static final VolDiot vsDiot = new VolDiot();
 	private static final RateDiot rateType = new RateDiot();
 	private static final DivDiot divType = new DivDiot();
 	private static final ImpliedCorr  corrType = new ImpliedCorr();
+	private static final SettlePriceDiot settleDiot = new SettlePriceDiot(); 
 	private final DioType<?>[] underTypeList = new DioType<?>[] {
 			atmType,vsDiot,rateType,divType};
 	private final DioType<?>[] mainTypeList = new DioType[]{
-			cpDiot,strkDiot,dteType,corrType};
+			cpDiot,strkDiot,dteType,corrType,settleDiot};
 	
 	
 	protected class MultiBlk{
 		double callPut; double[] atms;
 		double strike; double dte; double[] vols; double[] rates;
-		double[] divs;double corr;
+		double[] divs;Double corr;double settle;
 
 		boolean allGood;
 		List<String> ret = new ArrayList<String>();
@@ -145,17 +147,31 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 				allGood=false;
 				ret.add("bad div per underlying inputs");
 			}
+			
 			vols = VanOptAbst.bdListToDoubleArray(vsDiot,inblk);
 			if(vols==null){
 				allGood=false;
 				ret.add("bad vol array per underlying inputs");
 			}
 			BigDecimal bdCorr = corrType.getMainInputs(inblk);
-			if(bdCorr==null ){
-				allGood=false;
-				ret.add("bad correlation input");
-			}else{
+//			if(bdCorr==null ){
+//				allGood=false;
+//				ret.add("bad correlation input");
+//			}else{
+//				corr = bdCorr.doubleValue();
+//			}
+			if(bdCorr!=null ){
 				corr = bdCorr.doubleValue();
+			}else{
+				corr = null;
+			}
+			SettlementDataInterface sdi = settleDiot.getMainInputs(inblk);
+			settle = -1;
+			if(sdi!=null){
+				BigDecimal bdsettle = sdi.getPrice();
+				if(bdsettle!=null){
+					settle = bdsettle.doubleValue();
+				}
 			}
 		}
 		
@@ -203,7 +219,6 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 	@Override
 	public DerivativeReturn[] getAllSensitivites(String derivativeShortName,
 			InBlk inputs) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -232,91 +247,109 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 		double rate1 = inBlk.rates[1];
 		double div0 = inBlk.divs[0];
 		double div1 = inBlk.divs[1];
-		double corr = inBlk.corr;
+		Double corr = inBlk.corr;
 		
 		
-		if(sensitivityId.getString().compareTo(OPTPR)==0){
-//			Double greek = getSpreadPrice(inBlk.callPut, inBlk.atms[0],inBlk.atms[1] , 
-//					inBlk.strike, inBlk.dte, 
-//					inBlk.vols[0], inBlk.vols[0], inBlk.rates[0], inBlk.rates[1],inBlk.divs[0], inBlk.divs[1], 
-//					inBlk.corr, null, null);
-			Double greek = getSpreadPrice(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
-			if(greek==null || isNan(greek)) {
-				value=null;
-			}else{
-				return new DerivativeReturn[]{new DerivativeReturn(sensitivityId, derivativeShortName, greek)};
+		// first see if you are processing a sensitivity that requires the corr variable to be non-null
+		//  The corr variable is need for all sensitivities but implied correlation
+		if(corr!=null){
+			if(sensitivityId.getString().compareTo(OPTPR)==0){
+				Double greek = getSpreadPrice(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
+				if(greek==null || isNan(greek)) {
+					value=null;
+				}else{
+					return new DerivativeReturn[]{new DerivativeReturn(sensitivityId, derivativeShortName, greek)};
+				}
 			}
-		}
-		if(sensitivityId.getString().compareTo(THETA)==0){
-//			Double greek = getSpreadTheta(inBlk.callPut, inBlk.atms[0],inBlk.atms[0] , 
-//					inBlk.strike, inBlk.dte, 
-//					inBlk.vols[0], inBlk.vols[0], inBlk.rates[0], inBlk.rates[1],inBlk.divs[0], inBlk.divs[1], 
-//					inBlk.corr, null, null);
-			Double greek = getSpreadTheta(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
-			if(greek==null || isNan(greek)) {
-				value=null;
-			}else{
-				return new DerivativeReturn[]{new DerivativeReturn(sensitivityId, derivativeShortName, greek)};
+			if(sensitivityId.getString().compareTo(THETA)==0){
+				Double greek = getSpreadTheta(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
+				if(greek==null || isNan(greek)) {
+					value=null;
+				}else{
+					return new DerivativeReturn[]{new DerivativeReturn(sensitivityId, derivativeShortName, greek)};
+				}
 			}
-		}
 
-		if(sensitivityId.getString().compareTo(CORR_RISK)==0){
-//			Double greek = getSpreadCorrRisk(inBlk.callPut, inBlk.atms[0],inBlk.atms[0] , 
-//					inBlk.strike, inBlk.dte, 
-//					inBlk.vols[0], inBlk.vols[0], inBlk.rates[0], inBlk.rates[1],inBlk.divs[0], inBlk.divs[1], 
-//					inBlk.corr, null, null);
-			Double greek = getSpreadCorrRisk(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
-			if(greek==null || isNan(greek)) {
-				value=null;
-			}else{
-				return new DerivativeReturn[]{new DerivativeReturn(sensitivityId, derivativeShortName, greek)};
+			if(sensitivityId.getString().compareTo(CORR_RISK)==0){
+				Double greek = getSpreadCorrRisk(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
+				if(greek==null || isNan(greek)) {
+					value=null;
+				}else{
+					return new DerivativeReturn[]{new DerivativeReturn(sensitivityId, derivativeShortName, greek)};
+				}
 			}
+			
+			// now do sensitivities that with respect to each underlying
+			if(sensitivityId.getString().compareTo(DELTA)==0){
+				Double[] greek = getSpreadDelta(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
+				value = greek;
+			}
+			if(sensitivityId.getString().compareTo(GAMMA)==0){
+				Double[] greek = getSpreadGamma(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
+				value = greek;
+			}
+			if(sensitivityId.getString().compareTo(VEGA)==0){
+				Double[] greek = getSpreadVega(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
+				value = greek;
+			}
+
+			if(sensitivityId.equals(directionalVarSense)){
+				SecDef[] sds = inputs.getUnderlyingSds();
+				DerivativeReturn[] vars = getDirectionalVar(sensitivityId, derivativeShortName, inputs);
+				if(sds.length!=vars.length){
+					Exception e = Utils.IllState(this.getClass(),derivativeShortName+" : "+sensitivityId+" unit vars returned of "+vars.length+" does not equal number of underlyings of "+sds.length);
+					DerivativeReturn drErr = new DerivativeReturn(sensitivityId, derivativeShortName, null, e);
+					return new DerivativeReturn[]{drErr};
+				}
+				DerivativeReturn[] drRet = new DerivativeReturn[sds.length];
+				for(int i = 0;i<vars.length;i++){
+					drRet[i] = new DerivativeReturn(sensitivityId, sds[i].getShortName(), vars[i].getValue(), vars[i].getException());
+				}
+
+				return drRet;
+			}
+
+			if(sensitivityId.equals(deltaNeutralVarSense)){
+				SecDef[] sds = inputs.getUnderlyingSds();
+				DerivativeReturn[] vars = getDeltaNeutralVar(sensitivityId, derivativeShortName, inputs);
+				if(sds.length!=vars.length){
+					Exception e = Utils.IllState(this.getClass(),derivativeShortName+" : "+sensitivityId+" unit vars returned of "+vars.length+" does not equal number of underlyings of "+sds.length);
+					DerivativeReturn drErr = new DerivativeReturn(sensitivityId, derivativeShortName, null, e);
+					return new DerivativeReturn[]{drErr};
+				}
+				DerivativeReturn[] drRet = new DerivativeReturn[sds.length];
+				for(int i = 0;i<vars.length;i++){
+					drRet[i] = new DerivativeReturn(sensitivityId, sds[i].getShortName(), vars[i].getValue(), vars[i].getException());
+				}
+
+				return drRet;
+			}
+			
 		}
 		
-		// now do sensitivities that with respect to each underlying
-		if(sensitivityId.getString().compareTo(DELTA)==0){
-			Double[] greek = getSpreadDelta(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
-			value = greek;
-		}
-		if(sensitivityId.getString().compareTo(GAMMA)==0){
-			Double[] greek = getSpreadGamma(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
-			value = greek;
-		}
-		if(sensitivityId.getString().compareTo(VEGA)==0){
-			Double[] greek = getSpreadVega(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null);
-			value = greek;
-		}
+		
+		
+		// The correlation sensitivity is NOT included in the main sensitivities to be returned,
+		//  but can be called separately when needed.
+		// !!!!!! It also does not need the corr variable b/c it will find the corr variable !!!!!
+		if(sensitivityId.equals(IMPLIEDVOL)){
+		//(cp,f1,f2,strike,dte,vol1,vol2,rate0,rate1,div0,div1,corr, null, null)
+			if(inBlk.settle>=0){
+				double precision = .00001;
+				int maxIterations = 1000;
+				CsoModel spreadModel = new CsoModel();
+				double initialCorrelation = 0;
+				Object other1 = null;
+				Object other2 = null;
+				Double greek  = impliedCorrelation(inBlk.settle, precision, maxIterations, spreadModel, 
+						cp, f1,f2,strike,dte,vol1,vol2,rate0,div0,div1, initialCorrelation, other1,other2);
+				if(greek==null || isNan(greek)) {
+					value=null;
+				}else{
+					return new DerivativeReturn[]{new DerivativeReturn(sensitivityId, derivativeShortName, greek)};
+				}
 
-		if(sensitivityId.equals(directionalVarSense)){
-			SecDef[] sds = inputs.getUnderlyingSds();
-			DerivativeReturn[] vars = getDirectionalVar(sensitivityId, derivativeShortName, inputs);
-			if(sds.length!=vars.length){
-				Exception e = Utils.IllState(this.getClass(),derivativeShortName+" : "+sensitivityId+" unit vars returned of "+vars.length+" does not equal number of underlyings of "+sds.length);
-				DerivativeReturn drErr = new DerivativeReturn(sensitivityId, derivativeShortName, null, e);
-				return new DerivativeReturn[]{drErr};
 			}
-			DerivativeReturn[] drRet = new DerivativeReturn[sds.length];
-			for(int i = 0;i<vars.length;i++){
-				drRet[i] = new DerivativeReturn(sensitivityId, sds[i].getShortName(), vars[i].getValue(), vars[i].getException());
-			}
-
-			return drRet;
-		}
-
-		if(sensitivityId.equals(deltaNeutralVarSense)){
-			SecDef[] sds = inputs.getUnderlyingSds();
-			DerivativeReturn[] vars = getDeltaNeutralVar(sensitivityId, derivativeShortName, inputs);
-			if(sds.length!=vars.length){
-				Exception e = Utils.IllState(this.getClass(),derivativeShortName+" : "+sensitivityId+" unit vars returned of "+vars.length+" does not equal number of underlyings of "+sds.length);
-				DerivativeReturn drErr = new DerivativeReturn(sensitivityId, derivativeShortName, null, e);
-				return new DerivativeReturn[]{drErr};
-			}
-			DerivativeReturn[] drRet = new DerivativeReturn[sds.length];
-			for(int i = 0;i<vars.length;i++){
-				drRet[i] = new DerivativeReturn(sensitivityId, sds[i].getShortName(), vars[i].getValue(), vars[i].getException());
-			}
-
-			return drRet;
 		}
 
 		if(value==null){
@@ -350,13 +383,6 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 		return Arrays.asList(mainTypeList);
 	}
 
-//	@Override
-//	public DerivativeReturn[] getSensitivity(
-//			DerivativeSensitivityTypeInterface sensitivityId,
-//			String derivativeShortName, PrimitiveBlock primitiveInputs) {
-//		
-//		return null;
-//	}
 	
 	private static final double rnd(double n,int p){
 		double x = Math.round(n * Math.pow(10,p));
@@ -387,7 +413,6 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 						spreadPriceToAchieve, .00005, 10000, 
 						spreadModel, callPut, atmLeg0, atmLeg1, strike,
 						dte, volLeg0, volLeg1, rate, divLeg0, divLeg1, other0, other1);
-//		double bsCorr = bsImpCorr.find(0.0);
 		double bsCorr = bsImpCorr.findByInteration();
 		if(!Double.isInfinite(bsCorr) || !Double.isNaN(bsCorr)){
 			return rnd(bsCorr,10);
@@ -413,12 +438,8 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 		if(seed<-1)seed = -.99;
 		if(seed>1)seed = .99;
 		for(int i = 0;i<20;i++){
-//			double seed = initialCorrelation+i*.1;
 			result = nr.newtraph(seed);
 			if(result.compareTo(Double.NaN)!=0 && result<=0.999999999 && result>=-0.999999999)break;
-//			seed = initialCorrelation-i*.1;
-//			result = nr.newtraph(seed);
-//			if(result.compareTo(Double.NaN)!=0 && result<=0.999999999 && result>=-0.999999999)break;
 			seed = seed +.1;
 			if(seed>1)break;
 		}
@@ -590,10 +611,9 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 	@Override
 	public double[] getPriceArray(Map<DioType<?>, double[]> mainInputs,
 			Map<DioType<?>, double[][]> underlyingInputs) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	
+
 
 }

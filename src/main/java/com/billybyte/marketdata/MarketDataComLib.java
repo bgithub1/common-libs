@@ -20,20 +20,15 @@ import java.util.regex.Pattern;
 
 import com.billybyte.commoncollections.Tuple;
 import com.billybyte.commoninterfaces.QueryInterface;
-//import com.billybyte.commoninterfaces.SettlementDataInterface;
 import com.billybyte.commonstaticmethods.Dates;
-import com.billybyte.commonstaticmethods.HistData;
-import com.billybyte.commonstaticmethods.HistDataSources;
 import com.billybyte.commonstaticmethods.RegexMethods;
 import com.billybyte.commonstaticmethods.Rounding;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.DerivativeSetEngine;
 import com.billybyte.dse.inputs.QueryManager;
 
-//import com.billybyte.marketdata.DepthBook;
 import com.billybyte.marketdata.SecDef;
 import com.billybyte.marketdata.SecDefSimple;
-//import com.billybyte.marketdata.SettlementDataImmute;
 import com.billybyte.marketdata.ShortNameInfo;
 import com.billybyte.marketdata.SecEnums.SecCurrency;
 import com.billybyte.marketdata.SecEnums.SecExchange;
@@ -43,8 +38,6 @@ import com.billybyte.marketdata.futures.FuturesProduct;
 import com.billybyte.marketdata.futures.FuturesProductQuery;
 import com.billybyte.marketdata.futures.MonthYear;
 
-//import com.billybyte.mongo.MongoXml;
-//import com.billybyte.neodatis.DatabaseAccessEngine;
 import com.billybyte.queries.ComplexQueryResult;
 
 public class MarketDataComLib {
@@ -104,7 +97,6 @@ public class MarketDataComLib {
 		ShortNameInfo sni = new ShortNameInfo(symbol,
 				SecSymbolType.FUT ,exchange,currency,year,month,null,	
 				null,null);
-		if(sni==null)return null;
 		return sni.getShortName();							
 		
 	}
@@ -199,7 +191,6 @@ public class MarketDataComLib {
 		} catch (Exception e) {
 			return null;
 		}
-		if(my==null)return null;
 		int month = my.getMonth().getIndex();
 		int year = new Integer(my.getYear());
 		ShortNameInfo sni = new ShortNameInfo(
@@ -411,7 +402,7 @@ public class MarketDataComLib {
 	public static List<SecDef> getAllOutRightShortNamesInclusive(
 			QueryInterface<String,SecDef> outrightSecDefQueryEngine,
 			String shortNameOfWideSpread){
-		// TODO - implement this method
+		// 
 		return getAllOutRightShortNamesInclusive(outrightSecDefQueryEngine,shortNameOfWideSpread,100,TimeUnit.MILLISECONDS);
 	}
 	
@@ -758,16 +749,6 @@ public class MarketDataComLib {
 	}
 	
 	
-//	public static BigDecimal getSettlement(
-//			QueryInterface<String, DepthBook>  depthBookQuery,
-//			String shortName){
-//		DepthBook dbFut = depthBookQuery.get(shortName, 10000, TimeUnit.MILLISECONDS);
-//		if(dbFut==null)return null;
-//		if(shortName.compareTo(dbFut.getSecDef().getShortName())!=0)return null;
-//		BigDecimal futSettle = dbFut.getSettlement();
-//		return futSettle;
-//		
-//	}
 	
 	public static BigDecimal getAtmStrike(SecDef secDef,BigDecimal price, double strikeValToRoundto){
 		int prec = secDef.getExchangePrecision();
@@ -775,39 +756,9 @@ public class MarketDataComLib {
 		return strike;
 	}
 	
-//	public static BigDecimal getAtmStrike(
-//			QueryInterface<String, DepthBook>  depthBookQuery,
-//			SecDef futSd, 
-//			double strikeValToRoundto){
-//		BigDecimal futSettle = getSettlement(depthBookQuery,futSd.getShortName());
-//		if(futSettle==null)return null;
-//		return getAtmStrike(futSd,futSettle,strikeValToRoundto);
-//		
-//	}
 
 
 	
-//	/**
-//	 * 
-//	 * @param settlementDataAccessEngine
-//	 * @param underlyingSecDef
-//	 * @param optionSymbol - if this is null, use the underlying symbol as the options symbol
-//	 * @return
-//	 */
-//	public static final List<SettlementDataInterface> getAllFuturesOptionSettlements(
-//			DatabaseAccessEngine<SettlementDataImmute> settlementDataAccessEngine,
-//			SecDef underlyingSecDef,String optionSymbol){
-//		SecDef sd = underlyingSecDef;
-//		// create partial options shortName by replacing FUT with FOP, and symbol with options symbol
-//		String partialOptShortName = 
-//			sd.getShortName().replace(SecSymbolType.FUT.toString(),SecSymbolType.FOP.toString()).replace(sd.getSymbol(), optionSymbol==null?sd.getSymbol():optionSymbol);
-//		
-//		// get list of all options settlements for this underlying
-//		List<SettlementDataImmute> options = settlementDataAccessEngine.queryLike(new String[][]{{"shortName","^"+partialOptShortName}});
-//		List<SettlementDataInterface> ret = new ArrayList<SettlementDataInterface>();
-//		ret.addAll(options);
-//		return ret;
-//	}
 	
 	public static String getOptionsShortnameWoStrikeRight(SecDef optionSd){
 		String sep = DEFAULT_SHORTNAME_SEPARATOR;
@@ -815,138 +766,6 @@ public class MarketDataComLib {
 			YEAR_FORMAT.format(optionSd.getContractYear())+MONTH_FORMAT.format(optionSd.getContractMonth());
 	}
 	
-//	public static final SettlementDataInterface getSettlement(DatabaseAccessEngine<SettlementDataImmute> settlementDataAccessEngine,
-//			String shortName){
-//		List<SettlementDataImmute> setList = settlementDataAccessEngine.queryExact(new String[][]{{"shortName",shortName}});
-//		if(setList==null)return null;
-//		if(setList.size()<1)return null;
-//		SettlementDataInterface settle = setList.get(0);
-//		return settle;
-//	}
-//	
-//	
-//	public static final List<SecDef> getFuturesOptionSecDefsWithSettlements(
-//			DatabaseAccessEngine<SettlementDataImmute> settlementDataAccessEngine,
-//			String underlyingShortName,
-//			String optionSymbol,
-//			QueryInterface<String, SecDef> secDefQuery,int timeoutValue, TimeUnit timeUnitType){
-//
-//		SecDef sd = secDefQuery.get(underlyingShortName, timeoutValue, timeUnitType);
-//		List<SettlementDataInterface> options = 
-//			getAllFuturesOptionSettlements(settlementDataAccessEngine,sd,optionSymbol);
-//
-//		List<SecDef> ret = new ArrayList<SecDef>();
-//		for(SettlementDataInterface sdIm:options){
-//			ret.add(secDefQuery.get(sdIm.getShortName(),timeoutValue,timeUnitType));
-//		}
-//		return ret;
-//	}
-//	
-//	/**
-//	 * get an array of 3 shortnames: underlying, near OTMPut and near OTMCall
-//	 * @param settlementDataAccessEngine
-//	 * @param underlyingShortName
-//	 * @param optionSymbol
-//	 * @param secDefQuery
-//	 * @param timeoutValue
-//	 * @param timeUnitType
-//	 * @return
-//	 */
-//	public static final SecDef[] getOtmOptionSettleNearestToAtmUsingSettleDb(
-//			DatabaseAccessEngine<SettlementDataImmute> settlementDataAccessEngine,
-//			String underlyingShortName,
-//			String optionSymbol,
-//			QueryInterface<String, SecDef> secDefQuery,int timeoutValue, TimeUnit timeUnitType){
-//		// get the underlying shortName
-//		SecDef underlyingSd = secDefQuery.get(underlyingShortName, timeoutValue, timeUnitType);
-//		if(underlyingSd ==null)return null;
-//		
-//		// get it's settlement
-//		SettlementDataInterface underlyingSettle = getSettlement(settlementDataAccessEngine,underlyingShortName);
-//		if(underlyingSettle==null)return null;
-//		
-//		// find all options for this underlying
-//		List<SecDef> sdList = 
-//			getFuturesOptionSecDefsWithSettlements(
-//					settlementDataAccessEngine, underlyingShortName, 
-//					optionSymbol, secDefQuery, timeoutValue, timeUnitType);
-//		// find strike pair closest to settlementUnderlying
-//		BigDecimal nearestOtmCallSettle=new BigDecimal(Integer.MAX_VALUE);
-//		BigDecimal nearestOtmPutSettle=new BigDecimal(Integer.MAX_VALUE*-1);
-//		SecDef nearestOtmCallSd = null;
-//		SecDef nearestOtmPutSd = null;
-//
-//		BigDecimal settle= underlyingSettle.getPrice();
-//		for(SecDef sd:sdList){
-//			BigDecimal strike = sd.getStrike();
-//			String right = sd.getRight();
-//			if(right.compareTo("C")==0){
-//				if(strike.compareTo(nearestOtmCallSettle)<0 && strike.compareTo(settle)>=0){
-//					nearestOtmCallSettle=strike;
-//					nearestOtmCallSd=sd;
-//				}
-//			}else{
-//				if(strike.compareTo(nearestOtmPutSettle)>0 && strike.compareTo(settle)<=0){
-//					nearestOtmPutSettle=strike;
-//					nearestOtmPutSd=sd;
-//				}
-//			}
-//		}
-//		SecDef[] ret = new SecDef[]{
-//				underlyingSd,
-//				nearestOtmCallSd==null?null:nearestOtmCallSd,
-//				nearestOtmPutSd==null?null:nearestOtmPutSd
-//		};
-//		return ret;
-//	}
-//	
-//	public static final SecDef[] getFutConversionSdsNearestAtmUsingSettlementDatabase(
-//			DatabaseAccessEngine<SettlementDataImmute> settlementDataAccessEngine,
-//			String underlyingShortName,
-//			String optionSymbol,
-//			QueryInterface<String, SecDef> secDefQuery,int timeoutValue, TimeUnit timeUnitType){
-//		SettlementDataInterface underlyingSettle = getSettlement(settlementDataAccessEngine,underlyingShortName);
-//		if(underlyingSettle==null)return null;
-//
-//		List<SecDef> sdList = 
-//			getFuturesOptionSecDefsWithSettlements(
-//					settlementDataAccessEngine, underlyingShortName, 
-//					optionSymbol, secDefQuery, timeoutValue, timeUnitType);
-//		if(sdList==null || sdList.size()<1)return null;
-//		// find strike pair closest to settlementUnderlying
-//		TreeMap<BigDecimal,List<SecDef>> strikeTree = new TreeMap<BigDecimal, List<SecDef>>();
-//		// make a key of the strike
-//		SecDef underSd = secDefQuery.get(underlyingShortName,timeoutValue,timeUnitType);
-//		for(SecDef optSd:sdList){
-//			BigDecimal strike = optSd.getStrike();
-//			if(!strikeTree.containsKey(strike)){
-//				strikeTree.put(strike,  new ArrayList<SecDef>());
-//			}
-//			List<SecDef> secDefList = strikeTree.get(strike);
-//			secDefList.add(optSd);
-//		}
-//		
-//		if(strikeTree==null || strikeTree.size()<1)return null;
-//		
-//		BigDecimal underlyingPrice = underlyingSettle.getPrice();
-//
-//		List<SecDef> secDefList = strikeTree.ceilingEntry(underlyingPrice).getValue();
-//		if(secDefList==null){
-//			return null;
-//		}
-//		if(secDefList.size()<2){
-//			// try the next successive occurrences
-//			for(BigDecimal price:strikeTree.tailMap(underlyingPrice).keySet()){
-//				secDefList = strikeTree.get(price);
-//				if(secDefList.size()>1){
-//					return new SecDef[]{underSd,secDefList.get(0),secDefList.get(1)};
-//				}
-//			}
-//			return null;
-//		}
-//		
-//		return new SecDef[]{underSd,secDefList.get(0),secDefList.get(1)};
-//	}
 	
 	/**
 	 * 
@@ -1093,7 +912,6 @@ public class MarketDataComLib {
 			ret[i][i] = 1.0;
 			shortList.add(sds[i].getShortName());
 		}
-//		for()
 		for(Entry<String, ComplexQueryResult<BigDecimal>> entry: in.entrySet()){
 			ComplexQueryResult<BigDecimal> cqr = entry.getValue();
 			if(!cqr.isValidResult())return null;
@@ -1103,15 +921,6 @@ public class MarketDataComLib {
 				
 			}
 		}
-//		for(Entry<String, ComplexQueryResult<BigDecimal>> entry: in.entrySet()){
-//			ComplexQueryResult<BigDecimal> cqr = entry.getValue();
-//			if(!cqr.isValidResult())return null;
-//			String[] parts = entry.getKey().split("__");
-//			if(parts.length!=2)return null;
-//			int index0 = ts.headSet(parts[0]).size();
-//			int index1 = ts.headSet(parts[1]).size();
-//			ret[index0][index1] = cqr.getResult().doubleValue();
-//		}
 		return ret;
 	}
 

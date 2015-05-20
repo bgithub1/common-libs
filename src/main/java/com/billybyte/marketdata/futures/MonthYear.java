@@ -25,14 +25,7 @@ public class MonthYear {
 			this.year = year;
 			this.month = month;
 		} catch( NumberFormatException ex) {
-//			if( year.contains("/"))
-//				year = year.substring(0,year.indexOf('/'));
-//			try {
-//				this.year = Integer.parseInt(year);
-//				this.month = month;
-//			} catch (NumberFormatException e) {
 				ex.printStackTrace();
-//			}
 		}
 	}
 	public MonthYear(int year, Month month)
@@ -119,10 +112,8 @@ public class MonthYear {
 			}
 			String m =  (month.getIndex() >= 10)? ""+month.getIndex(): "0"+month.getIndex();
 			String y = String.valueOf(year.getFullYear());
-//		System.out.println("GET MONTH YEAR INT WILL RETURN - "+(y)+" month "+m);
 			return Integer.parseInt(y+m);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return -1;
 		}

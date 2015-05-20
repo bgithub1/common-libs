@@ -1,7 +1,6 @@
 package com.billybyte.commoncollections;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.thoughtworks.xstream.XStream;
@@ -49,6 +48,7 @@ public class Tuple<T1,T2> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		@SuppressWarnings("rawtypes")
 		Tuple other = (Tuple) obj;
 		if (t1_instance == null) {
 			if (other.t1_instance != null)

@@ -94,24 +94,6 @@ public abstract class DerivativeModel {
 
 	
 	
-//	public static double sCumNorm(double X){
-//		double a1 = 0.31938153;
-//		double a2 = -0.356563782;
-//		double a3 = 1.781477937;
-//		double a4 = -1.821255978;
-//		double a5 = 1.330274429;
-//		double L;
-//		double K;
-//		L = Math.abs(X);
-//		K = 1 / (1 + 0.2316419 * L);
-//		
-//		 double ret = 1 - 1 / Math.sqrt(2 * Math.PI) * Math.exp(-Math.pow(L,2)/2) * (a1 * K + a2 * Math.pow(K, 2) + a3 * Math.pow(K,3) + a4 * Math.pow(K,4) + a5 * Math.pow(K,5));
-//		if(X<0)return 1-ret;
-//		return ret;
-//
-//		
-//	}
-//	
 	
 	//
 	// Lower tail quantile for standard normal distribution function.

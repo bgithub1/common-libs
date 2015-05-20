@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 public enum Year {
 
-//	Jan ( 'F', 31, 31),
 	TwoThousandSeven (7, 2007),
 	TwoThousandEight (8, 2008),
 	TwoThousandNine (9, 2009),

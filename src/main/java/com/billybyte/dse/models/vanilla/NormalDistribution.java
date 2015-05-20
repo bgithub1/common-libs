@@ -32,7 +32,6 @@ public class NormalDistribution {
      */
     public static double inverseCumulativeDistribution(double p) {
     	return inverseCumulativeNormalDistribution_Wichura(p);
-//        return normalDistribution.inverseCumulativeProbability(p);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.billybyte.dse.models.spread.newtonraphsonforspreads;
 import static java.lang.Math.abs;
-//import java.util.*;
 /**
  * general solution for the problem of finding x 
  * 		when  you know 
@@ -19,7 +18,6 @@ import static java.lang.Math.abs;
  */
 public abstract class NewtonRaphson extends Derivative
 {   
-//	protected int counter=0;
 	public abstract double newtonroot(double rootvalue);  //the requesting function implements the calculation fx//
 	public double precisionvalue=0.0;
         
@@ -38,7 +36,7 @@ public abstract class NewtonRaphson extends Derivative
 	 * @return
 	 */
 	public double newtraph(double seedValue)
-	{ //System.out.println("Accuravcy levels=="+precisionvalue+"ITERATIONS=="+iterate);
+	{ 
          double fx=0.0;
          double Fx=0.0;
          double x=0.0;
@@ -63,7 +61,7 @@ public abstract class NewtonRaphson extends Derivative
 				 x=floorvalue((lowerbound-(fx/Fx)));
 						counter++;
 	}
-	//System.out.println("The Solution is:....................."+x);
+	
 		if(counter>=iterate){
 			return Double.NaN;
 		}

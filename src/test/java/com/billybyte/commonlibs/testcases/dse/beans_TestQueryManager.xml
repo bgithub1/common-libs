@@ -80,6 +80,12 @@
 	<bean id="corrQuery" class="com.billybyte.commonlibs.testcases.dse.CorrFromSnSetQueryForTest" > 
 	</bean> 
 
+	<bean id="settlePriceQuery" class="com.billybyte.commonlibs.testcases.dse.SettleQueryForTest" > 
+		<constructor-arg>
+			<ref local="testDataMap"/>
+		</constructor-arg>
+	</bean> 
+
 
 	<bean id="atmDiot" class="com.billybyte.dse.inputs.diotypes.AtmDiot" > 
 	</bean> 
@@ -97,6 +103,8 @@
 	</bean> 
 	<bean id="corrDiot" class="com.billybyte.dse.inputs.diotypes.CorrDiot" > 
 	</bean> 
+	<bean id="settlePriceDiot" class="com.billybyte.dse.inputs.diotypes.SettlePriceDiot" > 
+	</bean> 
 
 
 	<util:map id="queryMap">
@@ -108,6 +116,7 @@
 			<entry key-ref="dteDiot" value-ref="dteQuery"/>
 			<entry key-ref="cpDiot" value-ref="cpQuery"/>
 			<entry key-ref="corrDiot" value-ref="corrQuery"/>
+			<entry key-ref="settlePriceDiot" value-ref="settlePriceQuery"/>
 	</util:map>
 
  

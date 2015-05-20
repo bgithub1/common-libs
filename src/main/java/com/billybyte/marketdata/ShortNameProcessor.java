@@ -40,8 +40,6 @@ public class ShortNameProcessor implements ShortNameProcessorInterface{
 		this.productSet = productSet;
 		// build parts of regex string
 		String productPart = "[a-zA-Z0-9]{1,}";
-//		String productPart = "[a-zA-Z0-9]{1,}(-[ABC]){0,1}";
-//		String stockProductPart = "[a-zA-Z0-9]{1,}(-[ABC]){0,1}(_[A-Z]{1,2}){0,1}";
 		String stockProductPart = "[a-zA-Z0-9]{1,}(-[ABC]){0,1}(_[A-Z]{1,2}){0,1}";
 		String stockTypPart = SecSymbolType.STK.toString();
 		String futurePart = SecSymbolType.FUT.toString();
@@ -55,9 +53,6 @@ public class ShortNameProcessor implements ShortNameProcessorInterface{
 		String secRightPart="(P|C)";
 		String strikePart = "(-{0,1}[0-9]*\\.{0,1}[0-9]*)";
 		// build all possible regex strings (stock w/o currency, stock with currency, future, option)
-//		String stockNoCurrPattern = "[a-zA-Z0-9]{1,}_{0,1}[a-zA-Z0-9]{0,}"+this.fieldSeparator+
-//							stockTypPart+this.fieldSeparator+
-//							secExchPart;
 		
 		String stockNoCurrPattern = stockProductPart+this.fieldSeparator+
 				stockTypPart+this.fieldSeparator+
@@ -71,16 +66,8 @@ public class ShortNameProcessor implements ShortNameProcessorInterface{
 			secCurrPart+this.fieldSeparator+
 			yearPart+monthPart;
 		
-//		String optionPattern = 
-//			productPart+this.fieldSeparator+
-//			optionPart+this.fieldSeparator+
-//			secExchPart+this.fieldSeparator+
-//			secCurrPart+this.fieldSeparator+
-//			yearPart+monthPart+this.fieldSeparator+
-//			secRightPart+this.fieldSeparator+strikePart;
 
 		String optionPattern = 
-//				productPart+this.fieldSeparator+
 				stockProductPart+this.fieldSeparator+
 				optionPart+this.fieldSeparator+
 				secExchPart+this.fieldSeparator+
@@ -182,12 +169,10 @@ public class ShortNameProcessor implements ShortNameProcessorInterface{
 				right = fields.get(tokensProcessed);
 				tokensProcessed++;
 				strikeString = fields.get(tokensProcessed);
-//				strike  = new BigDecimal(fields.get(tokensProcessed));
 				tokensProcessed++;
 			}
 			if(fields.size()>tokensProcessed){
 				strikeString +="."+fields.get(tokensProcessed);
-//				strike.add(new BigDecimal("0."+fields.get(tokensProcessed)));
 			}
 			if(strikeString!=null){
 				strike = new BigDecimal(strikeString);

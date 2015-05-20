@@ -4,29 +4,6 @@ import com.billybyte.clientserver.ServiceBlock;
 
 /**
  * 
-rDataWithDatabaseQuery,http://127.0.0.1,http://127.0.0.1,9024
-trDataWithDatabaseQuery,http://192.168.78.40,http://192.168.78.40,0124
-rDataFromDataInSettleDatabaseQuery,http://127.0.0.1,http://127.0.0.1,9124
-trDataFromDataInSettleDatabaseQuery,http://192.168.78.40,http://192.168.78.40,9124
-rDataRtQuery,http://127.0.0.1,http://127.0.0.1,9025
-trDataRtQuery,http://192.168.78.40,http://192.168.78.40,9025
-rDataPerPrQuery,http://127.0.0.1,http://127.0.0.1,9026
-trDataPerPrQuery,http://192.168.78.40,http://192.168.78.40,9026
-secDefListQuery,http://127.0.0.1,http://127.0.0.1,9027
-tsecDefListQuery,http://192.168.78.40,http://192.168.78.40,9027
-settleDataMapFromPartialShortNameQuery,http://127.0.0.1,http://127.0.0.1,9100
-tsettleDataMapFromPartialShortNameQuery,http://192.168.78.40,http://192.168.78.40,9100
-regexToSettlementQuery,http://127.0.0.1,http://127.0.0.1,9130
-tregexToSettlementQuery,http://192.168.78.40,http://192.168.78.40,9130
-settlementDirectQuery,http://127.0.0.1,http://127.0.0.1,9131
-tsettlementDirectQuery,http://192.168.78.40,http://192.168.78.40,9131
-intServer,http://127.0.0.1,http://127.0.0.1,9066
-secDefAllQuery,http://127.0.0.1,http://127.0.0.1,9028
-tecDefAllQuery,http://192.168.78.40,http://192.168.78.40,9028
-settleAllQuery,http://127.0.0.1,http://127.0.0.1,9500
-tsettleAllQuery,http://192.168.78.40,http://192.168.78.40,9500
-volFromRDataQuery,http://127.0.0.1,http://127.0.0.1,9325
-tvolFromRDataQuery,http://192.168.78.40,http://192.168.78.40,9325
  * @author bperlman1
  *
  */

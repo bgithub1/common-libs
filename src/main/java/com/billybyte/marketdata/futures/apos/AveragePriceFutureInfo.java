@@ -8,14 +8,12 @@ import java.util.concurrent.TimeUnit;
 
 
 import com.billybyte.commoncollections.Tuple;
-import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.commoninterfaces.SettlementDataInterface;
 import com.billybyte.commonstaticmethods.Dates;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.marketdata.MarketDataComLib;
 import com.billybyte.marketdata.SecDef;
 import com.billybyte.marketdata.SecEnums.SecLocale;
-import com.billybyte.marketdata.futures.FuturesProductQuery;
 import com.billybyte.queries.ComplexQueryResult;
 /**
  * Info regarding an Averaged Priced Future

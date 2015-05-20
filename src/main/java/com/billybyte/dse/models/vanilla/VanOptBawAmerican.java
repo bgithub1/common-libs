@@ -17,8 +17,6 @@ import com.billybyte.dse.outputs.ThetaDerSen;
 import com.billybyte.dse.outputs.VegaDerSen;
 
 public class VanOptBawAmerican extends VanOptAbst {
-//	private final BawAmerican model = 
-//			new BawAmerican();
 	
 	public VanOptBawAmerican(Calendar evaluationDate,
 			DioType<BigDecimal> vsDiot, DioType<?>[] others) {
@@ -114,7 +112,6 @@ public class VanOptBawAmerican extends VanOptAbst {
 			double callput, double atm, double strike, double dte, double vol,
 			double rate, double div, Object[] others) {
 		throw Utils.IllState(this.getClass(),"not supporting custom sensitivity: "+customSensitivityType.toString());
-//		return 0;
 	}
 
 }

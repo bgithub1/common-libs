@@ -30,8 +30,6 @@ public class NymexCsoSecDefQuery implements QueryInterface<String, ComplexQueryR
 		for(String[] csoProdPair:csoProdNameOFfsetPairs){
 			productToMonthSpanMap.put(csoProdPair[0], new Integer(csoProdPair[1]));
 		}
-//		this.patternToUnderlyingQuery = patternToUnderlyingQuery;
-//		this.productToMonthSpanMap = productToMonthSpanMap;
 	}
 
 	private final QueryInterface<String, SecDef> sdQuery;
@@ -43,9 +41,6 @@ public class NymexCsoSecDefQuery implements QueryInterface<String, ComplexQueryR
 			{"G2","2"},{"G3","3"},{"G3B","3"},{"G4","1"},{"G4X","1"},{"G5","5"},{"G6","6"},{"G6B","6"},{"G7","12"},
 			{"7A","1"},{"7B","2"},{"7C","3"},{"7M","6"},{"7Z","12"},{"WA","1"},{"WB","2"},{"WC","3"},{"WM","6"},{"WZ","12"},}
 	;
-//	private final String[] csoProdNames = {"G2","G3","G3B","G4","G4X","G5","G6","G6B","G7",
-//			"7A","7B","7C","7M","7Z","WA","WB","WC","WM","WZ"};
-//	private final Integer[] csoOffsets = new Integer[]{2,3,3,1,1,5,6,6,12,1,2,3,6,12,1,2,3,6,12};
 	private final Map<String,Integer> productToMonthSpanMap ;//= CollectionsStaticMethods.mapInitFromArray(csoProdNames, csoOffsets);
 	
 	// Second the csoPatterns array

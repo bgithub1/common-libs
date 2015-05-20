@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import com.billybyte.commoninterfaces.QueryInterface;
-import com.billybyte.commonstaticmethods.CollectionsStaticMethods;
 import com.billybyte.commonstaticmethods.RegexMethods;
 import com.billybyte.marketdata.SecDef;
 

@@ -154,7 +154,6 @@ public class BawAmerican extends DerivativeModel{
 	     a = 2 * rate /pow(vol , 2);
 	     h = 1 - exp(-rate * dte);
 	     L1 = (-b - sqrt(pow(b , 2) + 4 * a / h)) / 2.0;
-//	     L2 = (-b + sqrt(pow(b , 2) + 4 * a / h)) / 2.0;
 	     dt = vol * sqrt(dte);
 	     
 	     Sp = Bisectional_put(atm, strike, dte, rate, D, vol);

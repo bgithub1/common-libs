@@ -6,7 +6,6 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import com.billybyte.commoninterfaces.QueryInterface;
-import com.billybyte.commonstaticmethods.Dates;
 import com.billybyte.commonstaticmethods.InterestRates;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.marketdata.MarketDataComLib;
@@ -34,6 +33,7 @@ public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQue
 	 * 		rateTablePathOrFileNameIfResource a fileName (no other path info) and
 	 * 		classOfPackage = any class that is the same package as the rateTable.xml file;
 	 */
+	@SuppressWarnings("unchecked")
 	public TreasuryRateSingleQuery(
 			QueryInterface<String,SecDef> sdQuery, 
 			String rateTablePathOrFileNameIfResource,

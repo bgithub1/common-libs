@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 
 import com.billybyte.marketdata.MarketDataComLib;
-import com.billybyte.commonstaticmethods.RegexMethods;
 import com.billybyte.commonstaticmethods.Utils;
 
 public class GmiShortNameConverter {

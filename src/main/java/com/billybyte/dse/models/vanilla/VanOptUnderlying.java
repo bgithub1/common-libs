@@ -102,7 +102,6 @@ public class VanOptUnderlying extends VanOptAbst{
 			double callput, double atm, double strike, double dte, double vol,
 			double rate, double div, Object[] others) {
 		throw Utils.IllState(this.getClass(),"not supporting custom sensitivity: "+customSensitivityType.toString());
-//		return 0;
 	}
 
 }

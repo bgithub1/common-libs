@@ -11,7 +11,6 @@ import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.commoninterfaces.SettlementDataInterface;
 
 import com.billybyte.marketdata.MarketDataComLib;
-import com.billybyte.mongo.MongoDatabaseNames;
 import com.billybyte.queries.ComplexQueryResult;
 import com.billybyte.queries.SettleQueryFromMongo;
 /**
@@ -55,13 +54,10 @@ public class SettleToBigDecSetQuery extends DseInputQuery<BigDecimal>{
 	}
 	
 	@Override
-//	public Map<String, ComplexQueryResult<?>> get(Set<String> keySet,
 	public Map<String, ComplexQueryResult<BigDecimal>> get(Set<String> keySet,
 			int timeoutValue, TimeUnit timeUnitType) {
 		Map<String,ComplexQueryResult<SettlementDataInterface>> cqrMap = 
 				this.setQuery.get(keySet, timeoutValue, timeUnitType);
-//		Map<String,ComplexQueryResult<?>> cqrMapBd = 
-//				new HashMap<String, ComplexQueryResult<?>>();
 		Map<String,ComplexQueryResult<BigDecimal>> cqrMapBd = 
 				new HashMap<String, ComplexQueryResult<BigDecimal>>();
 		for(Entry<String, ComplexQueryResult<SettlementDataInterface>> entry:cqrMap.entrySet()){

@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 import com.billybyte.commonstaticmethods.RegexMethods;
 import com.billybyte.commonstaticmethods.Utils;
-//import com.billybyte.marketdata.futures.swaps.SwapProduct;
 /**
  * convert CME NYMEX formatted shortName to SYM.TYPE.EXH.CURR.YYYYMM.CorP.STRIKE
  * 	like CLF1 = CL.FUT.NYMEX.USD.201101

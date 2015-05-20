@@ -167,17 +167,6 @@ public class CalendarSwapAveragePriceInputBlock {
 		return timeToaveragingPeriodStartAsPercOfYear;
 	}
 
-//	public BigDecimal[] getUnSettledAtms() {
-//		return underlyingAtms;
-//	}
-//
-//	public BigDecimal[] getUnSettledVols() {
-//		return underlyingVols;
-//	}
-//
-//	public Double[] getUnSettledWeights() {
-//		return underlyingWeights;
-//	}
 
 	public BigDecimal[] getRates() {
 		return rates;
@@ -216,7 +205,7 @@ public class CalendarSwapAveragePriceInputBlock {
 	public String toString() {
 		return derivativeShortName + ", "
 				+ Arrays.toString(underlyingShortNames) + ", " + callPut + ", "
-				+ strike + ", " +// realtimeAveragePrice + ", "
+				+ strike + ", " +
 				+ timeToExpiryAsPercOfYear + ", "
 				+ timeToaveragingPeriodStartAsPercOfYear + ", "
 				+ Arrays.toString(underlyingAtms) + ", "

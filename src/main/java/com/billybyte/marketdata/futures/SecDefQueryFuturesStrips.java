@@ -43,7 +43,6 @@ public class SecDefQueryFuturesStrips implements QueryInterface<String, SecDef>{
 						ones,ones);
 				return sdfcc;
 			} catch (Exception e) {
-				//			Utils.prtErr(e.getMessage());
 			}
 			return null;
 		}

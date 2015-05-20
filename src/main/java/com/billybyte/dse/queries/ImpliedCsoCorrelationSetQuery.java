@@ -18,7 +18,6 @@ import com.billybyte.mongo.MongoXml;
 import com.billybyte.queries.ComplexQueryResult;
 import com.billybyte.queries.QueryFromMap;
 
-//import com.thoughtworks.xstream.XStream;
 
 public class ImpliedCsoCorrelationSetQuery implements QueryInterface<Set<String>,Map<String,ComplexQueryResult<BigDecimal>>> {
 	public static final String REGEX_GET_STRING = "((G[234567])|(G(3B)|(4X)|(6B)))\\.FOP\\.NYMEX";

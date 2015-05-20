@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.print.DocFlavor.STRING;
 
 import com.billybyte.clientserver.ServiceBlock;
 import com.billybyte.clientserver.webserver.WebServiceComLib;
@@ -22,8 +21,6 @@ import com.thoughtworks.xstream.XStream;
  *
  */
 public class SettleSingleFromWebServ implements QueryInterface<String , ComplexQueryResult<SettlementDataInterface>>{
-//	private final static String settlePort = "9500";
-//	private final static String DEFAULT_SB_STRING = ","+settlePort+",http://127.0.0.1,settleDirectQuery";
 	private final QueryInterface<String, SettlementDataInterface> settleQuery ;
 	private final Map<String,SettlementDataInterface> cacheMap;
 /**

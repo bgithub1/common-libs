@@ -14,6 +14,7 @@ import junit.framework.TestCase;
 import Jama.Matrix;
 
 import com.billybyte.commoninterfaces.QueryInterface;
+import com.billybyte.commoninterfaces.SettlementDataInterface;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.DerivativeSetEngine;
 import com.billybyte.dse.inputs.InBlk;
@@ -24,6 +25,7 @@ import com.billybyte.dse.inputs.diotypes.DioType;
 import com.billybyte.dse.inputs.diotypes.DivDiot;
 import com.billybyte.dse.inputs.diotypes.DteSimpleDiot;
 import com.billybyte.dse.inputs.diotypes.RateDiot;
+import com.billybyte.dse.inputs.diotypes.SettlePriceDiot;
 import com.billybyte.dse.inputs.diotypes.StrikeDiot;
 import com.billybyte.dse.inputs.diotypes.VolDiot;
 import com.billybyte.dse.outputs.DerivativeReturn;
@@ -44,8 +46,10 @@ public class McVar { //extends TestCase{
 	private final DioType<BigDecimal>  dteDiot = new DteSimpleDiot();
 	private final DioType<Double>  cpDiot = new CallPutDiot();
 	private final DioType<BigDecimal>  strkDiot = new StrikeDiot();
-
-
+	// settlediot is ingored
+	static private final DioType<SettlementDataInterface> settleDiot = new SettlePriceDiot();
+	
+	
 	public static class StressInputQueryBlock {
 		private final Set<String> derivSns;
 		private final int numTrials;
@@ -237,6 +241,9 @@ public class McVar { //extends TestCase{
 		List<DioType<?>> mainDiotsPerDerivSn = dse.getModel(derivName).getMainInputTypes();
 		Map<DioType<?>, double[]> ret = new HashMap<DioType<?>, double[]>();
 		for(DioType<?> mainDiot:mainDiotsPerDerivSn){
+			if(mainDiot.compareTo(settleDiot)==0){
+				continue;
+			}
 			double[] trialValuesPerDiot = diotToShortNameToTrialValues.get(mainDiot).get(derivName);
 			ret.put(mainDiot,trialValuesPerDiot);
 		}
@@ -336,6 +343,10 @@ public class McVar { //extends TestCase{
 				new HashMap<DioType<?>, Map<String,double[]>>();
 		StressInputQueryBlock mainInpBlk = new StressInputQueryBlock(mainDiotNames, numTrials);
 		for(DioType<?> mainDiot:mainDiots){
+			// ignore settlement diot
+			if(mainDiot.compareTo(settleDiot)==0){
+				continue;
+			}
 			Map<String, double[]> trialValues = 
 					mcInputsQueryMap.get(mainDiot).get(mainInpBlk, 1, TimeUnit.SECONDS);	
 			diotToShortNameToTrialValues.put(mainDiot, trialValues);

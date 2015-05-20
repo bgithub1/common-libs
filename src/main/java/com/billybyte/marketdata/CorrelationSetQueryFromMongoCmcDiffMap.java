@@ -1,4 +1,4 @@
-package com.billybyte.dse.queries;
+package com.billybyte.marketdata;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -9,8 +9,8 @@ import java.util.TreeMap;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
+import com.billybyte.commoninterfaces.QueryInterface;
 
-import com.billybyte.marketdata.MarketDataComLib;
 import com.billybyte.queries.ComplexQueryResult;
 /**
  * get excepts a set of shortNames, creates pair names from elements of the set
@@ -18,7 +18,7 @@ import com.billybyte.queries.ComplexQueryResult;
  * @author bperlman1
  *
  */
-public class CorrelationSetQueryFromMongoCmcDiffMap extends DseInputQuery<BigDecimal> {
+public class CorrelationSetQueryFromMongoCmcDiffMap implements QueryInterface<Set<String>, Map<String, ComplexQueryResult<BigDecimal>>> {
 	private final CorrelationSetQueryFromMongoCmcDiffMapUsingPairStrings pairQuery ;
 	private final String CORR_SEP = MarketDataComLib.DEFAULT_CORRELATION_PAIR_SEPARATOR;
 
@@ -82,6 +82,7 @@ public class CorrelationSetQueryFromMongoCmcDiffMap extends DseInputQuery<BigDec
 			ret.put(reversePair(entry.getKey()),entry.getValue());
 		}
 		// end change code
+//		return this.pairQuery.get(pairSet, timeoutValue, timeUnitType);
 		return ret;
 	}
 

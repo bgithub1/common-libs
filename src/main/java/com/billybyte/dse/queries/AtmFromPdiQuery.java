@@ -20,8 +20,6 @@ public class AtmFromPdiQuery extends DseInputQuery<BigDecimal>{
 
 	final BigDecimal point5 = new BigDecimal(".5");
 	final QueryInterface<Set<String>, Map<String,PriceDisplayInterface>> innerPdiQuery ;//= 
-//			WebServiceComLib.getQueryService(
-//					new ServiceBlock(",9223,http://127.0.0.1,pdiSetQuery"), new XStream());
 
 	public AtmFromPdiQuery(QueryInterface<Set<String>, Map<String,PriceDisplayInterface>> innerPdiQuery){
 		this.innerPdiQuery = innerPdiQuery;

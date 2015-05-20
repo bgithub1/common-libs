@@ -22,6 +22,7 @@ import Jama.Matrix;
 
 import com.billybyte.commoncollections.Tuple;
 import com.billybyte.commoninterfaces.QueryInterface;
+import com.billybyte.commoninterfaces.SettlementDataInterface;
 import com.billybyte.commonstaticmethods.Dates;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.DerivativeModelInterface;
@@ -35,6 +36,7 @@ import com.billybyte.dse.inputs.diotypes.DioType;
 import com.billybyte.dse.inputs.diotypes.DivDiot;
 import com.billybyte.dse.inputs.diotypes.DteSimpleDiot;
 import com.billybyte.dse.inputs.diotypes.RateDiot;
+import com.billybyte.dse.inputs.diotypes.SettlePriceDiot;
 import com.billybyte.dse.inputs.diotypes.StrikeDiot;
 import com.billybyte.dse.inputs.diotypes.VolDiot;
 import com.billybyte.dse.models.vanilla.NormalDistribution;
@@ -61,6 +63,7 @@ public class TestCorrelatedRandoms extends TestCase{
 	private final DioType<BigDecimal>  dteDiot = new DteSimpleDiot();
 	private final DioType<Double>  cpDiot = new CallPutDiot();
 	private final DioType<BigDecimal>  strkDiot = new StrikeDiot();
+	private final DioType<SettlementDataInterface>  settleDiot = new SettlePriceDiot();
 
 	
 	private Set<String> underlyingNames;
@@ -136,6 +139,8 @@ public class TestCorrelatedRandoms extends TestCase{
 		ret.put(strkDiot,new RepeatInputQuery<BigDecimal>(strkDiot));
 		ret.put(dteDiot,new RepeatInputQuery<BigDecimal>(dteDiot));
 		ret.put(cpDiot,new RepeatInputQuery<Double>(cpDiot));
+		ret.put(cpDiot,new RepeatInputQuery<Double>(cpDiot));
+		ret.put(settleDiot,new SettleLocalInputQuery());
 		return ret;
 	}
 
@@ -619,7 +624,20 @@ public class TestCorrelatedRandoms extends TestCase{
 		
 	}
 	
-	
+	private class SettleLocalInputQuery implements QueryInterface<Set<String>,Map<String,double[]>>{
+		private final double[] retval = {1};
+		@Override
+		public Map<String, double[]> get(Set<String> key, int timeoutValue,
+				TimeUnit timeUnitType) {
+			// TODO Auto-generated method stub
+			Map<String,double[]> ret = new HashMap<String, double[]>();
+			for(String sn:key){
+				ret.put(sn, retval);
+			}
+			return ret;
+		}
+		
+	}
 	private class AtmLocalInputQuery implements QueryInterface<Set<String>,Map<String,double[]>>{
 		private final DseInputQuery<BigDecimal> corrQuery;
 		private final DseInputQuery<BigDecimal> atmQuery;

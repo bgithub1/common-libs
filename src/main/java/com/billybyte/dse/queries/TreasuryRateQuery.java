@@ -16,14 +16,10 @@ import com.billybyte.queries.ComplexQueryResult;
 import com.thoughtworks.xstream.XStream;
 
 public class TreasuryRateQuery extends DseInputQuery<BigDecimal> {
-//	private static final int DEFAULT_PORT = 9081;
-//	private static final String DEFAULT_SB_STRING = ","+DEFAULT_PORT+",http://127.0.0.1,rateService";
 	private final QueryInterface<Set<String>, Tuple<Set<String>, Map<String, BigDecimal>>> rateService;
 
 	public TreasuryRateQuery(String rateSbString){
 		this(new ServiceBlock(rateSbString));
-//		this.rateService = WebServiceComLib.getQueryService(
-//				new ServiceBlock(rateSbString/*!=null?rateSbString:DEFAULT_SB_STRING*/), new XStream());
 	}
 	
 	public TreasuryRateQuery(ServiceBlock rateSb){

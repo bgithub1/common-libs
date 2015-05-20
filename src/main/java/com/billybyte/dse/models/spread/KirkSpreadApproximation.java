@@ -16,114 +16,7 @@ public class KirkSpreadApproximation /*  extends DerivativeModel */ {
 	static final double AMT_TO_MOVE_CORRELATION = .001;
 	
 	
-//	@Override
-//	public Number[] getSensitivity(Sensitivity sensitivity, Number[] params) {
-//		Double[] ret ;
-//		switch(sensitivity){
-//		case DELTA:
-//			ret = new Double[2];
-//			double[] dRet = delta(
-//					params[0].doubleValue(), // callput
-//					params[1].doubleValue(), // F_1
-//					params[2].doubleValue(), // F_2
-//					params[3].doubleValue(), // X
-//					params[4].doubleValue(), // V_1
-//					params[5].doubleValue(), // V_2
-//					params[6].doubleValue(), // I
-//					params[7].doubleValue(), // T
-//					params[8].doubleValue()); // Corr
-//			ret[0] = dRet[0];
-//			ret[1] = dRet[1];
-//			return ret;
-//		case GAMMA:
-//			ret = new Double[2];
-//			double[] gRet = gamma(
-//					params[0].doubleValue(), // callput
-//					params[1].doubleValue(), // F_1
-//					params[2].doubleValue(), // F_2
-//					params[3].doubleValue(), // X
-//					params[4].doubleValue(), // V_1
-//					params[5].doubleValue(), // V_2
-//					params[6].doubleValue(), // I
-//					params[7].doubleValue(), // T
-//					params[8].doubleValue()); // Corr
-//			ret[0] = gRet[0];
-//			ret[1] = gRet[1];
-//			return ret;
-//		case THETA:
-//			ret = new Double[1];
-//			ret[0] = new Double(theta(
-//					params[0].doubleValue(), // callput
-//					params[1].doubleValue(), // F_1
-//					params[2].doubleValue(), // F_2
-//					params[3].doubleValue(), // X
-//					params[4].doubleValue(), // V_1
-//					params[5].doubleValue(), // V_2
-//					params[6].doubleValue(), // I
-//					params[7].doubleValue(), // T
-//					params[8].doubleValue())); // Corr
-//			return ret;
-//		case RHO:
-//			ret = new Double[1];
-//			ret[0] = new Double(rho(
-//					params[0].doubleValue(), // callput
-//					params[1].doubleValue(), // F_1
-//					params[2].doubleValue(), // F_2
-//					params[3].doubleValue(), // X
-//					params[4].doubleValue(), // V_1
-//					params[5].doubleValue(), // V_2
-//					params[6].doubleValue(), // I
-//					params[7].doubleValue(), // T
-//					params[8].doubleValue())); // Corr
-//			return ret;
-//		case VEGA:
-//			ret = new Double[2];
-//			double[] vRet = gamma(
-//					params[0].doubleValue(), // callput
-//					params[1].doubleValue(), // F_1
-//					params[2].doubleValue(), // F_2
-//					params[3].doubleValue(), // X
-//					params[4].doubleValue(), // V_1
-//					params[5].doubleValue(), // V_2
-//					params[6].doubleValue(), // I
-//					params[7].doubleValue(), // T
-//					params[8].doubleValue()); // Corr
-//			ret[0] = vRet[0];
-//			ret[1] = vRet[1];
-//			return ret;
-//		case OPTPRICE:
-//			ret = new Double[1];
-//			ret[0] = new Double(optPrice(
-//					params[0].doubleValue(), // callput
-//					params[1].doubleValue(), // F_1
-//					params[2].doubleValue(), // F_2
-//					params[3].doubleValue(), // X
-//					params[4].doubleValue(), // V_1
-//					params[5].doubleValue(), // V_2
-//					params[6].doubleValue(), // I
-//					params[7].doubleValue(), // T
-//					params[8].doubleValue())); // Corr
-//			return ret;
-//		}
-//		return null;
-//	}
 	
-/**
-Fover	F_2P/(F_2P+X)
- Va	SQRT(V_1^2 + (V_2 * Fover)^2 - 2*Corr * V_1 * V_2 *Fover)
-dt	Va * SQRT(T)
-F 	F_1/ (F_2P+X)
-d1	(LN(F) + (0.5*Va^2) * T)/dt
-d2	_d1-dt
-Nd1	NORMSDIST(_d1)
-Nd2	NORMSDIST(_d2)
-Nnd1	NORMSDIST(-_d1)
-Nnd2	NORMSDIST(-_d2)
-call	(F_2P+X)*((EXP(-I*T)*(F*_Nd1-_Nd2)))
-put	(F_2P+X)*((EXP(-I*T)*(F*_Nd1-_Nd2)))
-
- * 	
- */
 
 	/**
 	 * 
@@ -137,27 +30,6 @@ put	(F_2P+X)*((EXP(-I*T)*(F*_Nd1-_Nd2)))
 	 * @param T time as % of year (one day = 1/365)
 	 * @param Corr - Pearson's coefficient, between 0 and 1
 	 * @return price of call or put
- Fover = F_2 / (F_2 + X)
- ' Approximated volatility
- Va = Sqr(V_1 ^ 2 + (V_2 * Fover) ^ 2 - 2 * Corr * V_1 * V_2 * Fover)
- 
- dt = Va * Sqr(T)
- F = F_1 / (F_2 + X)
- 
- d1 = (Log(F) + (0.5 * Va ^ 2) * T) / dt
- d2 = d1 - dt
- Nd1 = SNorm(d1)
- Nd2 = SNorm(d2)
- NNd1 = SNorm(-d1)
- NNd2 = SNorm(-d2)
- 
- If OptionType = 1 Then
- SpreadFuturesApprox = (F_2 + X) * ((Exp(-r * T) * (F * Nd1 - Nd2)))
- Else
- SpreadFuturesApprox = (F_2 + X) * ((Exp(-r * T) * (NNd2 - F * NNd1)))
- End If
- 
-
 	 * 
 	 */
 	public static final double optPrice(

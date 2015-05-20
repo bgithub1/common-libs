@@ -29,6 +29,10 @@ public abstract class DioType<T> extends TypedMapKey<DseInputQuery<T>> implement
 		List<T> ret = new ArrayList<T>();
 		for(int i=0;i<sds.length;i++){
 			String sn = sds[i].getShortName();
+			ComplexQueryResult<T> cqr = inputsPerDiotMap.get(sn);
+			if(cqr==null || !cqr.isValidResult()){
+				ret.add(null);
+			}
 			T t = inputsPerDiotMap.get(sn).getResult();
 			ret.add(t);
 		}
@@ -40,7 +44,12 @@ public abstract class DioType<T> extends TypedMapKey<DseInputQuery<T>> implement
 		SecDef sd = inputs.getMainSd();
 		Map<String, ComplexQueryResult<T>> inputsPerDiotMap =
 				inputs.getUnderlyingDiotMap(this);
+		if(inputsPerDiotMap==null)return null;
 		String sn = sd.getShortName();
+		ComplexQueryResult<T> cqr = inputsPerDiotMap.get(sn);
+		if(cqr==null || !cqr.isValidResult()){
+			return null;
+		}
 		T t = inputsPerDiotMap.get(sn).getResult();
 		return t;
 	}

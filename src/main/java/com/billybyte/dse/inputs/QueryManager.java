@@ -43,6 +43,11 @@ public class QueryManager {
 			new TypedMap();
 	private transient final Object query_Lock = new Object();
 
+	
+	public QueryManager() {
+		super();
+	}
+
 	public QueryManager(
 			Map<DioType<?>, DseInputQuery<?>> dseInputQueryMap,
 			Map<String,QueryInterface<String, List<SecDef>>> regexSearchableUnderlyingQueries){
