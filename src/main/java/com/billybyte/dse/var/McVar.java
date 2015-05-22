@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
-import junit.framework.TestCase;
 
 import Jama.Matrix;
 
@@ -37,7 +36,7 @@ import com.billybyte.marketdata.SecDef;
 import com.billybyte.mathstuff.MathStuff;
 import com.billybyte.queries.ComplexQueryResult;
 
-public class McVar { //extends TestCase{
+public class McVar { 
 	private final DioType<BigDecimal> atmDiot = new AtmDiot();
 	private final DioType<BigDecimal>  volDiot = new VolDiot();
 	private final DioType<BigDecimal>  corrDiot = new CorrDiot();
