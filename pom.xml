@@ -24,6 +24,13 @@
     </plugins>
   </build>
 
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	
  <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -31,16 +38,7 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
- 	<dependency>
-		<groupId>com.billybyte</groupId>
-		<artifactId>collectionsstaticmethods</artifactId>
-		<version>1.0</version>
-	</dependency>
- 	<dependency>
-		<groupId>com.billybyte</groupId>
-		<artifactId>mongo-helper</artifactId>
-		<version>1.0</version>
-	</dependency>
+
 	<dependency>
 		<groupId>org.mongodb</groupId>
 		<artifactId>mongo-java-driver</artifactId>
@@ -56,16 +54,37 @@
 		<artifactId>neodatis-odb</artifactId>
 		<version>1.9.21.679</version>
 	</dependency>
-	<dependency>
-		<groupId>com.billybyte</groupId>
-		<artifactId>web-clnt-access</artifactId>
+
+
+
+ 	<dependency>
+		<groupId>com.github.bgithub1</groupId>
+		<artifactId>collectionsstaticmethods</artifactId>
 		<version>1.0</version>
-	</dependency>	
+	</dependency>
+
+ 	<dependency>
+		<groupId>com.github.bgithub1</groupId>
+		<artifactId>mongo-helper</artifactId>
+		<version>1.0</version>
+	</dependency>
+
 	<dependency>
-		<groupId>com.billybyte</groupId>
+		<groupId>com.github.bgithub1</groupId>
+		<artifactId>web-clnt-access</artifactId>
+		<version>1.1</version>
+	</dependency>
+
+
+
+
+	<dependency>
+		<groupId>com.github.bgithub1</groupId>
 		<artifactId>simple-web-service</artifactId>
 		<version>1.0</version>
 	</dependency>
+
+
 	<dependency>
 		<groupId>com.googlecode.combinatoricslib</groupId>
 		<artifactId>combinatoricslib</artifactId>

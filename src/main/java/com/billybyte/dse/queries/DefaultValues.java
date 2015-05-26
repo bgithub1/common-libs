@@ -29,11 +29,11 @@ public class DefaultValues {
 	public static int DEFAULT_MONGO_PORT = 27017;
 	public static String DEFAULT_MONGO_CORRELATION_DB_NAME = MongoDatabaseNames.CORRELATIONS_DB;
 	public static String DEFAULT_MONGO_CORRELATION_COLLECTION_NAME = MongoDatabaseNames.CORRELATIONS_CL;
-	public static final String DEFAULT_CMCDIFF_PATH = 
-			"../PortfolioData/CorrelationData/CommoditiesCorrelations/AllCommodities/perMonthCummCorr.csv";
-	public static final String DEFAULT_COMMODPRODCORR_PATH = 
-			"../PortfolioData/CorrelationData/CommoditiesCorrelations/AllCommodities/commProdCorrelations.csv";
-	public static final String DEFAULT_CSO_IMPLIED_CORRELATIONS_CSV_PATH = 
-			"../PortfolioData/CorrelationData/CommoditiesCorrelations/impliedCSOCorrelationsMap.csv";
+//	public static final String DEFAULT_CMCDIFF_PATH = 
+//			"../PortfolioData/CorrelationData/CommoditiesCorrelations/AllCommodities/perMonthCummCorr.csv";
+//	public static final String DEFAULT_COMMODPRODCORR_PATH = 
+//			"../PortfolioData/CorrelationData/CommoditiesCorrelations/AllCommodities/commProdCorrelations.csv";
+//	public static final String DEFAULT_CSO_IMPLIED_CORRELATIONS_CSV_PATH = 
+//			"../PortfolioData/CorrelationData/CommoditiesCorrelations/impliedCSOCorrelationsMap.csv";
 
 }
