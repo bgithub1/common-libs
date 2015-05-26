@@ -1,3 +1,2 @@
-export MAVEN_OPTS='-Xmx1500m -Xms300m'
-mvn exec:java -Dexec.mainClass="com.billybyte.clientserver.webserver.RunTestWebServiceServer" -Dexec.args="portOfService=7000 urlOfService=http://127.0.0.1 nameOfService=TestService"
+$1mvn exec:java -Dexec.mainClass="com.billybyte.clientserver.webserver.RunTestWebServiceServer" -Dexec.args="portOfService=7000 urlOfService=http://127.0.0.1 nameOfService=TestService"
 
