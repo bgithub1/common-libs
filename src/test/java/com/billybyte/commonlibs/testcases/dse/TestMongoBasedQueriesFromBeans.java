@@ -98,10 +98,18 @@ public class TestMongoBasedQueriesFromBeans  extends TestCase{
 					new ArrayList<DioType<?>>(dioMapKeys), evaluationDate);
 			List<BigDecimal> atmList = inBlk.getUnderLyingInputList(new AtmDiot());
 			Utils.prt(sn+": atms: ");
-			CollectionsStaticMethods.prtListItems(atmList);
+			if(atmList==null){
+				Utils.prt("no atms for :" + sn);
+			}else{
+				CollectionsStaticMethods.prtListItems(atmList);
+			}
 
 			BigDecimal vol = inBlk.getMainInputList(new VolDiotForTest());
-			Utils.prt(sn+": vol: "+vol.toString());
+			if(vol==null){
+				Utils.prt("no vol for :" + sn);
+			}else{
+				Utils.prt(sn+": vol: "+vol.toString());
+			}
 
 			BigDecimal strike = inBlk.getMainInputList(new StrikeDiotForTest());
 			Utils.prt(sn+": strikes=: " + strike);
