@@ -1,0 +1,22 @@
+<map>
+  <entry>
+    <string>NYMEX</string>
+    <string>NYM</string>
+  </entry>
+  <entry>
+    <string>ECBOT</string>
+    <string>CBT</string>
+  </entry>
+  <entry>
+    <string>GLOBEX</string>
+    <string>CME</string>
+  </entry>
+  <entry>
+    <string>COMEX</string>
+    <string>CMX</string>
+  </entry>
+  <entry>
+    <string>NYBOT</string>
+    <string>NYB</string>
+  </entry>
+</map>
