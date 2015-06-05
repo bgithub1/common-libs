@@ -46,13 +46,15 @@
     </resources>
   </build>
 
+
 	<repositories>
 		<repository>
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
 		</repository>
 	</repositories>
-	
+
+
  <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -77,8 +79,16 @@
 		<version>1.9.21.679</version>
 	</dependency>
 
-
-
+	<dependency>
+		<groupId>oauth.signpost</groupId>
+		<artifactId>signpost-core</artifactId>
+		<version>1.2.1.2</version>
+	</dependency>
+	<dependency>
+	    <groupId>oauth.signpost</groupId>
+	    <artifactId>signpost-commonshttp4</artifactId>
+	    <version>1.2.1.2</version>
+	</dependency>
  	<dependency>
 	 	<groupId>com.github.bgithub1</groupId>
 		<artifactId>collectionsstaticmethods</artifactId>
