@@ -26,7 +26,8 @@ import com.billybyte.marketdata.SecEnums.SecSymbolType;
 public class GoogleOptionChainQuery implements QueryInterface<String, TreeMap<Long,TreeMap<String,TreeMap<BigDecimal, SecDef>>>>{
 	private static final int BASE_YEAR=2000;
 	private final String OPTION_CHAIN = 
-			"http://www.google.com/finance/option_chain?q=STOCKNAME&expm=MM&expy=YYYY&output=json";
+//			"http://www.google.com/finance/option_chain?q=STOCKNAME&expm=MM&expy=YYYY&output=json";
+			"http://www.google.com/finance/option_chain?q=STOCKNAME&expy=YYYY&output=json";
 	private final Calendar evaluationDate;
 	private final int daysToAddFromEvaluationDate;
 	private final QueryInterface<String, SecDef> sdQuery;
@@ -66,6 +67,8 @@ public class GoogleOptionChainQuery implements QueryInterface<String, TreeMap<Lo
 		String symbol = key.split("\\"+MarketDataComLib.DEFAULT_SHORTNAME_SEPARATOR)[0];
 		Calendar firstOptionDate =
 				Dates.addToCalendar(evaluationDate, daysToAddFromEvaluationDate, Calendar.DAY_OF_YEAR, true);
+		long firstOptionYyyyMmDd = 
+				Dates.getYyyyMmDdFromCalendar(firstOptionDate);
 		int year = firstOptionDate.get(Calendar.YEAR);
 		int month = firstOptionDate.get(Calendar.MONTH)+1;
 		// get regex by looping through months
@@ -122,6 +125,10 @@ public class GoogleOptionChainQuery implements QueryInterface<String, TreeMap<Lo
 			shortName += sp+ys+ms+ds+sp+right+sp+dfTwoDec.format(strike);
 			SecDef sd = sdQuery.get(shortName, 1, TimeUnit.SECONDS);
 			long expiry = sd.getExpiryYear()*100*100 + sd.getExpiryMonth()*100+sd.getExpiryDay();
+
+			// check to see if we want to include this expiry
+			if(expiry<firstOptionYyyyMmDd)continue;
+			
 			if(!ret.containsKey(expiry)){
 				TreeMap<String,TreeMap<BigDecimal, SecDef>> newTm = new TreeMap<String,TreeMap<BigDecimal, SecDef>>();
 				ret.put(expiry, newTm);
@@ -161,7 +168,7 @@ public class GoogleOptionChainQuery implements QueryInterface<String, TreeMap<Lo
 	public static void main(String[] args) {
 		GoogleOptionChainQuery chainQuery = 
 				new GoogleOptionChainQuery(Calendar.getInstance(),
-						30, new SecDefQueryAllMarkets());
+						60, new SecDefQueryAllMarkets());
 		String[] sns = {
 				"IBM.STK.SMART",
 				"AAPL.STK.SMART",

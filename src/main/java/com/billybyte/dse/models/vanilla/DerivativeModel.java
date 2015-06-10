@@ -74,17 +74,17 @@ public abstract class DerivativeModel {
 	    boolean done=false;
 	    int count=0;
 	    Number[] localParams = Arrays.copyOf(params,params.length);
-	    localParams[indexOfVolParam] = sigmanow;
+	    
 	    while(!done){
-	    	
+	    	localParams[indexOfVolParam] = sigmanow;
 	        fval = model.getSensitivity(Sensitivity.OPTPRICE, localParams)[0].doubleValue() - optprice;
 	        fdashval = model.getSensitivity(Sensitivity.VEGA, localParams)[indexOfVolReturn].doubleValue();
-	        sigmanow = sigmanow - (fval / fdashval);
+	        sigmanow = sigmanow - (fval / fdashval)*.01;
 	        if(Math.abs(fval) <= atol){
 	        	done=true;
 	        }
 	        count++;
-	        if(count>15){
+	        if(count>30){
 	        	done=true;
 	        }
 	    }

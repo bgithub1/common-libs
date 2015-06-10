@@ -46,10 +46,18 @@ public abstract class  YahooFinanceCsvAbstractGenericQuery<V> implements QueryIn
 	private static String FIELD_REPLACE_STRING = "FIELDS";
 	
 	
-	public YahooFinanceCsvAbstractGenericQuery(Map<String,String> exchMap, Map<String,String> prodAssocMap,String[] yahooFields){
+	public YahooFinanceCsvAbstractGenericQuery(
+			Map<String,String> exchMap, 
+			Map<String,String> prodAssocMap,
+			String[] yahooFields){
 		this.exchMap = exchMap;
 		this.prodAssocMap = prodAssocMap;
 		this.YfFields = yahooFields;
+	}
+
+	@SuppressWarnings("unchecked")
+	public YahooFinanceCsvAbstractGenericQuery(String[] yahooFields){
+		this((Map<String,String>)Utils.getXmlData(Map.class,YahooFinanceCsvPdiWithFutQuery.class,"yahooExchangeMap.xml"),new HashMap<String,String>(),yahooFields);
 	}
 	
 	@Override

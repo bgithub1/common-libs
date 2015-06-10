@@ -362,5 +362,29 @@ public class BawAmerican extends DerivativeModel{
 			return diff;
 
 		}
+		
+		public static void main(String[] args) {
+			BawAmerican model = new BawAmerican();
+			//call,atm,strike,dte,vol,rate,div
+			double vol = .51;
+			Number[] params = {0,60,70,.3,vol,.001,.001};
+			Number[] ret = model.getSensitivity(Sensitivity.OPTPRICE, params);
+			for(int i=0;i<ret.length;i++){
+				System.out.println(ret[i]);				
+			}
+			double impVol = DerivativeModel.impliedVol(0, params, 4, 0, ret[0].doubleValue(), model,vol-.2);
+			System.out.println(impVol);
+
+			Number[] ret2 = model.getSensitivity(Sensitivity.VEGA, params);
+			for(int i=0;i<ret.length;i++){
+				System.out.println(ret2[i]);				
+			}
+			
+			Number[] params2 = {0,60,70,.3,vol+.01,.001,.001};
+			Number[] ret3 = model.getSensitivity(Sensitivity.OPTPRICE, params2);			
+			for(int i=0;i<ret.length;i++){
+				System.out.println(ret3[i]);				
+			}
+		}
 
 }

@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.marketdata.SecDef;
+import com.billybyte.marketdata.SecDefQueryAllMarkets;
 import com.billybyte.queries.ComplexQueryResult;
 
 public class TreasuryRateQueryFromTreasuryRateSingle extends DseInputQuery<BigDecimal> {
@@ -30,7 +31,9 @@ public class TreasuryRateQueryFromTreasuryRateSingle extends DseInputQuery<BigDe
 		
 	}
 	
-	
+	public TreasuryRateQueryFromTreasuryRateSingle(){
+		single = new TreasuryRateSingleQuery();
+	}
 
 	
 	@Override

@@ -13,6 +13,11 @@ import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.commonstaticmethods.CollectionsStaticMethods;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.models.vanilla.AnalyticFormulas;
+import com.billybyte.dse.models.vanilla.BawAmerican;
+import com.billybyte.dse.models.vanilla.DerivativeModel;
+import com.billybyte.dse.models.vanilla.DerivativeModel.Sensitivity;
+import com.billybyte.dse.queries.DivDseInputQuery;
+import com.billybyte.dse.queries.TreasuryRateQueryFromTreasuryRateSingle;
 import com.billybyte.marketdata.PriceDisplayInterface;
 import com.billybyte.marketdata.SecDef;
 import com.billybyte.marketdata.SecDefQueryAllMarkets;
@@ -27,7 +32,8 @@ import com.billybyte.queries.ComplexQueryResult;
  *
  */
 public class YahooAtmVolCqrQueryForStks implements QueryInterface<Set<String>, Map<String, ComplexQueryResult<BigDecimal>>>{
-	
+	private final BawAmerican model = new BawAmerican();
+	private final double seedVol = .2; 
 	private final QueryInterface<String, SecDef> sdQuery = new SecDefQueryAllMarkets();
 	private final double daysInYear;
 	private final GoogleOptionChainQuery chainQuery;
@@ -35,7 +41,13 @@ public class YahooAtmVolCqrQueryForStks implements QueryInterface<Set<String>, M
 	
 	private final BigDecimal maxPercDiffBtwSettleAndOpStrikeToAllow;
 	private final QueryInterface<Set<String>, Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery;
+	private final QueryInterface<Set<String>, 
+		Map<String, ComplexQueryResult<BigDecimal>>> rateQuery;
+	private final QueryInterface<Set<String>, 
+		Map<String, ComplexQueryResult<BigDecimal>>> divQuery; 
 	private final Calendar evalDate;
+	
+	
 	
 	/**
 	 * 
@@ -46,26 +58,58 @@ public class YahooAtmVolCqrQueryForStks implements QueryInterface<Set<String>, M
 	public YahooAtmVolCqrQueryForStks(
 			BigDecimal maxPercDiffBtwSettleAndOpStrikeToAllow,
 			QueryInterface<Set<String>, 
-			Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
-			Calendar evalDate) {
+				Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
+			QueryInterface<Set<String>, 
+				Map<String, ComplexQueryResult<BigDecimal>>> rateQuery,
+				QueryInterface<Set<String>, 
+				Map<String, ComplexQueryResult<BigDecimal>>> divQuery,
+				Calendar evalDate) {
+
 		super();
 		this.maxPercDiffBtwSettleAndOpStrikeToAllow = maxPercDiffBtwSettleAndOpStrikeToAllow;
-		this.pdiQuery = pdiQuery;
+		if(pdiQuery==null){
+			this.pdiQuery = 
+					new YahooCombinedStkOptPdiSetCqrRetQuery();
+		}else{
+			this.pdiQuery = pdiQuery;
+		}
+		if(rateQuery==null){
+			this.rateQuery = new TreasuryRateQueryFromTreasuryRateSingle();
+		}else{
+			this.rateQuery = rateQuery;
+		}
+		if(divQuery==null){
+			this.divQuery = new DivDseInputQuery();
+		}else{
+			this.divQuery = divQuery;
+		}
 		this.evalDate = evalDate;
 		this.chainQuery = 
-				 new GoogleOptionChainQuery(evalDate, 30, sdQuery);
+				 new GoogleOptionChainQuery(evalDate, 60, sdQuery);
 		this.daysInYear = 365;
 	}
 	
+	
+	public YahooAtmVolCqrQueryForStks(){
+		this(BigDecimal.ONE,
+				new YahooCombinedStkOptPdiSetCqrRetQuery(),
+				null,null,Calendar.getInstance());
+		
+	}
 	
 	@Override
 	public Map<String, ComplexQueryResult<BigDecimal>> get(Set<String> keySet,
 			int timeoutValue, TimeUnit timeUnitType) {
 		
-		// create return object
+		// Create return object
 		Map<String, ComplexQueryResult<BigDecimal>> ret = new HashMap<String, ComplexQueryResult<BigDecimal>>();
+		// Get rates and div rates
+		Map<String, ComplexQueryResult<BigDecimal>> ratesMap = 
+				rateQuery.get(keySet, timeoutValue, timeUnitType);
+		Map<String, ComplexQueryResult<BigDecimal>> divsMap = 
+				divQuery.get(keySet, timeoutValue, timeUnitType);
 		
-		// get settle pdi's
+		// Get settle pdi's
 		Map<String, ComplexQueryResult<PriceDisplayInterface>> atmPdis = 
 				pdiQuery.get(keySet, 10, TimeUnit.SECONDS);
 		
@@ -116,7 +160,7 @@ public class YahooAtmVolCqrQueryForStks implements QueryInterface<Set<String>, M
 		
 		// Get implied vols here
 		Map<String,BigDecimal> volMap = 
-				getImpliedVolPerUnderlying(atmPdis, derivPdis, derivToUnderMap);
+				getImpliedVolPerUnderlying(atmPdis, derivPdis, ratesMap,divsMap,derivToUnderMap);
 		// Check for null returns of implied vols.
 		for(Entry<String, BigDecimal> entry:volMap.entrySet()){
 			String underSn = entry.getKey();
@@ -143,7 +187,7 @@ public class YahooAtmVolCqrQueryForStks implements QueryInterface<Set<String>, M
 		
 		// Get option chains
 		TreeMap<Long, TreeMap<String,TreeMap<BigDecimal, SecDef>>> chains = 
-				chainQuery.get(shortName, 20, TimeUnit.SECONDS);
+				chainQuery.get(shortName, 40, TimeUnit.SECONDS);
 		if(chains==null || chains.size()<1)return null;
 		
 		/// You've got options chains.  Now get the calls of the one with the lastest expiry
@@ -175,6 +219,8 @@ public class YahooAtmVolCqrQueryForStks implements QueryInterface<Set<String>, M
 	private final Map<String,BigDecimal> getImpliedVolPerUnderlying(
 			Map<String, ComplexQueryResult<PriceDisplayInterface>> underlyingPdiMap,
 			Map<String, ComplexQueryResult<PriceDisplayInterface>> optionPdiMap,
+			Map<String, ComplexQueryResult<BigDecimal>> ratesMap,
+			Map<String, ComplexQueryResult<BigDecimal>> divsMap,
 			Map<String,String> optToUnderlyingSnMap){
 		Map<String,ImplieDVolInputs> impliedInputsMap = new HashMap<String, YahooAtmVolCqrQueryForStks.ImplieDVolInputs>();
 		for(ComplexQueryResult<PriceDisplayInterface> optCqr : optionPdiMap.values()){
@@ -199,31 +245,58 @@ public class YahooAtmVolCqrQueryForStks implements QueryInterface<Set<String>, M
 			SecDef optSd = sdQuery.get(optPdi.getShortName(),1, TimeUnit.SECONDS);
 			long dte = MarketDataComLib.getDaysToExpirationFromSd(evalDate, optSd);
 			double strike = optSd.getStrike().doubleValue();
+			ComplexQueryResult<BigDecimal> rateCqr = ratesMap.get(underSn);
+			double rate = Double.NaN;
+			if(rateCqr!=null && rateCqr.isValidResult()){
+				rate = rateCqr.getResult().doubleValue();
+			}
+			ComplexQueryResult<BigDecimal> divCqr = divsMap.get(underSn);
+			double div = Double.NaN;
+			if(divCqr!=null && divCqr.isValidResult()){
+				div = divCqr.getResult().doubleValue();
+			}
 			ImplieDVolInputs impIns = 
-					new ImplieDVolInputs(underSn, optSn, underPrice, dte, strike, optPrice);
+					new ImplieDVolInputs(underSn, optSn, optSd.getRight(), underPrice, strike, dte,rate,div, optPrice);
 			impliedInputsMap.put(underSn, impIns);
 		}
 
 		Map<String,BigDecimal> ret = new HashMap<String, BigDecimal>();
 		for(ImplieDVolInputs impIn : impliedInputsMap.values()){
-			BigDecimal vol = impliedVol(impIn.atm,
-				impIn.dte/daysInYear,impIn.strike,impIn.optPrice);
+			double callIsZero = 0;
+			if(impIn.right.compareTo("C")!=0){
+				callIsZero = 1;
+			}
+			double dteAsPercOfYear = impIn.dte/daysInYear;
+			BigDecimal vol = impliedVol(callIsZero,impIn.atm,impIn.strike,seedVol,
+					dteAsPercOfYear,impIn.rate,impIn.div,impIn.optPrice);
 			ret.put(impIn.underlyingSn, vol);
 		}
 		return ret;	
 	}
 	
 	
-	private final BigDecimal impliedVol(double atm,double dte,double strike,
+	private final BigDecimal impliedVol(
+			double callIsZero,
+			double atm,
+			double strike,
+			double seedVol,
+			double dte,
+			double rate,
+			double div,
 			double optPrice){
-		double vol = AnalyticFormulas.blackScholesOptionImpliedVolatility(
-				atm,
-				dte,
-				strike,
-				1,
-				optPrice);
-
-		return new BigDecimal(vol);
+		double iopt  = callIsZero !=0 ? 1 : 0; // make option type param default to 1 for anything that's not zero (call)
+		Number[] params = {iopt,atm,strike,dte,seedVol,rate,div};
+		double impVol = DerivativeModel.impliedVol(0, params, 4, 0, optPrice, model,seedVol);
+		return new BigDecimal(impVol);
+		
+//		double vol = AnalyticFormulas.blackScholesOptionImpliedVolatility(
+//				atm,
+//				dte,
+//				strike,
+//				1,
+//				optPrice);
+//
+//		return new BigDecimal(vol);
 	}
 	
 	
@@ -231,30 +304,34 @@ public class YahooAtmVolCqrQueryForStks implements QueryInterface<Set<String>, M
 		String underlyingSn;
 		@SuppressWarnings("unused")
 		String closestOptionSn;
+		String right;
 		double atm;
-		double dte;
 		double strike;
+		double dte;
+		double rate=.01;
+		double div=.01;
 		double optPrice;
 		private ImplieDVolInputs(String underlyingSn, String closestOptionSn,
-				double atm, double dte, double strike, double optPrice) {
+				String right,double atm, double strike,double dte, 
+				double rate, double div,double optPrice) {
 			super();
 			this.underlyingSn = underlyingSn;
 			this.closestOptionSn = closestOptionSn;
+			this.right = right;
 			this.atm = atm;
-			this.dte = dte;
 			this.strike = strike;
+			this.rate = rate;
+			this.div = div;
+			this.dte = dte;
 			this.optPrice = optPrice;
 		}
 		
 	}
 
 	public static void main(String[] args) {
-		YahooCombinedStkOptPdiSetCqrRetQuery pdiQuery = 
-				new YahooCombinedStkOptPdiSetCqrRetQuery();
 		
 		YahooAtmVolCqrQueryForStks q = 
-				new YahooAtmVolCqrQueryForStks(
-						BigDecimal.ONE, pdiQuery, Calendar.getInstance());
+				new YahooAtmVolCqrQueryForStks();
 		String[] stkArray = 
 			{
 				"IBM.STK.SMART",
