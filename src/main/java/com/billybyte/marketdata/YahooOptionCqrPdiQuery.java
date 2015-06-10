@@ -85,33 +85,6 @@ public class YahooOptionCqrPdiQuery implements QueryInterface<Set<String>,Map<St
 					pclose=pclosePrice;
 				}
 				
-//				String regex = "((l10)|([bal]00))_" +  yahooSn.toLowerCase() + "\">[0-9]{1,}\\.[0-9]{0,}</span>" ;
-//				List<String> l1 = RegexMethods.getRegexMatches(regex, s);
-//				
-//				if(l1!=null & l1.size()>0){
-//					List<BigDecimal> bidasklastclose = new ArrayList<BigDecimal>();
-//					for(String s2 : l1){
-//						List<String> l2 = RegexMethods.getRegexMatches(DEC_STRING,s2);
-//						BigDecimal value = new BigDecimal(l2.get(0));
-//						bidasklastclose.add(value);
-//					}
-//					
-//					String closestring1 = RegexMethods.getRegexMatches(PREVCLOSE_STRING,s).get(0);
-//					String closestring2 = RegexMethods.getRegexMatches(DEC_STRING,closestring1 ).get(0);
-//					
-//					BigDecimal close = new BigDecimal(closestring2);
-//					PriceDisplayImmute pdi = 
-//							new PriceDisplayImmute(
-//									sd.getShortName(), 
-//									bidasklastclose.get(0),1,
-//									bidasklastclose.get(1),1,
-//									bidasklastclose.get(2),1, 
-//									close,Dates.getToday() );
-//					ComplexQueryResult<PriceDisplayInterface> cqr = 
-//							new ComplexQueryResult<PriceDisplayInterface>(null, pdi);
-//					ret.put(key, cqr);
-//							
-//				}
 			}
 			
 			// now create cqr to return to user
