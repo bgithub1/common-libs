@@ -29,7 +29,7 @@ import com.billybyte.queries.ComplexQueryResult;
  * @author bperlman1
  *
  */
-public class YahooOptionVolCqrQueryForStks implements QueryInterface<Set<String>, Map<String, ComplexQueryResult<BigDecimal>>>{
+public class YahooOptionVolCqrQueryForOpts implements QueryInterface<Set<String>, Map<String, ComplexQueryResult<BigDecimal>>>{
 	private final BawAmerican model = new BawAmerican();
 	private final double seedVol = .2; 
 	private final QueryInterface<String, SecDef> sdQuery = new SecDefQueryAllMarkets();
@@ -53,7 +53,7 @@ public class YahooOptionVolCqrQueryForStks implements QueryInterface<Set<String>
 	 * @param pdiQuery
 	 * @param evalDate
 	 */
-	public YahooOptionVolCqrQueryForStks(
+	public YahooOptionVolCqrQueryForOpts(
 			QueryInterface<Set<String>, 
 				Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
 			QueryInterface<Set<String>, 
@@ -84,7 +84,7 @@ public class YahooOptionVolCqrQueryForStks implements QueryInterface<Set<String>
 	}
 	
 	
-	public YahooOptionVolCqrQueryForStks(){
+	public YahooOptionVolCqrQueryForOpts(){
 		this(
 				new YahooCombinedStkOptPdiSetCqrRetQuery(),
 				null,null,Calendar.getInstance());
@@ -240,8 +240,8 @@ public class YahooOptionVolCqrQueryForStks implements QueryInterface<Set<String>
 
 	public static void main(String[] args) {
 		
-		YahooOptionVolCqrQueryForStks q = 
-				new YahooOptionVolCqrQueryForStks();
+		YahooOptionVolCqrQueryForOpts q = 
+				new YahooOptionVolCqrQueryForOpts();
 		Set<String> snSet = new HashSet<String>();
 		snSet.add("IBM.OPT.SMART.USD.20170120.C.170.00");
 		snSet.add("IBM.OPT.SMART.USD.20170120.C.200.00");

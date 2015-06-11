@@ -203,10 +203,16 @@ public class BawAmerican extends DerivativeModel{
 	      a = 2 * r / pow(v , 2);
 	      h = 1 - exp(-r * T);
 	      L2 = (-b + sqrt(pow(b , 2) + 4 * a / h)) *0.5;
-	    	      
+	    	
+	      int iterCount =0;
 	      while(true){
 	          IterationCountE = 0.000000001;
     	      while( (Su - Sl) > IterationCountE){
+    	    	iterCount +=1;
+    	    	if(iterCount>100){
+    	    		// limit the number of loops
+    	    		return(Sx);
+    	    	}
     	        Sx = (Su + Sl) / 2;
     	        
     	        d1 = (log(Sx / X) + (r - D + pow(v , 2) * 0.5) * T) / dt;
@@ -250,10 +256,17 @@ public class BawAmerican extends DerivativeModel{
 	      a = 2 * r / pow(v , 2);
 	      h = 1 - exp(-r * T);
 	      L1 = (-(b - 1) - sqrt(pow((b - 1) , 2) + 4 * a / h)) * 0.5;
-	 
+
+	      int iterCount =0;
+
           IterationCountE = 0.000000001;
 	      while( (Su - Sl) > IterationCountE){
 	        Sx = (Su + Sl) / 2;
+   	    	iterCount +=1;
+	    	if(iterCount>100){
+	    		// limit the number of loops
+	    		return(Sx);
+	    	}
 	        
 	        d1 = (log(Sx / X) + (r - D + pow(v , 2) * 0.5) * T) / dt;
 	        P1 =   X - Sx;

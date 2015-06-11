@@ -240,6 +240,11 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 					vib.callput, vib.atm, vib.strike, vib.dte, 
 					vib.vol, vib.rate, vib.div, vib.others);
 		}
+		if(sensitivityId.getString().compareTo(RHO)==0){
+			value =  getVanillaRho(
+					vib.callput, vib.atm, vib.strike, vib.dte, 
+					vib.vol, vib.rate, vib.div, vib.others);
+		}
 
 // ************ implied vol *****************		
 		// implied vol?
