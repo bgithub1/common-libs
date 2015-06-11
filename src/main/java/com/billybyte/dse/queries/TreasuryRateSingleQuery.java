@@ -118,8 +118,17 @@ public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQue
 		String month = new Integer(evalDate.get(Calendar.MONTH)+1).toString();
 		String year = new Integer(evalDate.get(Calendar.YEAR)).toString();
 		String treasuryUrl = TREASURY_XML_URL.replace("MM", month).replace("YYYY", year);
-		List<String[]> pseudoCsv = 
-				Utils.getCSVData(treasuryUrl);
+		List<String[]> pseudoCsv =  null;
+		// you might have to switch the date around, b/c sometimes the site fails
+		try {
+			pseudoCsv = Utils.getCSVData(treasuryUrl);
+		} catch (Exception e) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e1) {
+			}
+			pseudoCsv = Utils.getCSVData(treasuryUrl);
+		}
 		// combine lines
 		String allLines = "";
 		for(String[] line:pseudoCsv){

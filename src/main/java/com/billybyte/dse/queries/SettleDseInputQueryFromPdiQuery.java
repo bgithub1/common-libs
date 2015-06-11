@@ -1,10 +1,12 @@
 package com.billybyte.dse.queries;
 
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
 
 import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.commoninterfaces.SettlementDataInterface;
+import com.billybyte.commonstaticmethods.Dates;
 import com.billybyte.marketdata.PriceDisplayInterface;
 import com.billybyte.marketdata.SecDef;
 import com.billybyte.marketdata.SettlementDataImmute;
@@ -30,6 +32,13 @@ public class SettleDseInputQueryFromPdiQuery extends DseInputQueryFromPdiQuery<S
 			QueryInterface<Set<String>, Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
 			long evalDate) {
 		super(sdQuery, pdiQuery, evalDate);
+	}
+
+	public SettleDseInputQueryFromPdiQuery(
+			QueryInterface<String, SecDef> sdQuery,
+			QueryInterface<Set<String>, Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
+			Calendar evalDate) {
+		super(sdQuery, pdiQuery, Dates.getYyyyMmDdFromCalendar(evalDate));
 	}
 
 	@Override

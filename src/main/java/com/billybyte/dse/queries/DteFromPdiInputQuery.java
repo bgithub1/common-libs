@@ -34,7 +34,7 @@ public class DteFromPdiInputQuery extends DseInputQueryFromPdiQuery<BigDecimal>{
 			QueryInterface<Set<String>, Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
 			Calendar evalDate) {
 		this(sdQuery,pdiQuery,
-				Dates.getYyyyMmDdFromCalendar(evalDate));
+				evalDate!=null ? Dates.getYyyyMmDdFromCalendar(evalDate) : Dates.getYyyyMmDdFromCalendar(Calendar.getInstance()));
 	}
 
 	@Override

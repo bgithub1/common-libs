@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+<!-- !!!! first do QueryManager --> 
+  	<bean id="evalDate" class="java.util.GregorianCalendar">
+	</bean> 	 
+
+	<bean id="sdQuery" class="com.billybyte.marketdata.SecDefQueryAllMarkets"/>
+
+	<bean id="yahooPdiQuery" class="com.billybyte.marketdata.YahooCombinedStkOptPdiSetCqrRetQuery">
+	</bean>
+
+	<bean id="atmQuery" class="com.billybyte.dse.queries.AtmFromPdiCqrQuery">
+		<constructor-arg>
+			<ref local="sdQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="yahooPdiQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="evalDate"/>
+		</constructor-arg>
+	</bean>
+
+	<bean id="yahooHistVolQuery" class="com.billybyte.marketdata.YahooHistoricalVolCqrQuery">
+	</bean>
+
+	<bean id="yahooOptionVolQuery" class="com.billybyte.marketdata.YahooOptionVolCqrQueryForOpts">
+	</bean>
+
+	<bean id="volQuery" class="com.billybyte.dse.queries.VolDseInputQueryForStksFromYahoo">
+		<constructor-arg>
+			<null/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="yahooHistVolQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="yahooOptionVolQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="sdQuery"/> 
+		</constructor-arg>
+	</bean>
+	
+	<bean id="dteQuery" class="com.billybyte.dse.queries.DteFromPdiInputQuery">
+		<constructor-arg>
+			<ref local="sdQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="yahooPdiQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="evalDate"/>
+		</constructor-arg>
+	</bean>
+		
+	<bean id="strikeQuery" class="com.billybyte.dse.queries.StrikeDseInputQuery">
+		<constructor-arg>
+			<ref local="sdQuery"/> 
+		</constructor-arg>
+	</bean>
+		
+		
+	<bean id="rateQuery" class="com.billybyte.dse.queries.TreasuryRateQueryFromTreasuryRateSingle">
+	</bean>
+						
+	<bean id="yahooDivYieldQuery" class="com.billybyte.marketdata.YahooFinanceDivYieldQuery">
+	</bean>
+	
+	<bean id="divQuery" class="com.billybyte.dse.queries.DivDseInputQuery">
+		<constructor-arg>
+			<ref local="rateQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="yahooDivYieldQuery"/> 
+		</constructor-arg>
+	</bean>
+
+	<bean id="settleQuery" class="com.billybyte.dse.queries.SettleDseInputQueryFromPdiQuery">
+		<constructor-arg>
+			<ref local="sdQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="yahooPdiQuery"/> 
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="evalDate"/>
+		</constructor-arg>
+	</bean>
+
+
+
+	<bean id="cpQuery" class="com.billybyte.dse.queries.CallPutInputQuery" > 
+		<constructor-arg>
+			<ref local="sdQuery"/>
+		</constructor-arg>
+	</bean> 
+
+
+	
+
+	<bean id="atmDiot" class="com.billybyte.dse.inputs.diotypes.AtmDiot" > 
+	</bean> 
+	<bean id="volDiot" class="com.billybyte.dse.inputs.diotypes.VolDiot" > 
+	</bean> 
+	<bean id="strikeDiot" class="com.billybyte.dse.inputs.diotypes.StrikeDiot" > 
+	</bean> 
+	<bean id="divDiot" class="com.billybyte.dse.inputs.diotypes.DivDiot" > 
+	</bean> 
+	<bean id="dteDiot" class="com.billybyte.dse.inputs.diotypes.DteSimpleDiot" > 
+	</bean> 
+	<bean id="rateDiot" class="com.billybyte.dse.inputs.diotypes.RateDiot" > 
+	</bean> 
+	<bean id="cpDiot" class="com.billybyte.dse.inputs.diotypes.CallPutDiot" > 
+	</bean> 
+	<bean id="settlePriceDiot" class="com.billybyte.dse.inputs.diotypes.SettlePriceDiot" > 
+	</bean> 
+
+	<util:map id="queryMap">
+			<entry key-ref="atmDiot" value-ref="atmQuery"/>
+			<entry key-ref="volDiot" value-ref="volQuery"/>
+			<entry key-ref="strikeDiot" value-ref="strikeQuery"/>
+			<entry key-ref="rateDiot" value-ref="rateQuery"/>
+			<entry key-ref="divDiot" value-ref="divQuery"/>
+			<entry key-ref="dteDiot" value-ref="dteQuery"/>
+			<entry key-ref="cpDiot" value-ref="cpQuery"/>
+			<entry key-ref="settlePriceDiot" value-ref="settleQuery"/>
+	</util:map>
+
+ 
+	<bean id="baseUnderlyingQuery" class="com.billybyte.dse.queries.BaseUnderlyingSecDefQuery" > 
+		<constructor-arg>
+			<ref local="sdQuery"/>
+		</constructor-arg>
+	</bean> 
+
+
+	<util:map id="secDefQueryMap">
+			<entry key="((OPT)|(STK))" value-ref="baseUnderlyingQuery"/>
+	</util:map>
+
+	<bean id="queryManager" class="com.billybyte.dse.inputs.QueryManager" > 
+		<constructor-arg>
+			<ref local="queryMap"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="secDefQueryMap"/>
+		</constructor-arg>
+	</bean> 
+ <!-- end QueryManager -->   
+ 
+ 
+ 
+ 
+ <!-- Now create the DerivativeSetEngine -->
+	<bean id="vanBawModel" class="com.billybyte.dse.models.vanilla.VanOptBawAmerican" > 
+		<constructor-arg>
+			<ref local="evalDate"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="volDiot"/>
+		</constructor-arg>
+	</bean> 
+
+	<bean id="vanUnderlyingModel" class="com.billybyte.dse.models.vanilla.VanOptUnderlying" > 
+		<constructor-arg>
+			<ref local="evalDate"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="volDiot"/>
+		</constructor-arg>
+	</bean> 
+
+
+
+	<util:map id="modelMap">
+			<entry key="((\.OPT\.))" value-ref="vanBawModel"/>
+			<entry key="((\.STK\.))" value-ref="vanUnderlyingModel"/>
+	</util:map>
+
+	<bean id="regexModelQuery" class="com.billybyte.queries.QueryFromRegexPattern">
+		<constructor-arg>
+			<ref bean="modelMap"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="dse" class="com.billybyte.dse.DerivativeSetEngine">
+		<constructor-arg>
+			<ref local="queryManager"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="sdQuery"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="evalDate"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref local="regexModelQuery"/>
+		</constructor-arg>
+	</bean>
+	<!-- END the DerivativeSetEngine -->
+	
+</beans>

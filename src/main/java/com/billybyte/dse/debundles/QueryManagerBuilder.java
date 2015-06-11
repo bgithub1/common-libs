@@ -33,6 +33,17 @@ import com.billybyte.marketdata.YahooFinanceDivYieldQuery;
 import com.billybyte.marketdata.YahooHistoricalVolCqrQuery;
 import com.billybyte.marketdata.YahooOptionVolCqrQueryForOpts;
 
+/**
+ * QueryManagerBuilder builds instances of QueryManager.
+ *   QueryManager is the class that gathers inputs for the options models
+ *     of DerivativeSetEngine.  
+ *   QueryManager maps the name of a security to various input queries which
+ *     fetch atm prices, vols, rates, etc that you use to calculate a
+ *     derivative price or a derivative sensitivity.
+ *       
+ * @author bperlman1
+ *
+ */
 public class QueryManagerBuilder {
 	public static final QueryManager qmForStocksUsingYahoo(
 			Calendar evalDate,
@@ -75,8 +86,7 @@ public class QueryManagerBuilder {
 						rateQuery,
 						new YahooFinanceDivYieldQuery());
 		
-		// settle
-		
+		// settle		
 		SettleDseInputQueryFromPdiQuery settleQuery = 
 				new SettleDseInputQueryFromPdiQuery(
 						sdQuery, 

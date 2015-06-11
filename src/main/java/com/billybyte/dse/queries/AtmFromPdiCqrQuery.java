@@ -2,10 +2,12 @@ package com.billybyte.dse.queries;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.Set;
 
 import com.billybyte.commoninterfaces.QueryInterface;
+import com.billybyte.commonstaticmethods.Dates;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.marketdata.PriceDisplayInterface;
 import com.billybyte.marketdata.PriceLevelData;
@@ -18,10 +20,17 @@ public class AtmFromPdiCqrQuery extends DseInputQueryFromPdiQuery<BigDecimal> {
 			QueryInterface<String, SecDef> sdQuery,
 			QueryInterface<Set<String>, Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
 			long evalDate) {
-		super(sdQuery, pdiQuery, evalDate);
-		
+		super(sdQuery, pdiQuery, evalDate);		
 	}
 
+	public AtmFromPdiCqrQuery(
+			QueryInterface<String, SecDef> sdQuery,
+			QueryInterface<Set<String>, Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
+			Calendar evalDate) {
+		this(sdQuery, pdiQuery, Dates.getYyyyMmDdFromCalendar(evalDate));		
+	}
+
+	
 	@Override
 	public ComplexQueryResult<BigDecimal> getValue(PriceDisplayInterface pdi,
 			SecDef sd, Long evalDate) {
