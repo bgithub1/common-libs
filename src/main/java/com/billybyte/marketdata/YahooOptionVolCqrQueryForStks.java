@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -14,16 +13,12 @@ import java.util.concurrent.TimeUnit;
 import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.commonstaticmethods.CollectionsStaticMethods;
 import com.billybyte.commonstaticmethods.Utils;
-import com.billybyte.dse.models.vanilla.AnalyticFormulas;
 import com.billybyte.dse.models.vanilla.BawAmerican;
-import com.billybyte.dse.models.vanilla.DerivativeModel;
-import com.billybyte.dse.models.vanilla.DerivativeModel.Sensitivity;
 import com.billybyte.dse.queries.DivDseInputQuery;
 import com.billybyte.dse.queries.TreasuryRateQueryFromTreasuryRateSingle;
 import com.billybyte.marketdata.PriceDisplayInterface;
 import com.billybyte.marketdata.SecDef;
 import com.billybyte.marketdata.SecDefQueryAllMarkets;
-import com.billybyte.marketdata.SecEnums.SecRight;
 import com.billybyte.marketdata.SecEnums.SecSymbolType;
 import com.billybyte.marketdata.YahooAtmVolCqrQueryForStks.ImplieDVolInputs;
 import com.billybyte.queries.ComplexQueryResult;
@@ -39,12 +34,10 @@ public class YahooOptionVolCqrQueryForStks implements QueryInterface<Set<String>
 	private final double seedVol = .2; 
 	private final QueryInterface<String, SecDef> sdQuery = new SecDefQueryAllMarkets();
 	private final double daysInYear;
-	private final GoogleOptionChainQuery chainQuery;
 
 	private final ConcurrentHashMap<String, ComplexQueryResult<BigDecimal>> cache = 
 			new ConcurrentHashMap<String, ComplexQueryResult<BigDecimal>>();
 	
-	private final BigDecimal maxPercDiffBtwSettleAndOpStrikeToAllow;
 	private final QueryInterface<Set<String>, Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery;
 	private final QueryInterface<Set<String>, 
 		Map<String, ComplexQueryResult<BigDecimal>>> rateQuery;
@@ -61,7 +54,6 @@ public class YahooOptionVolCqrQueryForStks implements QueryInterface<Set<String>
 	 * @param evalDate
 	 */
 	public YahooOptionVolCqrQueryForStks(
-			BigDecimal maxPercDiffBtwSettleAndOpStrikeToAllow,
 			QueryInterface<Set<String>, 
 				Map<String, ComplexQueryResult<PriceDisplayInterface>>> pdiQuery,
 			QueryInterface<Set<String>, 
@@ -71,7 +63,6 @@ public class YahooOptionVolCqrQueryForStks implements QueryInterface<Set<String>
 				Calendar evalDate) {
 
 		super();
-		this.maxPercDiffBtwSettleAndOpStrikeToAllow = maxPercDiffBtwSettleAndOpStrikeToAllow;
 		if(pdiQuery==null){
 			this.pdiQuery = 
 					new YahooCombinedStkOptPdiSetCqrRetQuery();
@@ -89,14 +80,12 @@ public class YahooOptionVolCqrQueryForStks implements QueryInterface<Set<String>
 			this.divQuery = divQuery;
 		}
 		this.evalDate = evalDate;
-		this.chainQuery = 
-				 new GoogleOptionChainQuery(evalDate, 60, sdQuery);
 		this.daysInYear = 365;
 	}
 	
 	
 	public YahooOptionVolCqrQueryForStks(){
-		this(BigDecimal.ONE,
+		this(
 				new YahooCombinedStkOptPdiSetCqrRetQuery(),
 				null,null,Calendar.getInstance());
 		

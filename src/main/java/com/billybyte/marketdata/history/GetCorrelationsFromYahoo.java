@@ -187,6 +187,23 @@ public class GetCorrelationsFromYahoo {
 		double[][] covMatrix = covMatrixFromCov.getData();
 		return createCorrMap(orderedNames, covMatrix);
 	}
+	
+	
+	public static Tuple<List<String>, double[][]> getReturnsMatrixTuple(
+			Set<String> snSet,
+			Calendar begDate,
+			Calendar endDate,
+			boolean useAdjClose){
+
+		List<String> orderedNames = 
+				new ArrayList<String>(
+						new TreeSet<String>(
+								snSet));
+		
+		
+		double[][] returnsTranspose = getReturnsMatrix(snSet, begDate,endDate,useAdjClose);
+		return new Tuple<List<String>, double[][]>(orderedNames, returnsTranspose);
+	}
 
 	
 	public static void main(String[] args) {

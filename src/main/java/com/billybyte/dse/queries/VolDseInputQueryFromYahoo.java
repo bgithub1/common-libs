@@ -13,28 +13,33 @@ import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.marketdata.SecDef;
 import com.billybyte.marketdata.SecDefQueryAllMarkets;
 import com.billybyte.marketdata.YahooAtmVolCqrQueryForStks;
+import com.billybyte.marketdata.YahooHistoricalVolCqrQuery;
 import com.billybyte.marketdata.YahooOptionVolCqrQueryForStks;
 import com.billybyte.marketdata.SecEnums.SecSymbolType;
 import com.billybyte.queries.ComplexQueryResult;
 
 public class VolDseInputQueryFromYahoo extends DseInputQuery<BigDecimal>{
 	private final QueryInterface<Set<String>,Map<String, ComplexQueryResult<BigDecimal>>> volForStks;
+	private final QueryInterface<Set<String>,Map<String, ComplexQueryResult<BigDecimal>>> histVolForStks;
 	private final QueryInterface<Set<String>,Map<String, ComplexQueryResult<BigDecimal>>> volForOpts;
 	private final QueryInterface<String,SecDef> sdQuery;
 	
 	public VolDseInputQueryFromYahoo(
 			QueryInterface<Set<String>, Map<String, ComplexQueryResult<BigDecimal>>> volForStks,
+			QueryInterface<Set<String>, Map<String, ComplexQueryResult<BigDecimal>>> histVolForStks,
 			QueryInterface<Set<String>, Map<String, ComplexQueryResult<BigDecimal>>> volForOpts,
 			QueryInterface<String,SecDef> sdQuery) {
 		
 		super();
 		this.volForStks = volForStks;
+		this.histVolForStks = histVolForStks;
 		this.volForOpts = volForOpts;
 		this.sdQuery = sdQuery;
 	}
 
 	public VolDseInputQueryFromYahoo(){
 		this(new YahooAtmVolCqrQueryForStks(),
+		new YahooHistoricalVolCqrQuery(),
 		new YahooOptionVolCqrQueryForStks(),
 		new SecDefQueryAllMarkets());
 	}
@@ -66,7 +71,37 @@ public class VolDseInputQueryFromYahoo extends DseInputQuery<BigDecimal>{
 		}
 		Map<String, ComplexQueryResult<BigDecimal>> stkRet = 
 				volForStks.get(stkKeySet, timeoutValue, timeUnitType);
+		// see if any of the stocks need to use historical vol (they might be mutual funds, for example
+		HashSet<String> histVolStkSet = new HashSet<String>();
+		for(String stkSn : stkKeySet){
+			ComplexQueryResult<BigDecimal> stkCqr = stkRet.get(stkSn);
+			if(stkCqr==null){
+				histVolStkSet.add(stkSn);
+			}else if(!stkCqr.isValidResult()){
+				histVolStkSet.add(stkSn);
+				stkRet.remove(stkSn);
+			}
+		}
+		// Put stocks that are still good in return map.  
 		ret.putAll(stkRet);
+
+		
+		// Now try to get historical vols for those stocks that didn't have an implied vol
+		if(histVolStkSet.size()>0){
+			Map<String, ComplexQueryResult<BigDecimal>> histVolRet = 
+					this.histVolForStks.get(histVolStkSet, timeoutValue, timeUnitType);
+			for(String stkSn : histVolStkSet){
+				ComplexQueryResult<BigDecimal> histVolCqr = 
+						histVolRet.get(stkSn);
+				if(histVolCqr==null || !histVolCqr.isValidResult()){
+					Exception e = Utils.IllState(this.getClass(), stkSn+" Can't get either implied or historical vol");
+					ret.put(stkSn, new ComplexQueryResult<BigDecimal>(e, null));
+				}else{
+					ret.put(stkSn, histVolCqr);
+				}
+			}
+		}
+		
 		Map<String, ComplexQueryResult<BigDecimal>> optRet = 
 				volForOpts.get(optKeySet, timeoutValue, timeUnitType);
 		ret.putAll(optRet);
@@ -86,6 +121,7 @@ public class VolDseInputQueryFromYahoo extends DseInputQuery<BigDecimal>{
 			"MSFT.OPT.SMART.USD.20170120.C.45.00",
 			"GOOG.STK.SMART",
 			"GOOG.OPT.SMART.USD.20170120.C.600.00",
+			"RYMEX.STK.SMART"
 		};
 		Set<String> keySet = CollectionsStaticMethods.setFromArray(array);
 		Map<String, ComplexQueryResult<BigDecimal>> ret = 
