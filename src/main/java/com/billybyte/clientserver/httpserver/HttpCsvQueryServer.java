@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import com.billybyte.commoninterfaces.QueryInterface;
 import com.billybyte.commonstaticmethods.CollectionsStaticMethods;
 import com.billybyte.commonstaticmethods.Utils;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -28,12 +29,41 @@ public class HttpCsvQueryServer {
 	private final String httpPath;
 	private final int timeoutValue;
 	private final TimeUnit timeUnitType;
-
+	private final String returnFileName;
 	/**
 	 * 
-	 * @param httpPort int
-	 * @param httpPath String
-	 * @param csvQuery QueryInterface<String, List<String[]>>
+	 * @param httpPort
+	 * @param httpPath
+	 * @param csvQuery
+	 * @param timeoutValue
+	 * @param timeUnitType
+	 * @param returnFileName
+	 * @throws IOException
+	 */
+	public HttpCsvQueryServer(int httpPort, String httpPath,
+			QueryInterface<String, List<String[]>> csvQuery,
+			int timeoutValue,
+			TimeUnit timeUnitType,
+			String returnFileName) throws IOException {
+		super();
+		this.timeoutValue = timeoutValue;
+		this.timeUnitType = timeUnitType;
+		this.httpPort = httpPort;
+		this.httpPath = httpPath;
+		this.csvQuery = csvQuery;
+		this.returnFileName = returnFileName;
+		
+		server = HttpServer.create(new InetSocketAddress(httpPort), 0);
+        server.createContext(httpPath, new MyHandler());
+        server.setExecutor(null); // creates a default executor
+
+	}
+	
+	/**
+	 * 
+	 * @param httpPort
+	 * @param httpPath
+	 * @param csvQuery
 	 * @param timeoutValue
 	 * @param timeUnitType
 	 * @throws IOException
@@ -42,16 +72,7 @@ public class HttpCsvQueryServer {
 			QueryInterface<String, List<String[]>> csvQuery,
 			int timeoutValue,
 			TimeUnit timeUnitType) throws IOException {
-		super();
-		this.timeoutValue = timeoutValue;
-		this.timeUnitType = timeUnitType;
-		this.httpPort = httpPort;
-		this.httpPath = httpPath;
-		this.csvQuery = csvQuery;
-		server = HttpServer.create(new InetSocketAddress(httpPort), 0);
-        server.createContext(httpPath, new MyHandler());
-        server.setExecutor(null); // creates a default executor
-
+		this(httpPort,httpPath,csvQuery,timeoutValue,timeUnitType,"myFileName.csv");
 	}
 	
 	public void start(){
@@ -75,10 +96,16 @@ public class HttpCsvQueryServer {
     			response += line + "\n";
     		}
     		
+            // This is a header to permit the download of the csv
+            Headers headers = t.getResponseHeaders();
+            headers.add("Content-Type", "text/csv");
+            headers.add("Content-Disposition", "attachment;filename="+returnFileName);
 			t.sendResponseHeaders(200,response.length());
 			OutputStream os=t.getResponseBody();
 			Utils.prt(response);
-			os.write(response.getBytes());
+			
+            
+            os.write(response.getBytes());
 			os.close();
 			
         }
@@ -110,7 +137,9 @@ public class HttpCsvQueryServer {
 							csvQuery, timeoutValue, timeUnitType);
 			csvs.start();
 			Utils.prtObErrMess(HttpCsvQueryServer.class, "server started on port 8888.");
-			Utils.prtObErrMess(HttpCsvQueryServer.class, "Enter http://127.0.0.1:8888/dummyCrude?p1=data to test");
+			Utils.prtObErrMess(HttpCsvQueryServer.class, "Enter http://127.0.0.1:8888/dummyCrude?p1=data");
+
+		CollectionsStaticMethods.prtCsv(Utils.getCSVData("http://127.0.0.1:8888/dummyCrude?p1=data"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
