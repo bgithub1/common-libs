@@ -49,6 +49,9 @@ public class RunGreeks {
 		if(example.compareTo("5")==0){
 			example5_DseResultsAsCsv(argPairs.get("portfolioPath"));
 		}
+		if(example.compareTo("6")==0){
+			example6_printPortfolio(argPairs.get("portfolioPath"));
+		}
 	}
 	
 	
@@ -96,12 +99,19 @@ public class RunGreeks {
 		List<DerivativeSensitivityTypeInterface> senses = getSenses();
 		DerivativeSetEngine dse = DerivativeSetEngineBuilder.dseForStocksUsingYahoo();
 		Map<String, Integer> portfolioMap = getPortfolio(portfolioPath);
-		
+		if(portfolioMap == null || portfolioMap.size()<=0){
+			Utils.prtObErrMess(RunGreeks.class, "Portfolio Map is null or can't be found");
+			return;
+		}
 		for(DerivativeSensitivityTypeInterface sense : senses){
 			Map<String, DerivativeReturn[]> dseResults = 
 					dse.getSensitivity(sense, portfolioMap.keySet());
-			for(String shortName : dseResults.keySet()){
-				DerivativeReturn dr = dseResults.get(shortName)[0];
+			for(String shortName : portfolioMap.keySet()){
+				DerivativeReturn[] drArr =dseResults.get(shortName);
+				DerivativeReturn dr = null;
+				if(drArr!=null){
+					dr = dseResults.get(shortName)[0];
+				}
 				printDr(shortName, dr, sense);
 			}
 		}
@@ -135,6 +145,10 @@ public class RunGreeks {
 		List<DerivativeSensitivityTypeInterface> senses = getSenses();
 		DerivativeSetEngine dse = DerivativeSetEngineBuilder.dseForStocksUsingYahoo();
 		Map<String, Integer> portfolioMap = getPortfolio(portfolioPath);
+		if(portfolioMap == null || portfolioMap.size()<=0){
+			Utils.prtObErrMess(RunGreeks.class, "Portfolio Map is null or can't be found");
+			return;
+		}
 		
 		
 		Map<String,Map<DerivativeSensitivityTypeInterface,DerivativeReturn>> secToSenseToDrArrMap = 
@@ -211,6 +225,14 @@ public class RunGreeks {
 
 	}
 
+	static final void example6_printPortfolio(String portfolioPath){
+		Map<String, Integer> portfolioMap = getPortfolio(portfolioPath);
+		if(portfolioMap == null || portfolioMap.size()<=0){
+			Utils.prtObErrMess(RunGreeks.class, "Portfolio Map is null or can't be found");
+			return;
+		}
+		CollectionsStaticMethods.prtMapItems(portfolioMap);
+	}
 	
 	
 	
@@ -292,7 +314,7 @@ public class RunGreeks {
 	 * @param sense
 	 */
 	static final void printDr(String shortName,DerivativeReturn dr, DerivativeSensitivityTypeInterface sense){
-		if(!dr.isValidReturn()){
+		if(dr==null || !dr.isValidReturn()){
 			Utils.prtObErrMess(RunGreeks.class, shortName+" : "+dr.getException().getMessage());
 		}else{
 			Utils.prt(shortName+" : "+ sense.getString()+ " : " + dr.getValue().toString());				
