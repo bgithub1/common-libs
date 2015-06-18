@@ -4,6 +4,7 @@ common-libs
 main api for trading/risk/marketdata etc
 
 Example mains:
+
 1. Turn any of your code into an http server see main in: 
    com.billybyte.clientserver.httpserver.HttpCsvQueryServer
 
@@ -30,8 +31,10 @@ Example mains:
 
 DerivativeSetEngine stuff:
 DeriviativeSetEngine allows you to compute prices and greeks for exchange traded commodity options
-   using the following syntax (from com.billybyte.ds.debunddles.RunGreeks): 
+   using the following syntax (from com.billybyte.ds.debunddles.RunGreeks):
+ 
     (see the sh script mvnexecRunGreeks.sh, where you can append an arg of 1,2,3,4,5 or 6)
+
 	example bash: sh mvnexecRunGreeks.sh 3
 	    
 	static final void example1_getPrices(){
