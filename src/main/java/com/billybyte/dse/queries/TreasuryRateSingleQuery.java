@@ -114,66 +114,90 @@ public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQue
 	 */
 	private static final TreeMap<Integer,BigDecimal> rateTableFromTreasuryGov(
 			Calendar evalDate){
-		// get xml as csv
-		String month = new Integer(evalDate.get(Calendar.MONTH)+1).toString();
-		String year = new Integer(evalDate.get(Calendar.YEAR)).toString();
-		String treasuryUrl = TREASURY_XML_URL.replace("MM", month).replace("YYYY", year);
-		List<String[]> pseudoCsv =  null;
-		// you might have to switch the date around, b/c sometimes the site fails
-		try {
-			pseudoCsv = Utils.getCSVData(treasuryUrl);
-		} catch (Exception e) {
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e1) {
-			}
-			pseudoCsv = Utils.getCSVData(treasuryUrl);
-		}
-		// combine lines
-		String allLines = "";
-		for(String[] line:pseudoCsv){
-			for(String column : line){
-				allLines += column;
-			}
-		}
-		String TREASURY_DATA_LINE_REGEX = 
-				"<d:BC_[0-9]{1,2}((MONTH)|(YEAR)) m:type=\"Edm.Double\">[0-9]{1,3}\\.[0-9]{0,2}</d:BC_";
-		String MONTH_YEAR_REGEX = "<d:BC_[0-9]{1,2}((MONTH)|(YEAR))";
-		String TIME_REGEX = "[0-9]{1,2}";
-		String MONTH_OR_YEAR_REGEX = "((MONTH)|(YEAR))";
-		String RATE_REGEX = "[0-9]{1,3}\\.[0-9]{0,2}";
-		double MONTH_MULTIPLIER = 31;
-		double YEAR_MULTIPLIER = 365;
-		List<String> rateLines = RegexMethods.getRegexMatches(
-				TREASURY_DATA_LINE_REGEX, allLines);
-		List<BigDecimal[]> expiries = new ArrayList<BigDecimal[]>();
-		for(String rateLine:rateLines){
-			List<String> monthYearStrings = RegexMethods.getRegexMatches(
-					MONTH_YEAR_REGEX, rateLine);
-			String ratePhrase = monthYearStrings.get(0);			
-			String timeAmt = RegexMethods.getRegexMatches(
-					TIME_REGEX, ratePhrase).get(0);
-			double time = new Double(timeAmt);
-			String monthOrYear = RegexMethods.getRegexMatches(
-					MONTH_OR_YEAR_REGEX, ratePhrase).get(0);
-			if(monthOrYear.compareTo("YEAR")==0){
-				time = time*YEAR_MULTIPLIER;
-			}else{
-				time = time*MONTH_MULTIPLIER;
-			}
-			String rateString = RegexMethods.getRegexMatches(
-					RATE_REGEX, rateLine).get(0);
-			BigDecimal bdTime = new BigDecimal(time);
-			BigDecimal bdRate = new BigDecimal(rateString);
-			BigDecimal[] expiryArray = {bdTime,bdRate};
-			expiries.add(expiryArray);
-		}
-		
 		TreeMap<Integer,BigDecimal> ret = new TreeMap<Integer, BigDecimal>();
-		for(BigDecimal[] timeRate : expiries){
-			Integer time = new Integer(timeRate[0].toString());
-			BigDecimal rate = timeRate[1].divide(HUNDRED);
-			ret.put(time,rate);
+
+		// get xml as csv
+		Integer monthInt = evalDate.get(Calendar.MONTH)+1;
+		// try 2 months
+		for(int i = 0;i<2;i++){
+			String month = monthInt.toString();
+			String year = new Integer(evalDate.get(Calendar.YEAR)).toString();
+			String treasuryUrl = TREASURY_XML_URL.replace("MM", month).replace("YYYY", year);
+			List<String[]> pseudoCsv =  null;
+			// you might have to switch the date around, b/c sometimes the site fails
+			try {
+				pseudoCsv = Utils.getCSVData(treasuryUrl);
+				if(pseudoCsv==null){
+					// try waiting, then try lowering the month
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e1) {
+					}
+
+				}
+				pseudoCsv = Utils.getCSVData(treasuryUrl);
+				if(pseudoCsv==null){
+					Integer m = new Integer(month)-1;
+					month = m.toString();
+					treasuryUrl = TREASURY_XML_URL.replace("MM", month).replace("YYYY", year);
+					pseudoCsv = Utils.getCSVData(treasuryUrl);
+				}
+			} catch (Exception e) {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e1) {
+				}
+				pseudoCsv = Utils.getCSVData(treasuryUrl);
+			}
+			// combine lines
+			String allLines = "";
+			for(String[] line:pseudoCsv){
+				for(String column : line){
+					allLines += column;
+				}
+			}
+			String TREASURY_DATA_LINE_REGEX = 
+					"<d:BC_[0-9]{1,2}((MONTH)|(YEAR)) m:type=\"Edm.Double\">[0-9]{1,3}\\.[0-9]{0,2}</d:BC_";
+			String MONTH_YEAR_REGEX = "<d:BC_[0-9]{1,2}((MONTH)|(YEAR))";
+			String TIME_REGEX = "[0-9]{1,2}";
+			String MONTH_OR_YEAR_REGEX = "((MONTH)|(YEAR))";
+			String RATE_REGEX = "[0-9]{1,3}\\.[0-9]{0,2}";
+			double MONTH_MULTIPLIER = 31;
+			double YEAR_MULTIPLIER = 365;
+			List<String> rateLines = RegexMethods.getRegexMatches(
+					TREASURY_DATA_LINE_REGEX, allLines);
+			List<BigDecimal[]> expiries = new ArrayList<BigDecimal[]>();
+			for(String rateLine:rateLines){
+				List<String> monthYearStrings = RegexMethods.getRegexMatches(
+						MONTH_YEAR_REGEX, rateLine);
+				String ratePhrase = monthYearStrings.get(0);			
+				String timeAmt = RegexMethods.getRegexMatches(
+						TIME_REGEX, ratePhrase).get(0);
+				double time = new Double(timeAmt);
+				String monthOrYear = RegexMethods.getRegexMatches(
+						MONTH_OR_YEAR_REGEX, ratePhrase).get(0);
+				if(monthOrYear.compareTo("YEAR")==0){
+					time = time*YEAR_MULTIPLIER;
+				}else{
+					time = time*MONTH_MULTIPLIER;
+				}
+				String rateString = RegexMethods.getRegexMatches(
+						RATE_REGEX, rateLine).get(0);
+				BigDecimal bdTime = new BigDecimal(time);
+				BigDecimal bdRate = new BigDecimal(rateString);
+				BigDecimal[] expiryArray = {bdTime,bdRate};
+				expiries.add(expiryArray);
+			}
+			if(expiries==null || expiries.size()<1){
+				// try again
+				monthInt = monthInt -1;
+			}
+			for(BigDecimal[] timeRate : expiries){
+				Integer time = new Integer(timeRate[0].toString());
+				BigDecimal rate = timeRate[1].divide(HUNDRED);
+				ret.put(time,rate);
+			}
+			
 		}
 		return ret;
 		
