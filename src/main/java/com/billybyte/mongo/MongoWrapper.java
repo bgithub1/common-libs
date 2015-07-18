@@ -3,12 +3,14 @@ package com.billybyte.mongo;
 import java.net.UnknownHostException;
 import java.util.Set;
 
+import com.billybyte.commonstaticmethods.Utils;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
 
 public class MongoWrapper {
@@ -20,6 +22,11 @@ public class MongoWrapper {
 	public MongoWrapper(String ip, Integer port) throws UnknownHostException {
 		this.mongo = new Mongo(ip, port);
 		this.mongo.setWriteConcern(WriteConcern.ACKNOWLEDGED);
+		try {
+			  mongo.getConnector().getDBPortPool(mongo.getAddress()).get().ensureOpen();
+		} catch (Exception e) {
+		  throw Utils.IllState(e);
+		}	
 	}
 
 	

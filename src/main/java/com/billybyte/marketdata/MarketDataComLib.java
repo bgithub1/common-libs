@@ -2,6 +2,7 @@ package com.billybyte.marketdata;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,6 +16,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 
@@ -37,8 +39,15 @@ import com.billybyte.marketdata.futures.FuturesCodes;
 import com.billybyte.marketdata.futures.FuturesProduct;
 import com.billybyte.marketdata.futures.FuturesProductQuery;
 import com.billybyte.marketdata.futures.MonthYear;
+import com.billybyte.mongo.MongoCollectionWrapper;
+import com.billybyte.mongo.MongoDatabaseNames;
+import com.billybyte.mongo.MongoWrapper;
 
 import com.billybyte.queries.ComplexQueryResult;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 
 public class MarketDataComLib {
 	public static final String[] MONTH_CODES_REGULAR = {"F","G","H","J","K","M","N","Q","U","V","X","Z"};
@@ -51,13 +60,50 @@ public class MarketDataComLib {
 	public static final String DEFAULT_SHORTNAME_SEPARATOR=".";
 	public static final String DEFAULT_CORRELATION_PAIR_SEPARATOR="__";
 	public static final String DEFAULT_EXCH_IN_SHORTNAME_SEPARATOR="_";
-
+	
 
 	
 	private static final MarketDataComLib instanceForExceptions = new MarketDataComLib();
 	private static final int DEFAULT_TIMEOUT_VALUE=1000;
 	private static final TimeUnit DEFAULT_TIMEUNIT = TimeUnit.MILLISECONDS;
+
+	private static final AtomicReference<Map<String, String>> atomicUnderlyingCache = 
+			new AtomicReference<Map<String,String>>(new HashMap<String,String>());
+
+	public static String getUnderlyingShortNameFromSpan(String key){
+		int cacheSize = atomicUnderlyingCache.get().size();
+		// get everything if nothing in cache
+		if(cacheSize==0){
+			MongoCollectionWrapper mwc = null;
+			try {
+				mwc =
+						new MongoCollectionWrapper(
+								"127.0.0.1",27022, 
+								UnderlyingInfo.getDbName(UnderlyingInfo.class), 
+								UnderlyingInfo.getCollectionName(UnderlyingInfo.class));
+			} catch (Exception e) {
+				Utils.prtObMess(MarketDataComLib.class, "NON-FATAL: Span Mongo Server not running");
+				e.printStackTrace();
+				Utils.prtObMess(MarketDataComLib.class, "END NON-FATAL: Span Mongo Server not running");
+				// put one dummy item in cache to stop looping thru this code
+				atomicUnderlyingCache.get().put("dummyBcNoSpanRunning", "dummyBcNoSpanRunning");
+				return null;
+			}
+
+			// get everything the first time through
+			DBObject search = new BasicDBObject();
+			List<UnderlyingInfo> uiList = mwc.getList(UnderlyingInfo.class, search);
+			if(uiList.size()<1)return null;
+			for(UnderlyingInfo ui : uiList){
+				atomicUnderlyingCache.get().put(ui.get_id(), ui.getUnderlyingShorName());
+			}
+		}
+		
+		
+		return atomicUnderlyingCache.get().get(key);
+	}
 	
+
 	/**
 	 * get month number (1 - 12) for a month code like F or G or Z
 	 */
@@ -335,6 +381,11 @@ public class MarketDataComLib {
 			QueryInterface<String, SecDef> secDefQuery,
 			FuturesProductQuery fpq, Calendar evalDate,
 			int timeoutValue, TimeUnit  timeUnitType){
+		String underFromSpan = 
+				getUnderlyingShortNameFromSpan(optionSd.getShortName());
+		if(underFromSpan!=null){
+			return secDefQuery.get(underFromSpan, timeoutValue, timeUnitType);
+		}
 		SecSymbolType retType =null;
 		//TODO - THIS IS A HACK
 		if(optionSd.getSymbolType()==SecSymbolType.OPT){

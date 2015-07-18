@@ -44,6 +44,11 @@ public class SecDefQueryAllMarkets implements QueryInterface<String, SecDef>{
 	private final Object get_Lock = new Object();
 	protected boolean inited = false;
 	
+//	// support for SecDef queries from mongo
+//	private static final String ALT_QUERIES_FROM_SPRING_XML_PATH = 
+//			"secDefQueryListFromSpring.xml";
+//	private static final String ALT_QUERIES_LIST_BEANNAME = "queryList";
+	
 	public SecDefQueryAllMarkets(){
 		init();
 	}
@@ -140,6 +145,17 @@ public class SecDefQueryAllMarkets implements QueryInterface<String, SecDef>{
 					this);
 			testQueryList.add(futSpreadsQueryEngine);
 			testQueryList.add(futStripsQueryEngine);
+			
+			// add other queries from spring xml
+			try {
+				QueryInterface<String, SecDef> spanSdQuery = new SecDefQuerySpanMongo(null, null, false);
+				testQueryList.add(spanSdQuery);
+			} catch (Exception e) {
+				Utils.prtObErrMess(SecDefQueryAllMarkets.class, "!!!!!!!!! NON-FATAL STACK TRACE DUE TO: Span Mongo not running on default ip and port");
+				e.printStackTrace();
+				Utils.prtObErrMess(SecDefQueryAllMarkets.class, "!!!!!!!!! END OF NON-FATAL STACK TRACE DUE TO: Span Mongo not running on default ip and port");
+			}
+			
 		}
 	}
 	

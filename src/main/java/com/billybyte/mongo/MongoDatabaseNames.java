@@ -56,4 +56,13 @@ public class MongoDatabaseNames {
 	public static String SYMBOL_CONV_DB = "symbolConvDb";
 	public static String SYMBOL_CONV_CL = "symbolConvColl";
 
+	public static String SPAN_SECDEF_DB = "spanSecDefDb"; // "secDefDb"
+	public static String SPAN_SECDEF_CL = "spanSecDefColl"; // "secDefColl"
+
+//	public static String SPAN_UNDER_SECDEF_DB = "spanUnderSecDefDb"; // "spanUnderSecDefDb"
+//	public static String SPAN_UNDER_SECDEF_CL = "spanUnderSecDefColl"; // "spanUnderSecDefColl"
+
+	public static String SPAN_UNDER_SNINFO_DB = "spanUnderSnInfoDb"; // "spanUnderSnInfoDb"
+	public static String SPAN_UNDER_SNINFO_CL = "spanUnderSnInfoColl"; // "spanUnderSnInfoColl"
+
 }

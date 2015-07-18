@@ -27,7 +27,9 @@ public class SecDefQueryFromListOfSecDefQueries implements QueryInterface<String
 	public SecDef get(String key, int timeoutValue, TimeUnit timeUnitType) {
 		for(QueryInterface<String, SecDef> query:queryList){
 			SecDef sd = query.get(key, timeoutValue, timeUnitType);
-			if(sd!=null)return sd;
+			if(sd!=null){
+				return sd;
+			}
 		}
 		return null;
 	}

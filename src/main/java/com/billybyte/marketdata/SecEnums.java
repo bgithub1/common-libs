@@ -11,6 +11,7 @@ public class SecEnums {
 		AUD("AUD"),
 		EUR("EUR"),
 		JPY("JPY"),
+		CAD("CAD"),
 		GBP("GBP");
 		
 		String currency;
@@ -70,6 +71,9 @@ public class SecEnums {
 		FOP("FOP"),
 		TAS("TAS"),
 		BAG("BAG"),
+		OOC("OOC"),
+		CMB("CMB"),
+		FWD("FWD"),
 		OOF("OOF");
 
 		String ibSymbolTypeString;
@@ -114,6 +118,7 @@ public class SecEnums {
 		CBT(SecSymbolType.FUT,"CBOT"),
 		ECBOT(SecSymbolType.FUT,"ECBOT"),
 		NYBOT(SecSymbolType.FUT,"NYBOT"),
+		NYB(SecSymbolType.FUT,"NYBOT"),
 		IPE(SecSymbolType.FUT,"IPE"),
 		ICE(SecSymbolType.FUT,"ICE");
 		
