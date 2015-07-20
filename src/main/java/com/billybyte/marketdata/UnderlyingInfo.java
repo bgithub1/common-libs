@@ -62,6 +62,9 @@ public class UnderlyingInfo extends MongoBaseAbstract<UnderlyingInfo> {
 	}
 	
 	public static void main(String[] args) {
+		QueryInterface<String , SecDef> sdQuery = new SecDefQueryAllMarkets();
+		SecDef sd = sdQuery.get("LO3.OOF.NYMEX.USD.201507.C.55.50",1, TimeUnit.SECONDS);
+		Utils.prt(sd.getShortName());
 		MongoCollectionWrapper mcw = new MongoCollectionWrapper(
 				"127.0.0.1", 27022, 
 				MongoDatabaseNames.SPAN_UNDER_SNINFO_DB, 
@@ -73,7 +76,6 @@ public class UnderlyingInfo extends MongoBaseAbstract<UnderlyingInfo> {
 		}
 		
 		// now get all of these keys from MarketDataComLib
-		QueryInterface<String , SecDef> sdQuery = new SecDefQueryAllMarkets();
 		for(UnderlyingInfo ui : uiList){
 			SecDef uiSd = sdQuery.get(ui.get_id(), 1, TimeUnit.SECONDS);
 			SecDef uiUnder = MarketDataComLib.getUnderylingSecDefFromOptionSecDef(uiSd, sdQuery, null, null, 1, null);
