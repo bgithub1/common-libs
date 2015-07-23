@@ -10,6 +10,7 @@ import java.util.Map;
 import com.billybyte.commoninterfaces.SettlementDataInterface;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.DerivativeAbstractModel;
+import com.billybyte.dse.DerivativeSetEngine;
 import com.billybyte.dse.inputs.InBlk;
 import com.billybyte.dse.inputs.diotypes.AtmDiot;
 import com.billybyte.dse.inputs.diotypes.CallPutDiot;
@@ -31,6 +32,8 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 	private final double NEWTON_RAPHSON_PRECISION = 0.00001;
 	private final int NEWTON_RAPHSON_MAX_ITERATIONS = 500;
 	private final double NEWTON_RAPHSON_SEED_VOL = .1;
+	private final double normSinv99 = NormalDistribution.inverseCumulativeDistribution(DerivativeSetEngine.DEFAULT_CONFIDENCE_FOR_VAR);
+	private final double ERRORVALUE = -11111111;
 		
 	/**
 	 * default
@@ -287,7 +290,14 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 		// ************ END implied vol *****************		
 
 
-		
+		// the directional Var is just the delta * the atm * the vol
+		if(sensitivityId.getString().compareTo(DIRECTIONALVAR)==0){
+			return getDirectionalVar(sensitivityId, derivativeShortName, inputs);
+		}
+		if(sensitivityId.getString().compareTo(DELTANEUTRALVAR)==0){
+			return getDeltaNeutralVar(sensitivityId, derivativeShortName, inputs);
+		}
+
 		
 		
 		if(isNan(value)){
@@ -376,6 +386,97 @@ public abstract class VanOptAbst extends DerivativeAbstractModel{
 	
 	
 	
+	public DerivativeReturn[] getDeltaNeutralVar(
+			DerivativeSensitivityTypeInterface sensitivityId,
+			String derivativeShortName, InBlk inputs) {
+		double value=Double.NaN;
+		VanInBlk vib = new VanInBlk(inputs);
+			
+		String problems = vib.problems();
+
+		if(vib.problems()!=null){
+			Exception e = Utils.IllState(this.getClass(), " Cannot compute DeltaNeutral Var " +  problems +  " with inputs : " + vib.toString());
+			return new DerivativeReturn[]{
+					new DerivativeReturn(
+							sensitivityId, 
+							derivativeShortName, 
+							null,e)};
+			
+		}
+		double gamma  = getVanillaGamma(
+				vib.callput, vib.atm, vib.strike, vib.dte, 
+				vib.vol, vib.rate, vib.div, vib.others);
+		double vega  = getVanillaVega(
+				vib.callput, vib.atm, vib.strike, vib.dte, 
+				vib.vol, vib.rate, vib.div, vib.others);
 	
+		double gammaEffect = Double.NaN;
+		if(!Double.isNaN(gamma)){
+			gammaEffect = .25 * gamma * vib.vol * vib.atm / Math.sqrt(252.0);
+		}
+		double vegaEffect = Double.NaN;
+		if(!Double.isNaN(vega)){
+			double vegaMultiplier = vib.vol * DerivativeSetEngine.DEFAULT_VOL_STRESS_FOR_VAR * 100 ;
+			vegaEffect = vega * vegaMultiplier * .5;
+		}
+		
+		if(Double.isNaN(gammaEffect) || Double.isNaN(vegaEffect)){
+			Exception e = Utils.IllState(this.getClass(), " Cannot compute Implied Vol " +  problems +  " with inputs : " + vib.toString());
+			return new DerivativeReturn[]{
+					new DerivativeReturn(
+							sensitivityId, 
+							derivativeShortName, 
+							null,e)};
+			
+		}
+
+		value =  vegaEffect  + gammaEffect;
+		return new DerivativeReturn[]{
+				goodRet(sensitivityId,
+						derivativeShortName,value)};
+	}
+
+	
+	public DerivativeReturn[] getDirectionalVar(
+			DerivativeSensitivityTypeInterface sensitivityId,
+			String derivativeShortName, InBlk inputs) {
+		// do Var
+		VanInBlk vib = new VanInBlk(inputs);
+			
+		String problems = vib.problems();
+		if(vib.problems()!=null){
+			Exception e = Utils.IllState(this.getClass(), " Cannot compute Implied Vol " +  problems +  " with inputs : " + vib.toString());
+			return new DerivativeReturn[]{
+					new DerivativeReturn(
+							sensitivityId, 
+							derivativeShortName, 
+							null,e)};
+		}
+		
+		double delta  = getVanillaDelta(
+				vib.callput, vib.atm, vib.strike, vib.dte, 
+				vib.vol, vib.rate, vib.div, vib.others);
+		
+		if(Double.isNaN(delta) || Double.isInfinite(delta)){
+			Exception e = Utils.IllState(this.getClass(), " Cannot compute Implied Vol " +  problems +  " with inputs : " + vib.toString());
+			return new DerivativeReturn[]{
+					new DerivativeReturn(
+							sensitivityId, 
+							derivativeShortName, 
+							null,e)};
+		}
+		
+		double var = (delta * vib.atm * normSinv99 * vib.vol/ Math.sqrt(252.0));
+
+		
+		return new DerivativeReturn[]{
+				goodRet(sensitivityId,
+						derivativeShortName,var)};
+	
+		
+
+		
+	}
+		
 
 }

@@ -5,8 +5,10 @@ import java.util.Calendar;
 import com.billybyte.commonstaticmethods.Utils;
 import com.billybyte.dse.outputs.DayDeltaDerSen;
 import com.billybyte.dse.outputs.DeltaDerSen;
+import com.billybyte.dse.outputs.DeltaNeutralVarDerSen;
 import com.billybyte.dse.outputs.DerivativeReturn;
 import com.billybyte.dse.outputs.DerivativeSensitivityTypeInterface;
+import com.billybyte.dse.outputs.DirectionalVarDerSen;
 import com.billybyte.dse.outputs.GammaDerSen;
 import com.billybyte.dse.outputs.ImpliedVolDerSen;
 import com.billybyte.dse.outputs.OptPriceDerSen;
@@ -34,6 +36,10 @@ public abstract class DerivativeAbstractModel implements DerivativeModelInterfac
 			new RhoDerSen().getString();
 	protected static final String IMPLIEDVOL = 
 			new ImpliedVolDerSen().getString();
+	protected static final String DIRECTIONALVAR = 
+			new DirectionalVarDerSen().getString();
+	protected static final String DELTANEUTRALVAR = 
+			new DeltaNeutralVarDerSen().getString();
 	
 	
 	public static final boolean isNan(double value){

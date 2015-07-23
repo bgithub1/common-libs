@@ -42,5 +42,12 @@ public class MongoCollectionWrapper {
 		}
 		return ret;
 	}
-	
+
+	public <T extends MongoBaseAbstract<T>> List<DBObject> toDboList(List<T> tList){
+		List<DBObject> ret = new ArrayList<DBObject>();
+		for(T t : tList){
+			ret.add(t.toDBObject());
+		}
+		return ret;
+	}
 }

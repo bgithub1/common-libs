@@ -4,9 +4,13 @@ public class MongoDatabaseNames {
 	public static final String DEFAULT_HOST = "localhost";
 	public static final int DEFAULT_PORT = 27017;
 	// database names
-//	public static final String CORRELATIONS_DB = "stkCorr";
 	public static final String CORRELATIONS_DB = "stkCorrXml";
 	public static final String CORRELATIONS_CL = "correls";
+	
+	// correls (from spanHist)
+	public static final String CORREL_DB = "correlDb";
+	public static final String CORREL_CL = "correlColl";
+	
 	// settlements
 	public static final String SETTLEMENT_DB = "settleDb";
 	public static final String SETTLEMENT_CL = 	"settleColl";
@@ -65,4 +69,6 @@ public class MongoDatabaseNames {
 	public static String SPAN_UNDER_SNINFO_DB = "spanUnderSnInfoDb"; // "spanUnderSnInfoDb"
 	public static String SPAN_UNDER_SNINFO_CL = "spanUnderSnInfoColl"; // "spanUnderSnInfoColl"
 
+	public static final String SPAN_HIST_DB = "spanHistDb"; // ""
+	public static final String SPAN_HIST_CL = "spanHistColl"; // ""
 }

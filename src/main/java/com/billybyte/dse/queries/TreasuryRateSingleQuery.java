@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +18,13 @@ import com.billybyte.marketdata.SecDef;
 import com.billybyte.marketdata.SecDefQueryAllMarkets;
 import com.billybyte.marketdata.SecEnums.SecSymbolType;
 import com.billybyte.queries.ComplexQueryResult;
-
+/**
+ * Get rate information from a serialized Map (often located in "./treasuryMap.xml")
+ *   or from the data.treasury.gov site.
+ *   
+ * @author bperlman1
+ *
+ */
 public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQueryResult<BigDecimal>>{
 	private static final BigDecimal HUNDRED = new BigDecimal("100");
 	private final QueryInterface<String,SecDef> sdQuery;
@@ -25,16 +32,10 @@ public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQue
 	private final Calendar evalDate;
 	private static final String TREASURY_XML_URL = 
 			"http://data.treasury.gov/feed.svc/DailyTreasuryYieldCurveRateData?$filter=month(NEW_DATE)%20eq%20MM%20and%20year(NEW_DATE)%20eq%20YYYY";
+	private static final String DEF_TREASURYMAP_PATH = "treasuryMap.xml";
 	
 	public TreasuryRateSingleQuery(QueryInterface<String,SecDef> sdQuery, TreeMap<Integer,BigDecimal> rateTable){
 		this(sdQuery,rateTable==null ? rateTableFromTreasuryGov(Calendar.getInstance()) : rateTable,Calendar.getInstance());
-//		this.sdQuery = sdQuery;
-//		if(rateTable==null){
-//			this.rateTable = rateTableFromTreasuryGov();
-//		}else{
-//			this.rateTable = rateTable;
-//		}
-//		this.evalDate = Calendar.getInstance();
 	}
 	
 	public TreasuryRateSingleQuery(){
@@ -46,11 +47,22 @@ public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQue
 			TreeMap<Integer,BigDecimal> rateTable,
 			Calendar evalDate){
 		this.sdQuery = sdQuery;
+		TreeMap<Integer,BigDecimal> rtable = null;
 		if(rateTable==null){
-			this.rateTable = rateTableFromTreasuryGov(evalDate);
+			try {
+				rtable = rateTableFromTreasuryGov(evalDate);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Utils.prtObErrMess(TreasuryRateSingleQuery.class, "Trying treasury xml serialized file at : "+DEF_TREASURYMAP_PATH);
+				rtable = getDefaultMap();
+			}
 		}else{
-			this.rateTable = rateTable;
+			rtable = rateTable;
 		}
+		if(rtable==null){
+			throw Utils.IllState(this.getClass(),"Can't create rateTable during constructor");
+		}
+		this.rateTable = rtable;
 		this.evalDate = evalDate;
 	}
 
@@ -135,6 +147,7 @@ public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQue
 					}
 
 				}
+				Utils.prtObErrMess(TreasuryRateSingleQuery.class, "can't access treasury rate file from URL - trying previous month : "+treasuryUrl);
 				pseudoCsv = Utils.getCSVData(treasuryUrl);
 				if(pseudoCsv==null){
 					Integer m = new Integer(month)-1;
@@ -144,6 +157,7 @@ public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQue
 				}
 			} catch (Exception e) {
 				try {
+					Utils.prtObErrMess(TreasuryRateSingleQuery.class, "can't access treasury rate file at URL from previous month : "+treasuryUrl);
 					Thread.sleep(2000);
 				} catch (InterruptedException e1) {
 				}
@@ -201,6 +215,12 @@ public class TreasuryRateSingleQuery implements QueryInterface<String,ComplexQue
 		}
 		return ret;
 		
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	private static final TreeMap<Integer,BigDecimal> getDefaultMap(){
+		return new TreeMap<Integer, BigDecimal>(Utils.getXmlData(Map.class, null, DEF_TREASURYMAP_PATH));
 	}
 	
 	public static void main(String[] args) {
