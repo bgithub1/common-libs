@@ -34,6 +34,7 @@ public class UnderlyingShortNameFromOptionShortNameQuery implements QueryInterfa
 	@Override
 	public String get(String key, int timeoutValue, TimeUnit timeUnitType) {
 		SecDef optionSd = sdQuery.get(key, timeoutValue, timeUnitType);
+		if(optionSd==null)return null;
 		if(optionSd.getSymbolType()==SecSymbolType.FUT  || optionSd.getSymbolType()==SecSymbolType.STK ){
 			return key;
 		}
