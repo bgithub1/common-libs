@@ -92,26 +92,29 @@
  	<dependency>
 	 	<groupId>com.github.bgithub1</groupId>
 		<artifactId>collectionsstaticmethods</artifactId>
-		<version>c57a5e1473</version>
+		<version>0.1.0</version>
 	</dependency>
-
+<!-- 		<version>c57a5e1473</version -->
  	<dependency>
 		<groupId>com.github.bgithub1</groupId>
 		<artifactId>mongo-helper</artifactId>
-		<version>361841f1f5</version>
+		<version>0.1.0</version>
 	</dependency>
+	<!-- <version>361841f1f5</version> -->
 
 	<dependency>
 		<groupId>com.github.bgithub1</groupId>
 		<artifactId>web-clnt-access</artifactId>
-		<version>633a94a087</version>
+		<version>0.1.0</version>
 	</dependency>
+	<!-- <version>633a94a087</version> -->
 
 	<dependency>
 		<groupId>com.github.bgithub1</groupId>
 		<artifactId>simple-web-service</artifactId>
-		<version>4c6cc756e1</version>
+		<version>0.1.0</version>
 	</dependency>
+		<!-- <version>4c6cc756e1</version>  -->
 
 
 	<dependency>
