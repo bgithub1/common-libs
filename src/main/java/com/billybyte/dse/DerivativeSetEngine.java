@@ -262,6 +262,10 @@ public class DerivativeSetEngine {
 			Map  diotMap = 
 					(Map)getQueryManager().getDioInputs(diot, set, tovDataGet,tut);
 			if(diotMap!=null){
+				Map diotMapFromUnderlyings = uim.getMap(diot);
+				if(diotMapFromUnderlyings!=null){
+					diotMap.putAll(diotMapFromUnderlyings);
+				}
 				uim.putDiotMap(diot, diotMap);
 			}
 		}
