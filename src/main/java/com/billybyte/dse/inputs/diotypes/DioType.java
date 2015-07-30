@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.billybyte.commoncollections.TypedMapKey;
+import com.billybyte.commonstaticmethods.Utils;
 
 import com.billybyte.dse.inputs.InBlk;
 import com.billybyte.dse.queries.DseInputQuery;
@@ -33,7 +34,14 @@ public abstract class DioType<T> extends TypedMapKey<DseInputQuery<T>> implement
 			if(cqr==null || !cqr.isValidResult()){
 				ret.add(null);
 			}
-			T t = inputsPerDiotMap.get(sn).getResult();
+			ComplexQueryResult<T> cqrT = inputsPerDiotMap.get(sn);
+			if(cqrT==null){
+				throw Utils.IllState(this.getClass(), "null return from inputsPerDiotMap.get(sn) with sn="+sn);
+			}
+			if(!cqrT.isValidResult()){
+				throw Utils.IllState(this.getClass(), "invalid Cqr return from inputsPerDiotMap.get(sn) with sn="+sn+ " Car message = "+cqrT.getException().getMessage());
+			}
+			T t = cqrT.getResult();
 			ret.add(t);
 		}
 		
