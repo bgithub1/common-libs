@@ -24,6 +24,10 @@ public class NormalDistribution {
         return normalDistribution.cumulativeProbability(x);
     }
     
+    public static double probabilityDensity(double x){
+    	return normalDistribution.density(x);
+    }
+    
     /**
      * Inverse of the cumulative distribution function of the standard normal distribution using Jakarta commons-math
      *
