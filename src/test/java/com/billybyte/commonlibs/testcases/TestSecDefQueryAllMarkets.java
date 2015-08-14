@@ -274,4 +274,5 @@ public class TestSecDefQueryAllMarkets extends TestCase{
 		SecDef sd = allMarketsQuery.get(key, 1, TimeUnit.SECONDS);
 		assertNotNull(sd);
 	}
+	
 }
