@@ -23,6 +23,7 @@ import com.billybyte.dse.inputs.diotypes.CorrDiot;
 import com.billybyte.dse.inputs.diotypes.DioType;
 import com.billybyte.dse.inputs.diotypes.DivDiot;
 import com.billybyte.dse.inputs.diotypes.DteSimpleDiot;
+import com.billybyte.dse.inputs.diotypes.ImpliedCorr;
 import com.billybyte.dse.inputs.diotypes.RateDiot;
 import com.billybyte.dse.inputs.diotypes.SettlePriceDiot;
 import com.billybyte.dse.inputs.diotypes.StrikeDiot;
@@ -45,10 +46,25 @@ public class McVar {
 	private final DioType<BigDecimal>  dteDiot = new DteSimpleDiot();
 	private final DioType<Double>  cpDiot = new CallPutDiot();
 	private final DioType<BigDecimal>  strkDiot = new StrikeDiot();
+	private final DioType<BigDecimal> impliedCorr = new ImpliedCorr();
+	
+	private final Map<DioType<?>,QueryInterface<StressInputQueryBlock,Map<String,double[]>>> userSuppliedMcInputQueryMap
+			= new HashMap<DioType<?>, QueryInterface<StressInputQueryBlock,Map<String,double[]>>>();
+
 	// settlediot is ingored
 	static private final DioType<SettlementDataInterface> settleDiot = new SettlePriceDiot();
 	
+	public McVar(){
+		
+	}
 	
+	public McVar(
+			Map<DioType<?>, QueryInterface<StressInputQueryBlock, Map<String, double[]>>> userSuppliedMcInputQueryMap) {
+		super();
+		this.userSuppliedMcInputQueryMap.putAll(userSuppliedMcInputQueryMap);
+				
+	}
+
 	public static class StressInputQueryBlock {
 		private final Set<String> derivSns;
 		private final int numTrials;
@@ -381,6 +397,10 @@ public class McVar {
 		ret.put(strkDiot,new RepeatInputQuery<BigDecimal>(strkDiot,dse));
 		ret.put(dteDiot,new RepeatInputQuery<BigDecimal>(dteDiot,dse));
 		ret.put(cpDiot,new RepeatInputQuery<Double>(cpDiot,dse));
+		ret.put(impliedCorr,new RepeatInputQuery<BigDecimal>(impliedCorr,dse));
+		
+		// overwrite any of the above with user supplied queries
+		ret.putAll(this.userSuppliedMcInputQueryMap);
 		return ret;
 	}
 
