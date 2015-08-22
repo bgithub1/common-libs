@@ -22,6 +22,7 @@ import com.billybyte.dse.inputs.diotypes.CallPutDiot;
 import com.billybyte.dse.inputs.diotypes.CorrDiot;
 import com.billybyte.dse.inputs.diotypes.DioType;
 import com.billybyte.dse.inputs.diotypes.DivDiot;
+import com.billybyte.dse.inputs.diotypes.DteFromSettleDiot;
 import com.billybyte.dse.inputs.diotypes.DteSimpleDiot;
 import com.billybyte.dse.inputs.diotypes.ImpliedCorr;
 import com.billybyte.dse.inputs.diotypes.RateDiot;
@@ -47,6 +48,7 @@ public class McVar {
 	private final DioType<Double>  cpDiot = new CallPutDiot();
 	private final DioType<BigDecimal>  strkDiot = new StrikeDiot();
 	private final DioType<BigDecimal> impliedCorr = new ImpliedCorr();
+	private final DioType<BigDecimal> dteFromSettleCorr = new DteFromSettleDiot();
 	
 	private final Map<DioType<?>,QueryInterface<StressInputQueryBlock,Map<String,double[]>>> userSuppliedMcInputQueryMap
 			= new HashMap<DioType<?>, QueryInterface<StressInputQueryBlock,Map<String,double[]>>>();
@@ -398,7 +400,7 @@ public class McVar {
 		ret.put(dteDiot,new RepeatInputQuery<BigDecimal>(dteDiot,dse));
 		ret.put(cpDiot,new RepeatInputQuery<Double>(cpDiot,dse));
 		ret.put(impliedCorr,new RepeatInputQuery<BigDecimal>(impliedCorr,dse));
-		
+		ret.put(dteFromSettleCorr,new RepeatInputQuery<BigDecimal>(dteFromSettleCorr,dse));
 		// overwrite any of the above with user supplied queries
 		ret.putAll(this.userSuppliedMcInputQueryMap);
 		return ret;

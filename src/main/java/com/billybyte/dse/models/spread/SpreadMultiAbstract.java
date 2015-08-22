@@ -611,7 +611,40 @@ public abstract class SpreadMultiAbstract extends DerivativeAbstractModel{
 	@Override
 	public double[] getPriceArray(Map<DioType<?>, double[]> mainInputs,
 			Map<DioType<?>, double[][]> underlyingInputs) {
-		return null;
+		int len = mainInputs.get(cpDiot).length;
+		double[] cpArr = mainInputs.get(cpDiot);
+		double[][] atmArr = underlyingInputs.get(atmType);
+		double[] strkArr = mainInputs.get(strkDiot);
+		double[] dteArr = mainInputs.get(dteType);
+		double[][] volArr = underlyingInputs.get(vsDiot);
+		double[][] rateArr = underlyingInputs.get(rateType);
+		double[][] divArr = underlyingInputs.get(divType);
+		double[] corrArr = mainInputs.get(corrType);
+
+		double[] ret = new double[len];
+		Arrays.fill(ret, Double.NaN);
+		
+		for(int i = 0;i<len;i++){
+			double callPut=cpArr[i] ; 
+			double atmLeg0= atmArr[i][0] ;
+			double atmLeg1= atmArr[i][1] ;
+			double strike= strkArr[i] ;
+			double dte= dteArr[i] ; 
+			double volLeg0= volArr[i][0] ;
+			double volLeg1= volArr[i][1] ;
+			double rate0 = rateArr[i][0] ; 
+			double rate1 = rateArr[i][1] ; 
+			double divLeg0 = divArr[i][0] ;
+			double divLeg1 = divArr[i][0] ;
+			double corr = corrArr[i];
+			
+			double val = 
+					getSpreadPrice(
+							callPut, atmLeg0, atmLeg1, strike, dte, volLeg0, volLeg1, rate0, rate1, 
+							divLeg0, divLeg1, corr, null, null);
+			ret[i] = val;
+		}
+		return ret;
 	}
 	
 
