@@ -39,21 +39,23 @@ public class RepeatInputQuery<T extends Number> implements QueryInterface<Stress
 				new ArrayList<String>(new TreeSet<String>(snSet));
 		int len = orderedList.size();
 		double[] vecDouble = new double[len];
-		List<Exception> excepts = new ArrayList<Exception>();
+		List<String> excepts = new ArrayList<String>();
 		for(int i = 0;i<len;i++){
 			String sn = orderedList.get(i);
 			ComplexQueryResult<T> cqr = r.get(sn);
 			if(!cqr.isValidResult()){
-				excepts.add(cqr.getException());
+				excepts.add(dioType.toString() + ":" + cqr.getException().getMessage());
+				vecDouble[i]  = Double.NaN;
 				continue;
 			}
 			vecDouble[i] = cqr.getResult().doubleValue();
 		}
 		if(excepts.size()>0){
-			throw Utils.illStateWithExceptList(this.getClass(),  excepts);
+			for(String except : excepts){
+				Utils.prtObErrMess(this.getClass(),  except);
+			}
 		}
 		
-//		double[][] retDouble = MathStuff.generateDuplicateRowMatrix(trials,new Matrix(vecDouble,len)).transpose().getArray();
 		double[][] retDouble = MathStuff.generateDuplicateRowMatrix(trials,vecDouble).transpose().getArray();
 		Map<String,double[]> ret = new HashMap<String, double[]>();
 		

@@ -243,7 +243,14 @@ public class McVar {
 					trials);
 			
 			// call batch get price
-			double[] resultsPerTrial = dse.getModel(derivName).getPriceArray(mainTrialsPerDiot, underTrialsPerDiot);
+			double[] resultsPerTrial = null;
+			try {
+				resultsPerTrial = dse.getModel(derivName).getPriceArray(mainTrialsPerDiot, underTrialsPerDiot);
+			} catch (Exception e) {
+				Utils.prtObErrMess(this.getClass(), derivName + " : error during getPriceArray");
+				resultsPerTrial = dse.getModel(derivName).getPriceArray(mainTrialsPerDiot, underTrialsPerDiot);
+				//throw Utils.IllState(e);
+			}
 			resultsPerTrialPerDerivNameTransposed[i] = resultsPerTrial;
 		}
 		
@@ -371,8 +378,14 @@ public class McVar {
 		StressInputQueryBlock underInpBlk = new StressInputQueryBlock(underDiotNames, numTrials);
 		for(DioType<?> underDiot:underDiots){
 			Map<String, double[]> trialValues = 
-					mcInputsQueryMap.get(underDiot).get(underInpBlk, 1, TimeUnit.SECONDS);	
-			diotToShortNameToTrialValues.put(underDiot, trialValues);
+					mcInputsQueryMap.get(underDiot).get(underInpBlk, 1, TimeUnit.SECONDS);
+			Map<String, double[]> innerMap = diotToShortNameToTrialValues.get(underDiot);
+			if(innerMap==null){
+				diotToShortNameToTrialValues.put(underDiot, trialValues);	
+			}else{
+				innerMap.putAll(trialValues);
+			}
+			
 		}
 		
 		return diotToShortNameToTrialValues;
