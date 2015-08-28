@@ -104,13 +104,14 @@ public class HttpCsvQueryServer {
     		// if a returnFileName has been specified, then  add header info to 
     		//   the repsonse that will cause a file download rather than a display
     		//   in the browser.
+            Headers headers = t.getResponseHeaders();
     		if(returnFileName!=null){
                 // This is a header to permit the download of the csv
-                Headers headers = t.getResponseHeaders();
                 headers.add("Content-Type", "text/csv");
-                headers.add("Content-Disposition", "attachment;filename="+returnFileName);
+                headers.add("Content-Disposition", "attachment;filename="+returnFileName);            
     		}
-			t.sendResponseHeaders(200,response.length());
+    		headers.add("Access-Control-Allow-Origin", "*");
+    		t.sendResponseHeaders(200,response.length());
 			OutputStream os=t.getResponseBody();
 			Utils.prt(response);
 			
