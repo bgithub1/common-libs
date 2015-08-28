@@ -15,6 +15,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+
+
+
 @SuppressWarnings("restriction")
 /**
  * Generalized http server which calls a QueryInterface<String,List<String[]>
@@ -30,8 +33,10 @@ public class HttpCsvQueryServer {
 	private final int timeoutValue;
 	private final TimeUnit timeUnitType;
 	private final String returnFileName;
+
+	
+	
 	/**
-	 * 
 	 * @param httpPort
 	 * @param httpPath
 	 * @param csvQuery
@@ -96,10 +101,15 @@ public class HttpCsvQueryServer {
     			response += line + "\n";
     		}
     		
-            // This is a header to permit the download of the csv
-            Headers headers = t.getResponseHeaders();
-            headers.add("Content-Type", "text/csv");
-            headers.add("Content-Disposition", "attachment;filename="+returnFileName);
+    		// if a returnFileName has been specified, then  add header info to 
+    		//   the repsonse that will cause a file download rather than a display
+    		//   in the browser.
+    		if(returnFileName!=null){
+                // This is a header to permit the download of the csv
+                Headers headers = t.getResponseHeaders();
+                headers.add("Content-Type", "text/csv");
+                headers.add("Content-Disposition", "attachment;filename="+returnFileName);
+    		}
 			t.sendResponseHeaders(200,response.length());
 			OutputStream os=t.getResponseBody();
 			Utils.prt(response);
@@ -134,7 +144,7 @@ public class HttpCsvQueryServer {
 			HttpCsvQueryServer csvs = 
 					new HttpCsvQueryServer(
 							httpPort, httpPath, 
-							csvQuery, timeoutValue, timeUnitType);
+							csvQuery, timeoutValue, timeUnitType,null);
 			csvs.start();
 			Utils.prtObErrMess(HttpCsvQueryServer.class, "server started on port 8888.");
 			Utils.prtObErrMess(HttpCsvQueryServer.class, "Enter http://127.0.0.1:8888/dummyCrude?p1=data");
