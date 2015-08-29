@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import com.billybyte.commoninterfaces.QueryInterface;
@@ -33,8 +36,9 @@ public class HttpCsvQueryServer {
 	private final int timeoutValue;
 	private final TimeUnit timeUnitType;
 	private final String returnFileName;
-
-	
+	private final List<String[]> otherHeaderPairs;
+	private final Map<String,QueryInterface<String, List<String[]>>> altCsvQueryMap = 
+		new ConcurrentHashMap<String, QueryInterface<String,List<String[]>>>(new HashMap<String, QueryInterface<String,List<String[]>>>());
 	
 	/**
 	 * @param httpPort
@@ -49,7 +53,8 @@ public class HttpCsvQueryServer {
 			QueryInterface<String, List<String[]>> csvQuery,
 			int timeoutValue,
 			TimeUnit timeUnitType,
-			String returnFileName) throws IOException {
+			String returnFileName,
+			List<String[]> otherHeaderPairs) throws IOException {
 		super();
 		this.timeoutValue = timeoutValue;
 		this.timeUnitType = timeUnitType;
@@ -57,12 +62,32 @@ public class HttpCsvQueryServer {
 		this.httpPath = httpPath;
 		this.csvQuery = csvQuery;
 		this.returnFileName = returnFileName;
-		
+		this.otherHeaderPairs = otherHeaderPairs;
+				
 		server = HttpServer.create(new InetSocketAddress(httpPort), 0);
         server.createContext(httpPath, new MyHandler());
         server.setExecutor(null); // creates a default executor
 
 	}
+	
+	/**
+	 * 
+	 * @param httpPort
+	 * @param httpPath
+	 * @param csvQuery
+	 * @param timeoutValue
+	 * @param timeUnitType
+	 * @param returnFileName
+	 * @throws IOException
+	 */
+	public HttpCsvQueryServer(int httpPort, String httpPath,
+			QueryInterface<String, List<String[]>> csvQuery,
+			int timeoutValue,
+			TimeUnit timeUnitType,
+			String returnFileName)throws IOException{
+		this(httpPort, httpPath, csvQuery, timeoutValue, timeUnitType, returnFileName, null);
+	}
+
 	
 	/**
 	 * 
@@ -77,9 +102,17 @@ public class HttpCsvQueryServer {
 			QueryInterface<String, List<String[]>> csvQuery,
 			int timeoutValue,
 			TimeUnit timeUnitType) throws IOException {
-		this(httpPort,httpPath,csvQuery,timeoutValue,timeUnitType,"myFileName.csv");
+		this(httpPort,httpPath,csvQuery,timeoutValue,timeUnitType,"myFileName.csv",null);
 	}
 	
+	public void addAlternativePath(String httpPath,QueryInterface<String,List<String[]>> altCsvQuery){
+		try {
+			this.altCsvQueryMap.put(httpPath, altCsvQuery);
+			this.server.createContext(httpPath, new MyHandler());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void start(){
 		server.start();
 	}
@@ -87,10 +120,21 @@ public class HttpCsvQueryServer {
     private class MyHandler implements HttpHandler {
 
     	public void handle(HttpExchange t) throws IOException {
+    		String path = t.getHttpContext().getPath();
+    		
     		String q = t.getRequestURI().getQuery();
     		String response = "";
-    		List<String[]> csvList = 
-    				csvQuery.get(q,timeoutValue,timeUnitType);
+    		List<String[]> csvList = null;
+    		if(altCsvQueryMap.containsKey(path)){
+    			QueryInterface<String, List<String[]>> altQuery = 
+    					altCsvQueryMap.get(path);
+    			csvList = 
+    					altQuery.get(q,timeoutValue,timeUnitType);
+    		}else{
+    			csvList = 
+        				csvQuery.get(q,timeoutValue,timeUnitType);
+    		}
+    		 
     		// turn list of csv into a string
     		for(String[] csvLine: csvList){
     			String line = "";
@@ -110,7 +154,13 @@ public class HttpCsvQueryServer {
                 headers.add("Content-Type", "text/csv");
                 headers.add("Content-Disposition", "attachment;filename="+returnFileName);            
     		}
+    		
     		headers.add("Access-Control-Allow-Origin", "*");
+    		if(otherHeaderPairs!=null &&  otherHeaderPairs.size()>0){
+    			for(String[] otherHeaderPair : otherHeaderPairs){
+    				headers.add(otherHeaderPair[0],otherHeaderPair[1]);
+    			}
+    		}
     		t.sendResponseHeaders(200,response.length());
 			OutputStream os=t.getResponseBody();
 			Utils.prt(response);
