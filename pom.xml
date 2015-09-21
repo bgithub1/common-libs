@@ -89,12 +89,23 @@
 	    <artifactId>signpost-commonshttp4</artifactId>
 	    <version>1.2.1.2</version>
 	</dependency>
+
+
+
+<!--  
+ 	<dependency>
+	 	<groupId>com.billybyte</groupId>
+		<artifactId>collectionsstaticmethods</artifactId>
+		<version>1.0</version>
+	</dependency>
+
+-->
  	<dependency>
 	 	<groupId>com.github.bgithub1</groupId>
 		<artifactId>collectionsstaticmethods</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 	</dependency>
-<!-- 		<version>c57a5e1473</version -->
+
  	<dependency>
 		<groupId>com.github.bgithub1</groupId>
 		<artifactId>mongo-helper</artifactId>

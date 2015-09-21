@@ -99,9 +99,11 @@ public class TestExpiryFromListOfExpiryRules extends TestCase{
 	}
 
 	
-	static String databasePath = "../PortfolioData/CmeData/cmeContracts.database";
+//	static String databasePath = "../PortfolioData/CmeData/cmeContracts.database";	
+//	static String iceExpiryQueryDatabasePath = "../PortfolioData/CmeData/IceExpiryDatabase.database";
 	
-	static String iceExpiryQueryDatabasePath = "../PortfolioData/CmeData/IceExpiryDatabase.database";
+	static String databasePath = "PortfolioData/CmeData/cmeContracts.database";	
+	static String iceExpiryQueryDatabasePath = "PortfolioData/CmeData/IceExpiryDatabase.database";
 
 	
 	
