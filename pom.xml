@@ -123,7 +123,7 @@
 	<dependency>
 		<groupId>com.github.bgithub1</groupId>
 		<artifactId>simple-web-service</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 	</dependency>
 		<!-- <version>4c6cc756e1</version>  -->
 
