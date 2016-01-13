@@ -109,14 +109,14 @@
  	<dependency>
 		<groupId>com.github.bgithub1</groupId>
 		<artifactId>mongo-helper</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.2</version>
 	</dependency>
 	<!-- <version>361841f1f5</version> -->
 
 	<dependency>
 		<groupId>com.github.bgithub1</groupId>
 		<artifactId>web-clnt-access</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 	</dependency>
 	<!-- <version>633a94a087</version> -->
 
